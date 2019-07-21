@@ -86,10 +86,11 @@ export default {
       component: '../layouts/UserLayout',
       routes: [
         {
+          name: 'login',
           path: '/user/login',
           component: './user/Login',
-        },
-      ]
+        }
+      ],
     },
     {
       path: '/',

@@ -1,5 +1,4 @@
-import React from 'react'
+import React from 'react';
+import Login from './login/';
 
-export default () => (
-    <div>default login page</div>
-);
+export default Login;
