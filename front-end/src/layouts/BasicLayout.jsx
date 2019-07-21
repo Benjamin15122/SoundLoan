@@ -24,7 +24,8 @@ const menuDataRender = menuList =>
 
 const footerRender = (_, defaultDom) => {
   if (!isAntDesignPro()) {
-    return defaultDom;
+    // return defaultDom;
+    return <div style={{textAlign: 'center'}}>TODO: ADD FOOTER</div>
   }
 
   return (
