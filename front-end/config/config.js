@@ -88,8 +88,13 @@ export default {
         {
           name: 'login',
           path: '/user/login',
-          component: './user/Login',
-        }
+          component: './user/login',
+        },
+        {
+          name: 'register',
+          path: '/user/register',
+          component: './user/register',
+        },
       ],
     },
     {
