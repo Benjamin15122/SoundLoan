@@ -54,7 +54,7 @@ const GlobalHeaderRight = props => {
           <Icon type="question-circle-o" />
         </a>
       </Tooltip>
-      <Avatar />
+      <Avatar menu/>
       {/* <SelectLang className={styles.action} /> */}
     </div>
   );
