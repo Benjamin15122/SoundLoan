@@ -5,10 +5,11 @@ import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 export default {
   UserName: {
-    props: {
+    name: 'userName',
+    customProps: {
       size: 'large',
       id: 'userName',
-      prefix: <Icon type="user" className={styles.prefixIcon} />,
+      prefix: <Icon type='user' className={styles.prefixIcon} />,
       placeholder: `${formatMessage({
         id: 'user-login.login.userName',
       })}: admin or user`,
@@ -23,9 +24,10 @@ export default {
     ],
   },
   Password: {
-    props: {
+    name: 'password',
+    customProps: {
       size: 'large',
-      prefix: <Icon type="lock" className={styles.prefixIcon} />,
+      prefix: <Icon type='lock' className={styles.prefixIcon} />,
       type: 'password',
       id: 'password',
       placeholder: `${formatMessage({
@@ -42,9 +44,10 @@ export default {
     ],
   },
   Mobile: {
-    props: {
+    name: 'mobile',
+    customProps: {
       size: 'large',
-      prefix: <Icon type="mobile" className={styles.prefixIcon} />,
+      prefix: <Icon type='mobile' className={styles.prefixIcon} />,
       placeholder: formatMessage({
         id: 'user-login.phone-number.placeholder',
       }),
@@ -65,9 +68,10 @@ export default {
     ],
   },
   Captcha: {
-    props: {
+    name: 'captcha',
+    customProps: {
       size: 'large',
-      prefix: <Icon type="mail" className={styles.prefixIcon} />,
+      prefix: <Icon type='mail' className={styles.prefixIcon} />,
       placeholder: formatMessage({
         id: 'user-login.verification-code.placeholder',
       }),
@@ -80,5 +84,12 @@ export default {
         }),
       },
     ],
+    countDown: 120,
+    getCaptchaButtonText: formatMessage({
+      id: 'user-login.form.get-captcha',
+    }),
+    getCaptchaSecondText: formatMessage({
+      id: 'user-login.captcha.second',
+    }),
   },
 };

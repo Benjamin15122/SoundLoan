@@ -97,23 +97,14 @@ class Login extends Component {
             })}
           >
             {status === 'error' &&
-              loginType === 'account' &&
               !submitting &&
               this.renderMessage(
                 formatMessage({
                   id: 'user-login.login.message-invalid-credentials',
                 }),
               )}
-            <UserName
-              name="userName"
-            />
-            <Password
-              name="password"
-              onPressEnter={e => {
-                e.preventDefault();
-                this.loginForm.validateFields(this.handleSubmit);
-              }}
-            />
+            <UserName />
+            <Password />
           </Tab>
           <Tab
             key="mobile"
@@ -122,26 +113,15 @@ class Login extends Component {
             })}
           >
             {status === 'error' &&
-              loginType === 'mobile' &&
               !submitting &&
               this.renderMessage(
                 formatMessage({
                   id: 'user-login.login.message-invalid-verification-code',
                 }),
               )}
-            <Mobile
-              name="mobile"
-            />
+            <Mobile />
             <Captcha
-              name="captcha"
-              countDown={120}
               onGetCaptcha={this.onGetCaptcha}
-              getCaptchaButtonText={formatMessage({
-                id: 'user-login.form.get-captcha',
-              })}
-              getCaptchaSecondText={formatMessage({
-                id: 'user-login.captcha.second',
-              })}
             />
           </Tab>
           <div>
