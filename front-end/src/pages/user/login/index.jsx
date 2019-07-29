@@ -106,31 +106,9 @@ class Login extends Component {
               )}
             <UserName
               name="userName"
-              placeholder={`${formatMessage({
-                id: 'user-login.login.userName',
-              })}: admin or user`}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.userName.required',
-                  }),
-                },
-              ]}
             />
             <Password
               name="password"
-              placeholder={`${formatMessage({
-                id: 'user-login.login.password',
-              })}: ant.design`}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.password.required',
-                  }),
-                },
-              ]}
               onPressEnter={e => {
                 e.preventDefault();
                 this.loginForm.validateFields(this.handleSubmit);
@@ -153,29 +131,9 @@ class Login extends Component {
               )}
             <Mobile
               name="mobile"
-              placeholder={formatMessage({
-                id: 'user-login.phone-number.placeholder',
-              })}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.phone-number.required',
-                  }),
-                },
-                {
-                  pattern: /^1\d{10}$/,
-                  message: formatMessage({
-                    id: 'user-login.phone-number.wrong-format',
-                  }),
-                },
-              ]}
             />
             <Captcha
               name="captcha"
-              placeholder={formatMessage({
-                id: 'user-login.verification-code.placeholder',
-              })}
               countDown={120}
               onGetCaptcha={this.onGetCaptcha}
               getCaptchaButtonText={formatMessage({
@@ -184,14 +142,6 @@ class Login extends Component {
               getCaptchaSecondText={formatMessage({
                 id: 'user-login.captcha.second',
               })}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.verification-code.required',
-                  }),
-                },
-              ]}
             />
           </Tab>
           <div>

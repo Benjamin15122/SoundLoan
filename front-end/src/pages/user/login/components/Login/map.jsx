@@ -1,6 +1,7 @@
 import { Icon } from 'antd';
 import React from 'react';
 import styles from './index.less';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 export default {
   UserName: {
@@ -8,12 +9,16 @@ export default {
       size: 'large',
       id: 'userName',
       prefix: <Icon type="user" className={styles.prefixIcon} />,
-      placeholder: 'admin',
+      placeholder: `${formatMessage({
+        id: 'user-login.login.userName',
+      })}: admin or user`,
     },
     rules: [
       {
         required: true,
-        message: 'Please enter username!',
+        message: formatMessage({
+          id: 'user-login.userName.required',
+        }),
       },
     ],
   },
@@ -23,12 +28,16 @@ export default {
       prefix: <Icon type="lock" className={styles.prefixIcon} />,
       type: 'password',
       id: 'password',
-      placeholder: '888888',
+      placeholder: `${formatMessage({
+        id: 'user-login.login.password',
+      })}: ant.design`,
     },
     rules: [
       {
         required: true,
-        message: 'Please enter password!',
+        message: formatMessage({
+          id: 'user-login.password.required',
+        }),
       },
     ],
   },
@@ -36,16 +45,22 @@ export default {
     props: {
       size: 'large',
       prefix: <Icon type="mobile" className={styles.prefixIcon} />,
-      placeholder: 'mobile number',
+      placeholder: formatMessage({
+        id: 'user-login.phone-number.placeholder',
+      }),
     },
     rules: [
       {
         required: true,
-        message: 'Please enter mobile number!',
+        message: formatMessage({
+          id: 'user-login.phone-number.required',
+        }),
       },
       {
         pattern: /^1\d{10}$/,
-        message: 'Wrong mobile number format!',
+        message: formatMessage({
+          id: 'user-login.phone-number.wrong-format',
+        }),
       },
     ],
   },
@@ -53,12 +68,16 @@ export default {
     props: {
       size: 'large',
       prefix: <Icon type="mail" className={styles.prefixIcon} />,
-      placeholder: 'captcha',
+      placeholder: formatMessage({
+        id: 'user-login.verification-code.placeholder',
+      }),
     },
     rules: [
       {
         required: true,
-        message: 'Please enter Captcha!',
+        message: formatMessage({
+          id: 'user-login.verification-code.required',
+        }),
       },
     ],
   },
