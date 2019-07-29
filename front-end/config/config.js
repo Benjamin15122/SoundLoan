@@ -87,12 +87,22 @@ export default {
       routes: [
         {
           name: 'login',
-          path: '/user/login',
+          path: 'login',
           component: './user/login',
         },
         {
+          name: 'registerForPerson',
+          path: 'register/person',
+          component: './user/register/person'
+        },
+        {
+          name: 'registerForEnterprise',
+          path: 'register/enterprise',
+          component: './user/register/enterprise'
+        },
+        {
           name: 'register',
-          path: '/user/register',
+          path: 'register',
           component: './user/register',
         },
       ],

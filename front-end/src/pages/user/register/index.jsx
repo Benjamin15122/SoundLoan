@@ -5,6 +5,7 @@ import Link from 'umi/link';
 import { connect } from 'dva';
 import router from 'umi/router';
 import styles from './style.less';
+import SelectUserType from '../components/SelectUserType'
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -193,6 +194,12 @@ class Register extends Component {
   };
 
   render() {
+
+    return <SelectUserType 
+              linkForPerson='./register/person' 
+              linkForEnterprise='./register/enterprise'
+              />
+
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
     const { count, prefix, help, visible } = this.state;
