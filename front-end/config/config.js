@@ -86,12 +86,10 @@ export default {
       component: '../layouts/UserLayout',
       routes: [
         {
-          name: 'login',
           path: 'login',
           component: './user/login',
         },
         {
-          name: 'register',
           path: 'register',
           component: './user/register',
         },
@@ -106,6 +104,36 @@ export default {
       Routes: ['src/pages/Authorized'],
       authority: ['admin', 'user'],
       routes: [
+        {
+          name: '个人信息',
+          icon: 'user',
+          path: '/account',
+          routes: [
+            {
+              name: '个人空间',
+              path: 'center',
+              component: './account/center',
+            },
+            {
+              name: '我的贷款',
+              path: 'loans',
+              component: './account/loans',
+            },
+            {
+              name: '我的合同',
+              path: 'contracts',
+              component: './account/contracts',
+            },
+            {
+              name: '账户设置',
+              path: 'settings',
+              component: './account/settings',
+            },
+            {
+              component: './404',
+            },
+          ],
+        },
         {
           path: '/',
           name: 'welcome',
