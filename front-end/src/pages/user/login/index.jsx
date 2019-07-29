@@ -80,17 +80,9 @@ class Login extends Component {
 
   render() {
     const query = getPageQuery();
-    if (query.type === 'person') {
-
-    }
-    else if (query.type === 'enterprise') {
-
-    }
-    else {
-      return <SelectUserType
-              linkToPerson='?type=person'
-              linkToEnterprise='?type=enterprise'
-              />
+    let tabPane;
+    if (query.type !== 'person' && query.type !== 'enterprise') {
+      return <SelectUserType linkToPerson="?type=person" linkToEnterprise="?type=enterprise" />;
     }
 
     const { userLogin, submitting } = this.props;
@@ -106,40 +98,42 @@ class Login extends Component {
             this.loginForm = form;
           }}
         >
-          <Tab
-            key="account"
-            tab={formatMessage({
-              id: 'user-login.login.tab-login-credentials',
-            })}
-          >
-            {status === 'error' &&
-              !submitting &&
-              this.renderMessage(
-                formatMessage({
-                  id: 'user-login.login.message-invalid-credentials',
-                }),
-              )}
-            <UserName />
-            <Password />
-          </Tab>
-          <Tab
-            key="mobile"
-            tab={formatMessage({
-              id: 'user-login.login.tab-login-mobile',
-            })}
-          >
-            {status === 'error' &&
-              !submitting &&
-              this.renderMessage(
-                formatMessage({
-                  id: 'user-login.login.message-invalid-verification-code',
-                }),
-              )}
-            <Mobile />
-            <Captcha
-              onGetCaptcha={this.onGetCaptcha}
-            />
-          </Tab>
+          {query.type === 'person' || query.type === 'enterprise' ? (
+            <Tab
+              key="account"
+              tab={formatMessage({
+                id: 'user-login.login.tab-login-credentials',
+              })}
+            >
+              {status === 'error' &&
+                !submitting &&
+                this.renderMessage(
+                  formatMessage({
+                    id: 'user-login.login.message-invalid-credentials',
+                  }),
+                )}
+              <UserName />
+              <Password />
+            </Tab>
+          ) : null}
+          {query.type === 'person' ? (
+            <Tab
+              key="mobile"
+              tab={formatMessage({
+                id: 'user-login.login.tab-login-mobile',
+              })}
+            >
+              {status === 'error' &&
+                !submitting &&
+                this.renderMessage(
+                  formatMessage({
+                    id: 'user-login.login.message-invalid-verification-code',
+                  }),
+                )}
+              <Mobile />
+              <Captcha onGetCaptcha={this.onGetCaptcha} />
+            </Tab>
+          ) : null}
           <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               <FormattedMessage id="user-login.login.remember-me" />
