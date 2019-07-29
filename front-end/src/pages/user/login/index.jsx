@@ -5,6 +5,8 @@ import Link from 'umi/link';
 import { connect } from 'dva';
 import LoginComponents from './components/Login';
 import styles from './style.less';
+import { getPageQuery } from '@/pages/user/utils/utils';
+import SelectUserType from '@/pages/user/components/SelectUserType';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
 
@@ -77,6 +79,20 @@ class Login extends Component {
   );
 
   render() {
+    const query = getPageQuery();
+    if (query.type === 'person') {
+
+    }
+    else if (query.type === 'enterprise') {
+
+    }
+    else {
+      return <SelectUserType
+              linkToPerson='?type=person'
+              linkToEnterprise='?type=enterprise'
+              />
+    }
+
     const { userLogin, submitting } = this.props;
     const { status, type: loginType } = userLogin;
     const { type, autoLogin } = this.state;
