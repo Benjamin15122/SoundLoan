@@ -196,8 +196,8 @@ class Register extends Component {
   render() {
 
     return <SelectUserType 
-              linkForPerson='./register/person' 
-              linkForEnterprise='./register/enterprise'
+              linkToPerson='?type=person' 
+              linkToEnterprise='?type=enterprise'
               />
 
     const { form, submitting } = this.props;

@@ -91,16 +91,6 @@ export default {
           component: './user/login',
         },
         {
-          name: 'registerForPerson',
-          path: 'register/person',
-          component: './user/register/person'
-        },
-        {
-          name: 'registerForEnterprise',
-          path: 'register/enterprise',
-          component: './user/register/enterprise'
-        },
-        {
           name: 'register',
           path: 'register',
           component: './user/register',
