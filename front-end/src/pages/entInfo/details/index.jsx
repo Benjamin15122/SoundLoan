@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Card, Tabs } from 'antd';
 
+import Introduction from './components/Introduction';
+
 const TabPane = Tabs.TabPane;
 
 class EntInfoDetails extends Component {
@@ -10,14 +12,14 @@ class EntInfoDetails extends Component {
     return <>
       <PageHeaderWrapper>
         <Card>
-          企业基本信息
+          <Introduction />
         </Card>
         <Card>
           <Tabs>
-            <TabPane tab='企业新闻'/>
-            <TabPane tab='信息变更'/>
-            <TabPane tab='关联关系'/>
-            <TabPane tab='用户评价'/>
+            <TabPane key='news' tab='企业新闻'/>
+            <TabPane key='change' tab='信息变更'/>
+            <TabPane key='relation' tab='关联关系'/>
+            <TabPane key='comments' tab='用户评价'/>
           </Tabs>
         </Card>
       </PageHeaderWrapper>
