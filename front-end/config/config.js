@@ -135,6 +135,21 @@ export default {
           ],
         },
         {
+          name: '企业信息',
+          icon: 'database',
+          path: '/entInfo',
+          routes: [
+            {
+              name: '企业详情',
+              path: 'details',
+              component: './entInfo/details'
+            },
+            {
+              component: './404',
+            }
+          ]
+        },
+        {
           path: '/',
           name: 'welcome',
           icon: 'smile',
