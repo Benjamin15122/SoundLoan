@@ -2,7 +2,6 @@ import os
 import logging
 
 from app import app, db
-from app.models import UserIndividualInfo, UserEnterpriseInfo, LoanRecordInfo, ContractInfo, LoanProductInfo
 
 
 if __name__ == "__main__":

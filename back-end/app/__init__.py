@@ -15,7 +15,7 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 online_users = {}
 
-from app import models
 from app.manage import routes
+from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract
 
 db.create_all()

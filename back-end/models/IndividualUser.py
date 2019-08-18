@@ -5,11 +5,11 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSigna
 # from sqlalchemy import Enum
 
 from app import db, app
-from app.utils import extend_to_16
+from utils.common_utils import extend_to_16
 
 
 
-class UserIndividualInfo(db.Model):
+class IndividualUser(db.Model):
     __tablename__ = "user_individual"
     Id = db.Column(db.Integer, primary_key=True)
     Nickname = db.Column(db.String(80), index=True, nullable=False, unique=True)
@@ -33,6 +33,11 @@ class UserIndividualInfo(db.Model):
     WorkYear = db.Column(db.Integer)
 
     Job = db.Column(db.Enum('student','whiteCollar','farmer','other'))
+
+    IsAuthenticated = db.Column(db.Boolean)
+    PhoneNumber = db.Column(db.Integer)
+    IDCardNumber = db.Column(db.String(18))
+
 
     ApplyPassTime = db.Column(db.Integer)
     PayTime = db.Column(db.Integer)
@@ -87,6 +92,12 @@ class UserIndividualInfo(db.Model):
         self.RepayIntersetAmount = -1
         self.UnrepayInterestAmount = -1
         self.CreditScore = -1
+
+        # Authentication info is not set when user is initialized,
+        # fill these fields in Authentication process
+        self.IsAuthenticated = False
+        self.PhoneNumber = -1
+        self.IDCardNumber = 'xxxxxxxxxxxxxxxxxx'
 
     def to_dict(self):
         return {
@@ -158,160 +169,3 @@ class UserIndividualInfo(db.Model):
         user = UserIndividualInfo.query.get(data['UserId'])
         return user
 
-
-class UserEnterpriseInfo(db.Model):
-    __tablename__ = "user_enterprise"
-    Id = db.Column(db.Integer, primary_key=True)
-    Name = db.Column(db.String(80), index=True, nullable=False, unique=True)
-    PasswordHash = db.Column(db.String(255), nullable=False)
-
-    FoundationDate = db.Column(db.TIMESTAMP)
-    CorporateCapital = db.Column(db.BIGINT)
-    LegalPpersonName = db.Column(db.String(80))
-    RegisterCapital = db.Column(db.BIGINT)
-    LoanRateMin = db.Column(db.Float)
-    LoanRateMax = db.Column(db.Float)
-    Address = db.Column(db.String(256))
-    Website = db.Column(db.String(256))
-    Contact = db.Column(db.String(256))
-    Description = db.Column(db.String(1000))
-
-    CreditScore = db.Column(db.Integer)
-    
-    aes = AES.new(extend_to_16(app.config['SECRET_KEY']), AES.MODE_ECB)
-
-
-    def __init__(self, name, password,
-                    foundation_date, corporate_capital, legal_person_name, register_capital,
-                    loan_rate_min, loan_rate_max,
-                    address, website, contact, description):
-        self.Name = name
-        self.hash_password(password)
-
-        self.FoundationDate = foundation_date
-        self.CorporateCapital = corporate_capital
-        self.LegalPpersonName = legal_person_name
-        self.RegisterCapital = register_capital
-        self.LoanRateMin = loan_rate_min
-        self.LoanRateMax = loan_rate_max
-        self.Address = address
-        self.Website = website
-        self.Contact = contact
-        self.Description = description
-
-        # '-1' as 'not set'
-        self.CreditScore = -1
-
-    def to_dict(self):
-        return {
-            'name': self.Name,
-
-            'foundation_date': self.FoundationDate.strftime('%Y-%m-%d'),
-            'corporate_capital': self.CorporateCapital,
-            'legal_person_name': self.LegalPpersonName,
-            'register_capital': self.RegisterCapital,
-            'loan_rate_min': self.LoanRateMin,
-            'loan_rate_max': self.LoanRateMax,
-            'address': self.Address,
-            'website': self.Website,
-            'contact': self.Contact,
-            'description': self.Description,
-
-            'credit_score': self.CreditScore
-        }
-
-    def get_name(self):
-        return self.name
-
-    def get_password_hash(self):
-        return self.PasswordHash
-
-    def hash_password(self, password):
-        encrypt_aes = self.aes.encrypt(extend_to_16(password))
-        self.PasswordHash = str(base64.encodebytes(encrypt_aes), encoding='utf-8').rstrip('\n')
-
-    def get_decoded_password(self):
-        encoded_str = base64.decodestring(self.PasswordHash.encode(encoding='utf-8'))
-        decoded_password = self.aes.decrypt(encoded_str).decode().rstrip('\0')
-        return decoded_password
-
-    def verify_password(self, password):
-        encrypt_aes = self.aes.encrypt(extend_to_16(password))
-        password_hash = str(base64.encodebytes(encrypt_aes), encoding='utf-8').rstrip('\n')
-        return password_hash == self.PasswordHash
-
-    def gen_auth_token(self):
-        s = Serializer(app.config['SECRET_KEY'], expires_in=app.config['EXPIRES_IN'])
-        return str(s.dumps({'UserId': self.Id}), encoding='utf-8')
-
-    @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(app.config['SECRET_KEY'])
-        origin_token = bytes(token, encoding='utf-8')
-        try:
-            data = s.loads(origin_token)
-        except SignatureExpired:
-            return None # valid token, but expire
-        except BadSignature:
-            return None # invalid token
-        user = UserEnterpriseInfo.query.get(data['UserId'])
-        return user
-
-class LoanRecordInfo(db.Model):
-    __tablename__ = "loan_record"
-
-    Id = db.Column(db.Integer, primary_key=True)
-
-    LoanMoney = db.Column(db.Integer)
-    Rate = db.Column(db.Float)
-    LenderId = db.Column(db.Integer, db.ForeignKey('user_enterprise.Id'))
-    debtor_id = db.Column(db.Integer, db.ForeignKey('user_individual.Id'))
-    AppDate = db.Column(db.TIMESTAMP)
-    RepayDate = db.Column(db.TIMESTAMP)
-    ContractId = db.Column(db.Integer, db.ForeignKey('contract.Id'))
-
-    def to_dict(self):
-        return {
-            'LoanMoney': self.LoanMoney,
-            'rate': self.Rate,
-            'app_date': self.AppDate.strftime('%Y-%m-%d'),
-            'repay_date': self.RepayDate.strftime('%Y-%m-%d'),
-        }
-
-
-class ContractInfo(db.Model):
-    __tablename__ = "contract"
-
-    Id = db.Column(db.Integer, primary_key=True)
-
-    Text = db.Column(db.String(2000))
-    Record = db.Column(db.String(2000))
-
-    def to_dict(self):
-        return {
-            'text': self.Text,
-            'record': self.Record,
-        }
-
-class LoanProductInfo(db.Model):
-    __tablename__ = "loan_product"
-
-
-
-    Id = db.Column(db.Integer, primary_key=True)
-
-    Name = db.Column(db.String(80))
-    EnterpriseName = db.Column(db.String(80))
-    AmountMin = db.Column(db.Integer)
-    AmountMax = db.Column(db.Integer)
-    Rate = db.Column(db.Float)
-
-
-    def to_dict(self):
-        return {
-            'name': self.Name,
-            'enterprise_name': self.EnterpriseName,
-            'amount_min': self.AmountMin,
-            'amount_max': self.AmountMax,
-            'rate': self.Rate,
-        }

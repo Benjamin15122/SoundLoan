@@ -2,7 +2,11 @@ from flask import jsonify, request
 
 from flask import Response, jsonify
 from app import app, db
-from app.models import UserIndividualInfo, UserEnterpriseInfo, LoanRecordInfo, ContractInfo, LoanProductInfo
+from models.IndividualUser import IndividualUser
+from models.EnterpriseUser import EnterpriseUser
+from models.LoanProduct import LoanProduct
+from models.LoanRecord import LoanRecord
+from models.Contract import Contract
 
 
 @app.route("/infoMan/indUserInfo", methods=["GET"])
@@ -13,9 +17,9 @@ def query_individual_user():
         return jsonify({'success': False, 'message': 'Missing param id and nickname.'})
 
     if user_id is not None:
-        user = UserIndividualInfo.query.filter(UserIndividualInfo.Id == user_id).first()
+        user = IndividualUser.query.filter(IndividualUser.Id == user_id).first()
     else:
-        user = UserIndividualInfo.query.filter(UserIndividualInfo.Nickname == user_nickname).first()
+        user = IndividualUser.query.filter(IndividualUser.Nickname == user_nickname).first()
     if user is None:
         return jsonify({'success': False, 'message': 'Failed to find a qualified user.'})
     
@@ -27,7 +31,7 @@ def create_individual_user():
     try:
         params = request.form.to_dict()
 
-        new_user = UserIndividualInfo(**params)
+        new_user = IndividualUser(**params)
 
         db.session.add(new_user)
         db.session.commit()
@@ -47,7 +51,7 @@ def login_individual_user():
     password = request.form.get('password', None)
     if not nickname or not password:
         return jsonify({'success': False, 'message': 'Missing params nickname or password！'})
-    user = UserIndividualInfo.query.filter(UserIndividualInfo.Nickname == nickname).first()
+    user = IndividualUser.query.filter(IndividualUser.Nickname == nickname).first()
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
     if user.verify_password(password):
@@ -64,9 +68,9 @@ def query_enterprise_user():
         return jsonify({'success': False, 'message': 'Missing param id and name.'})
 
     if user_id is not None:
-        user = UserEnterpriseInfo.query.filter(UserEnterpriseInfo.Id == user_id).first()
+        user = EnterpriseUser.query.filter(EnterpriseUser.Id == user_id).first()
     else:
-        user = UserEnterpriseInfo.query.filter(UserEnterpriseInfo.Name == user_name).first()
+        user = EnterpriseUser.query.filter(EnterpriseUser.Name == user_name).first()
     if user is None:
         return jsonify({'success': False, 'message': 'Failed to find a qualified user.'})
     
@@ -78,7 +82,7 @@ def create_enterprise_user():
     try:
         params = request.form.to_dict()
 
-        new_user = UserEnterpriseInfo(**params)
+        new_user = EnterpriseUser(**params)
 
         db.session.add(new_user)
         db.session.commit()
@@ -99,7 +103,7 @@ def login_enterprise_user():
     password = request.form.get('password', None)
     if not name or not password:
         return jsonify({'success': False, 'message': 'Missing params name or password！'})
-    user = UserEnterpriseInfo.query.filter(UserEnterpriseInfo.Name == name).first()
+    user = EnterpriseUser.query.filter(EnterpriseUser.Name == name).first()
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
     if user.verify_password(password):
