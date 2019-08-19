@@ -11,13 +11,14 @@ class Contract(db.Model):
 
     Id = db.Column(db.Integer, primary_key=True)
 
+    UserId = db.Column(db.Integer, db.ForeignKey('individual_user.id'))
     Text = db.Column(db.String(2000))
     Record = db.Column(db.String(2000))
 
     def to_dict(self):
         return {
+            'user_id': self.UserId,
             'text': self.Text,
             'record': self.Record,
         }
-
 
