@@ -102,6 +102,6 @@ class EnterpriseUser(db.Model):
             return None # valid token, but expire
         except BadSignature:
             return None # invalid token
-        user = UserEnterpriseInfo.query.get(data['UserId'])
+        user = EnterpriseUser.query.get(data['UserId'])
         return user
 

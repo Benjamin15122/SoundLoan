@@ -166,6 +166,6 @@ class IndividualUser(db.Model):
             return None # valid token, but expire
         except BadSignature:
             return None # invalid token
-        user = UserIndividualInfo.query.get(data['UserId'])
+        user = IndividualUser.query.get(data['UserId'])
         return user
 

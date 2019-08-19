@@ -10,7 +10,6 @@ from app import db, app
 class LoanProduct(db.Model):
     __tablename__ = "loan_product"
 
-
     Id = db.Column(db.Integer, primary_key=True)
 
     Name = db.Column(db.String(80))
