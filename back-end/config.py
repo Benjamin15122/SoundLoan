@@ -22,3 +22,7 @@ class Config(object):
     # example 'mysql+pymysql://mdpmonitor:X7_mJw12m8UW@168.61.2.7:3306/mdpmonitor?charset=utf8'
     SQLALCHEMY_DATABASE_URI = URI_FORMAT.format(MYSQL_USER, MYSQL_PASSWD, MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE)
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+    # Parameters for loan matching
+    SIGMOID_RATIO = 0.9
+    LINEAR_LAXITY = 0.3
