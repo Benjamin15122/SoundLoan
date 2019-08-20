@@ -4,19 +4,15 @@ from app import app
 from models.IndividualUser import IndividualUser
 from models.LoanProduct import LoanProduct
 from utils.loan_match_utils import *
-
-# Parameters for loan matching
-SIGMOID_RATIO = 0.9
-LINEAR_LAXITY = 0.3
-
+from config import Config
 
 @app.route("/loanMatch", methods=["POST"])
 def demand_loan_match():
     try:
         demand = json.loads(request.get_data(), strict=False)
         amount = demand['amount_expect']
-        loan_products = LoanProduct.query.filter(LoanProduct.AmountMin <= amount*(1+LINEAR_LAXITY),
-                                                 LoanProduct.AmountMax >= amount*(1-LINEAR_LAXITY)).all()
+        loan_products = LoanProduct.query.filter(LoanProduct.AmountMin <= amount*(1+Config.LINEAR_LAXITY),
+                                                 LoanProduct.AmountMax >= amount*(1-Config.LINEAR_LAXITY)).all()
         if len(loan_products) == 0:
             return jsonify({
                 'success': False,
