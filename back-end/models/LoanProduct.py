@@ -18,8 +18,8 @@ class LoanProduct(db.Model):
     AmountMax = db.Column(db.Integer)
     RateMin = db.Column(db.Float)
     RateMax = db.Column(db.Float)
-    DurationMin = db.Column(db.TIMESTAMP)
-    DurationMax = db.Column(db.TIMESTAMP)
+    DurationMin = db.Column(db.Integer)
+    DurationMax = db.Column(db.Integer)
 
 
     def to_dict(self):

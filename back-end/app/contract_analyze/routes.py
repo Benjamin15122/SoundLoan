@@ -1,0 +1,52 @@
+from algorithm.contract_analyze.contract_analyze_rules import *
+from utils.contract_analyze_utils import *
+from flask import jsonify, request
+from app import app
+from config import Config
+import json
+
+
+@app.route("/contract/analyze", methods=["POST", "GET"])
+def contract_analyze():
+    try:
+        if request.method == 'GET':
+            return "test get."
+        contract_data = json.loads(request.get_data(), strict=False)
+        # 解析请求中用户自己选择的字段
+        loan_consistent_with_actual = contract_data['loan_consistent_with_actual']
+        fake_advertising = contract_data['fake_advertising']
+
+        if contract_data["type"] == 'text':
+            return_obj = analyze(contract_data['text_data'],
+                                 loan_consistent_with_actual,
+                                 fake_advertising, 'text')
+            return jsonify({
+                'success': True,
+                'message': '',
+                'content': return_obj
+            })
+
+        elif contract_data["type"] == 'image':
+            text = image_to_text(contract_data['image_base64_data'])
+            return_obj = analyze(text,
+                                 loan_consistent_with_actual,
+                                 fake_advertising, 'image')
+            return jsonify({
+                    'success': True,
+                    'message': '',
+                    'content': return_obj
+            })
+
+        else:
+            return jsonify({
+                'success': False,
+                'message': 'Unknown contract type: should be either Text or Image',
+                'content': None
+            })
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e),
+            'content': None
+        })
