@@ -53,7 +53,7 @@ def demand_product_match(demand, product):
     return 0.3*amount_match+0.3*duration_match+0.4*rate_match
 
 
-def recommend_products(demand, products):
+def match_products(demand, products):
     # TODO: 违约概率测算的模型出来之后加入进去
     match_score = [demand_product_match(demand, product) for product in products]
     index = sorted(range(len(match_score)), key=lambda k: match_score[k])

@@ -24,6 +24,7 @@ class LoanProduct(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.Id,
             'name': self.Name,
             'enterprise_name': self.EnterpriseName,
             'amount_min': self.AmountMin,
@@ -31,5 +32,5 @@ class LoanProduct(db.Model):
             'rate_min': self.RateMin,
             'rate_max': self.RateMax,
             'duratioin_min': self.DurationMin,
-            'duratioin_max': self.DurationMax,
+            'duratioin_max': self.DurationMax
         }

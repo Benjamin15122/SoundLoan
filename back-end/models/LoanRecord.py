@@ -15,15 +15,15 @@ class LoanRecord(db.Model):
     LoanMoney = db.Column(db.Integer)
     Rate = db.Column(db.Float)
     LenderId = db.Column(db.Integer, db.ForeignKey('user_enterprise.Id'))
-    DebtorId = db.Column(db.Integer, db.ForeignKey('user_individual.Id'))
 
+    DebtorId = db.Column(db.Integer, db.ForeignKey('user_individual.Id'))
     ProductId = db.Column(db.Integer, db.ForeignKey('loan_product.Id'))
 
     AppDate = db.Column(db.TIMESTAMP)
     DueDate = db.Column(db.TIMESTAMP)
     StartDate = db.Column(db.TIMESTAMP)
     EndDate = db.Column(db.TIMESTAMP)
-    RepayStatus = db.Column(db.Enum('overdue ','ongoing','done'))
+    RepayStatus = db.Column(db.Enum('overdue ', 'ongoing', 'done'))
     ContractId = db.Column(db.Integer, db.ForeignKey('contract.Id'))
 
     def to_dict(self):

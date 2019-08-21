@@ -30,3 +30,16 @@ class Config(object):
     # Parameters for loan matching
     SIGMOID_RATIO = 0.9
     LINEAR_LAXITY = 0.3
+
+    # recommendation system update data everyday
+    K_USERS, K_PRODUCTS = 5, 20
+    JOBS = [
+        {  # 每隔一天执行一次
+            'id': 'Job1: Update_recommendation_model',
+            #'func': 'algorithm.loan_recommendation.recommendation_userbased:update_model',  # 方法名
+            'func': 'utils.recommendation_userbased_utils:update_model',
+            # 'args': (K_USERS, K_PRODUCTS),  # 入参
+            'trigger': 'interval',  # interval表示循环任务
+            'seconds': 24*60*60,
+        }
+    ]

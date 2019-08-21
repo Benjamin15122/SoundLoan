@@ -169,13 +169,13 @@ def analyze(text: str,
 
     warning_msg, count_warning = {}, 0
 
-    if loan_consistent_with_actual is 'No':
+    if loan_consistent_with_actual == 'No':
         count_warning += 1
-        warning_msg['Item'+str(count_warning)] = (u'合同金额与借贷金额不一致', u"可能是“虚高借款合同”、“伪造银行流水”套路，根据中华人民共和国法律，网贷中所谓服务费、咨询费、信息费等一律计入利息范畴，严格按照24%，36%这两个界限确定其性质。这种条款违背了我国合同法的规定： 借款的利息不得预先在本金中扣除。正常条款中借款金额严格等于还款金额。")
+        warning_msg[count_warning] = (u'合同金额与借贷金额不一致', u"可能是“虚高借款合同”、“伪造银行流水”套路，根据中华人民共和国法律，网贷中所谓服务费、咨询费、信息费等一律计入利息范畴，严格按照24%，36%这两个界限确定其性质。这种条款违背了我国合同法的规定： 借款的利息不得预先在本金中扣除。正常条款中借款金额严格等于还款金额。")
 
-    if fake_advertising is 'Yes':
+    if fake_advertising == 'Yes':
         count_warning += 1
-        warning_msg['Item'+str(count_warning)] = (u"“低息、免息、无抵押、无担保、快速放贷”宣传",
+        warning_msg[count_warning] = (u"“低息、免息、无抵押、无担保、快速放贷”宣传",
         u"可能为套路贷诱饵，吸引用户借款后，套路贷常常以“违约金”“保证金”等各种名目骗取受害人签订虚假 借款合同、抵押 借款合同或房产、车辆买卖委托书等各种套路文件。")
 
     for rule in rules:
@@ -184,10 +184,10 @@ def analyze(text: str,
             if result is not None:
                 #print('Term: %s; \n Risk: %s;\n ' % (result[0], result[1]))
                 count_warning += 1
-                warning_msg['Item'+str(count_warning)] = (result[0], result[1])
+                warning_msg[count_warning] = (result[0], result[1])
 
     for each in warning_msg:
-        print(each+": "+str(warning_msg[each][0]))
+        print(str(each)+": "+str(warning_msg[each][0]))
         print(str(warning_msg[each][1]))
 
     return warning_msg

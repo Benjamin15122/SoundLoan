@@ -20,11 +20,11 @@ def demand_loan_match():
                 'content': None
             })
 
-        recommends = recommend_products(demand, loan_products)
+        products = match_products(demand, loan_products)
         return jsonify({
             'success': True,
             'message': u"为您找到了如下的贷款产品，按照匹配度排序",
-            'content': recommends
+            'content': products
         })
     except Exception as e:
         return jsonify({
