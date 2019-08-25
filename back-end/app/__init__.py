@@ -19,7 +19,7 @@ from app.manage import routes
 from app.loan_match import routes
 from app.contract_analyze import routes
 from app.loan_recommendation import routes
-from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract
+from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract, LoanProductComment
 
 #db.create_all()
 

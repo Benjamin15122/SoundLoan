@@ -37,6 +37,7 @@ class IndividualUser(db.Model):
     IsAuthenticated = db.Column(db.Boolean)
     PhoneNumber = db.Column(db.Integer)
     IDCardNumber = db.Column(db.String(18))
+    BankCardNumber = db.Column(db.String(19))
 
 
     ApplyPassTime = db.Column(db.Integer)
@@ -98,6 +99,7 @@ class IndividualUser(db.Model):
         self.IsAuthenticated = False
         self.PhoneNumber = -1
         self.IDCardNumber = 'xxxxxxxxxxxxxxxxxx'
+        self.BankCardNumber = 'xxxxxxxxxxxxxxxxxx'
 
     def to_dict(self):
         return {
