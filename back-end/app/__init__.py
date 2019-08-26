@@ -16,6 +16,7 @@ db = SQLAlchemy(app)
 online_users = {}
 
 from app.manage import routes
-from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract
+from app.news_crawl import routes
+from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract, EnterpriseNews
 
 db.create_all()
