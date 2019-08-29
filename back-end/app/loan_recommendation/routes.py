@@ -21,11 +21,11 @@ class LoanRecommendation(Resource):
 
     def post(self):
         try:
-            loan_data = json.loads(request.get_data(), strict=False)
+            user_data = json.loads(request.get_data(), strict=False)
             if LoanRecommendation.recommend_model is None:
                 init_model()
             products_id = LoanRecommendation.recommend_model.get_recommendation(
-                loan_data['user_id'],
+                user_data['user_id'],
                 LoanRecommendation.k_users,
                 LoanRecommendation.k_products
             )
@@ -34,7 +34,7 @@ class LoanRecommendation(Resource):
             return jsonify({
                 'success': True,
                 'message': '',
-                'content': [each.to_dict() for each in products]
+                'content': [each.to_dict() for each in products][:user_data['num_max']]
             })
 
         except Exception as e:

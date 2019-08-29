@@ -11,6 +11,7 @@ import json
 def contract_analyze():
     try:
         contract_data = json.loads(request.get_data(), strict=False)
+        # contract_data = request.form.to_dict()
 
         # 解析用户Id
         nickname = contract_data['nickname']

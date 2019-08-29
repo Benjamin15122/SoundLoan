@@ -57,4 +57,5 @@ def match_products(demand, products):
     # TODO: 违约概率测算的模型出来之后加入进去
     match_score = [demand_product_match(demand, product) for product in products]
     index = sorted(range(len(match_score)), key=lambda k: match_score[k])
+    index = index[::-1][:demand['num_max']]
     return [products[i].to_dict() for i in index]
