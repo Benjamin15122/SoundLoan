@@ -21,7 +21,11 @@ class LoanRecommendation(Resource):
 
     def post(self):
         try:
-            user_data = json.loads(request.get_data(), strict=False)
+            # user_data = json.loads(request.get_data(), strict=False)
+            user_data = {
+                'user_id': int(request.form.get('user_id')),
+                'num_max': int(request.form.get('num_max'))
+            }
             if LoanRecommendation.recommend_model is None:
                 init_model()
             products_id = LoanRecommendation.recommend_model.get_recommendation(

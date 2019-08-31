@@ -9,13 +9,14 @@ from config import Config
 @app.route("/loanMatch", methods=["POST"])
 def demand_loan_match():
     try:
-        demand = json.loads(request.get_data(), strict=False)
-        # demand = {
-        #     'nickname': request.form.get('nickname'),
-        #     'amount_expect': int(request.form.get('amount_expect')),
-        #     'duration_expect': int(request.form.get('duration_expect')),
-        #     'rate_expect': float(request.form.get('rate_expect'))
-        # }
+        # demand = json.loads(request.get_data(), strict=False)
+        demand = {
+            'nickname': request.form.get('nickname'),
+            'amount_expect': int(request.form.get('amount_expect')),
+            'duration_expect': int(request.form.get('duration_expect')),
+            'rate_expect': float(request.form.get('rate_expect')),
+            'num_max': int(request.form.get('num_max'))
+        }
         amount = int(demand['amount_expect'])
         loan_products = LoanProduct.query.filter(LoanProduct.AmountMin <= amount*(1+Config.LINEAR_LAXITY),
                                                  LoanProduct.AmountMax >= amount*(1-Config.LINEAR_LAXITY)).all()
