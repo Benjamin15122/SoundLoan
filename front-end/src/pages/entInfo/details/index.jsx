@@ -38,8 +38,9 @@ class EntInfoDetails extends Component {
         <Card>
           <Tabs>
             <TabPane key='news' tab='企业新闻'>
-              {news.map(({ news_title, news_link, distribution_date }) =>
-                <NewsItem title={news_title} link={news_link} date={distribution_date}/>)}
+              {news.map(({ news_title, news_link, distribution_date }, index) =>
+                <NewsItem key={index}
+                          title={news_title} link={news_link} date={distribution_date}/>)}
             </TabPane>
             <TabPane key='change' tab='信息变更'/>
             <TabPane key='relation' tab='关联关系'/>

@@ -39,7 +39,9 @@ export default class Introduction extends Component {
         <Col span={20}>
           <Descriptions column={2}>
             {itemLabelList.map((itemLabelPair) => {
-              return <DescItem label={itemLabelPair[1]}>{descriptions[itemLabelPair[0]]}</DescItem>
+              return <DescItem key={itemLabelPair[1]} label={itemLabelPair[1]}>
+                {descriptions[itemLabelPair[0]]}
+              </DescItem>
             })}
           </Descriptions>
         </Col>
