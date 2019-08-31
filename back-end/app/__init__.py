@@ -62,3 +62,14 @@ loan_record2 = LoanRecord.LoanRecord(LoanMoney=5000, DebtorId=user1.Id, ProductI
 loan_record3 = LoanRecord.LoanRecord(LoanMoney=20000, DebtorId=user2.Id, ProductId=loan2.Id, LenderId=company2.Id)
 db.session.add_all([loan_record1, loan_record2, loan_record3])
 db.session.commit()
+
+loan_product_comments = [
+    LoanProductComment.LoanProductComment(ProductId=1, UserId=1, Comment="balabala_1_1"),
+    LoanProductComment.LoanProductComment(ProductId=2, UserId=1, Comment="balabala_1_2"),
+    LoanProductComment.LoanProductComment(ProductId=3, UserId=1, Comment="balabala_1_3"),
+    LoanProductComment.LoanProductComment(ProductId=1, UserId=2, Comment="balabala_2_1"),
+    LoanProductComment.LoanProductComment(ProductId=2, UserId=2, Comment="balabala_2_2"),
+    LoanProductComment.LoanProductComment(ProductId=3, UserId=2, Comment="balabala_2_3"),
+]
+db.session.add_all(loan_product_comments)
+db.session.commit()
