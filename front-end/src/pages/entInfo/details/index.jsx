@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Card, Tabs } from 'antd';
+import { Card, Tabs, List } from 'antd';
 
 import Introduction from './components/Introduction';
 import { getNews } from '@/services/entInfo';
@@ -38,9 +38,13 @@ class EntInfoDetails extends Component {
         <Card>
           <Tabs>
             <TabPane key='news' tab='企业新闻'>
+              <List>
               {news.map(({ news_title, news_link, distribution_date }, index) =>
-                <NewsItem key={index}
-                          title={news_title} link={news_link} date={distribution_date}/>)}
+                <List.Item>
+                  <NewsItem key={index}
+                            title={news_title} link={news_link} date={distribution_date}/>
+                </List.Item>)}
+              </List>
             </TabPane>
             <TabPane key='change' tab='信息变更'/>
             <TabPane key='relation' tab='关联关系'/>
