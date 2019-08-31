@@ -44,8 +44,7 @@
     background-color : rgb(204,235,248);    
 }
 
-/* removed images */
-/*#recordButton {
+#recordButton {
     background: url('../../sitemap/styles/images/233_hyperlink_16.png') no-repeat center center;
 }
 
@@ -59,7 +58,7 @@
 
 #deleteButton {
     background: url('../../sitemap/styles/images/231_event_16.png') no-repeat center center;
-}*/
+}
 
 #recordNameHeader
 {

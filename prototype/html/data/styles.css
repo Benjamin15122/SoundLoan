@@ -1,53 +1,50 @@
 ﻿.ax_default {
-  font-family:'ArialMT', 'Arial';
+  font-family:'Arial Normal', 'Arial';
   font-weight:400;
   font-style:normal;
   font-size:13px;
-  letter-spacing:normal;
   color:#333333;
-  vertical-align:none;
   text-align:center;
   line-height:normal;
-  text-transform:none;
 }
 ._图片 {
 }
 ._一级标题 {
-  font-family:'ArialMT', 'Arial';
+  font-family:'Arial Normal', 'Arial';
   font-weight:bold;
   font-style:normal;
   font-size:32px;
   text-align:left;
 }
 ._二级标题 {
-  font-family:'ArialMT', 'Arial';
+  font-family:'Arial Normal', 'Arial';
   font-weight:bold;
   font-style:normal;
   font-size:24px;
   text-align:left;
 }
 ._三级标题 {
-  font-family:'ArialMT', 'Arial';
+  font-family:'Arial Normal', 'Arial';
   font-weight:bold;
   font-style:normal;
   font-size:18px;
   text-align:left;
 }
 ._四级标题 {
-  font-family:'ArialMT', 'Arial';
+  font-family:'Arial Normal', 'Arial';
   font-weight:bold;
   font-style:normal;
   font-size:14px;
   text-align:left;
 }
 ._五级标题 {
-  font-family:'ArialMT', 'Arial';
+  font-family:'Arial Normal', 'Arial';
   font-weight:bold;
   font-style:normal;
   text-align:left;
 }
 ._六级标题 {
-  font-family:'ArialMT', 'Arial';
+  font-family:'Arial Normal', 'Arial';
   font-weight:bold;
   font-style:normal;
   font-size:10px;
@@ -55,11 +52,6 @@
 }
 ._文本段落 {
   text-align:left;
-}
-.form_hint {
-  color:#999999;
-}
-.form_disabled {
 }
 .text_field {
   color:#000000;
@@ -77,14 +69,14 @@
 .line {
 }
 .heading_1 {
-  font-family:'Arial-BoldMT', 'Arial Bold', 'Arial';
+  font-family:'Arial Negreta', 'Arial Normal', 'Arial';
   font-weight:700;
   font-style:normal;
   font-size:32px;
   text-align:left;
 }
 .heading_2 {
-  font-family:'Arial-BoldMT', 'Arial Bold', 'Arial';
+  font-family:'Arial Negreta', 'Arial Normal', 'Arial';
   font-weight:700;
   font-style:normal;
   font-size:24px;
@@ -114,7 +106,7 @@
 .vertical_line {
 }
 .iconfont {
-  font-family:'iconfont';
+  font-family:'iconfont Regular', 'iconfont';
   font-weight:400;
   font-style:normal;
   font-size:18px;
@@ -126,4 +118,3 @@
 }
 .image1 {
 }
-textarea, select, input, button { outline: none; }
