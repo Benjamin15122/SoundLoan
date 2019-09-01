@@ -26,6 +26,8 @@ class EntInfoInquiry extends Component {
 
   static columns = [
     { title: '企业名称', dataIndex: 'name' },
+    // TODO: how to get scores ?
+    { title: '用户评分', dataIndex: 'score' },
     { title: '企业地址', dataIndex: 'address' },
     { title: '企业官网', dataIndex: 'website' },
     { title: '联系方式', dataIndex: 'contact' },
