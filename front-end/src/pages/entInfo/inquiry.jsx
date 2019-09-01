@@ -21,7 +21,9 @@ class EntInfoInquiry extends Component {
 
   static columns = [
     { title: '企业名称', dataIndex: 'name' },
-    { title: ''}
+    { title: '企业地址', dataIndex: 'address' },
+    { title: '企业官网', dataIndex: 'website' },
+    { title: '联系方式', dataIndex: 'contact' },
   ];
 
   onChange = (e) => {
@@ -42,14 +44,14 @@ class EntInfoInquiry extends Component {
     const { loading, showSearchResult, searchResult, recommendedResult } = this.state;
     return <div>
       <div style={{ textAlign: 'center' }}>
-        <Input addonBefore={<Icon type='search'/>} style={{ width: '60%' }}
+        <Input prefix={<Icon type='search'/>} style={{ width: '60%' }}
                onChange={this.onChange} onPressEnter={this.onSearch}/>
         <Button style={{ marginLeft: '5px' }} onClick={this.onSearch}>
           企业搜索
         </Button>
       </div>
       <div style={{ paddingTop: '10px' }}>
-        <Table title={() => <b>企业推荐</b>} loading={loading}
+        <Table title={() => <b>企业推荐</b>} loading={loading} columns={EntInfoInquiry.columns}
                dataSource={showSearchResult? searchResult: recommendedResult} />
       </div>
     </div>
