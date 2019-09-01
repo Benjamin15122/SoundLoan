@@ -7,6 +7,7 @@ class LoanProductComment(db.Model):
     ProductId = db.Column(db.Integer, primary_key=True)
     UserId = db.Column(db.Integer, primary_key=True)
     Comment = db.Column(db.String(1000))
+    Score = db.Column(db.Integer)
 
 
     def to_dict(self):
@@ -14,4 +15,5 @@ class LoanProductComment(db.Model):
             'product_id': self.ProductId,
             'user_id': self.UserId,
             'comment': self.Comment,
+            'score': self.Score,
         }

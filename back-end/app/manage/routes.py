@@ -1,4 +1,5 @@
 from flask import jsonify, request
+from sqlalchemy import func
 
 from flask import Response, jsonify
 from app import app, db
@@ -113,11 +114,11 @@ def login_enterprise_user():
         return jsonify({'success': False, 'message': 'Wrong password！'})
 
 
-@app.route("/infoMan/loanProductComment", methods=["GET"])
-def loan_product_comment():
+@app.route("/infoMan/allLoanProductComment", methods=["GET"])
+def all_loan_product_comment():
     comments = LoanProductComment.query.all()
-    print([c.to_dict() for c in comments])
-    return jsonify({'success': True})
+    result = [c.to_dict() for c in comments]
+    return jsonify({'success': True, 'content': result})
 
 
 @app.route("/infoMan/entProductComment", methods=["GET"])
@@ -131,6 +132,20 @@ def ent_product_comment():
         'product_name': c.Name,
         'user_id': c.LoanProductComment.UserId,
         'comment': c.LoanProductComment.Comment,
+        'score': c.LoanProductComment.Score,
     } for c in commentList]
 
+    return jsonify({'success': True, 'content': result})
+
+
+@app.route("/infoMan/entScore", methods=["GET"])
+def ent_score():
+    # entScore is the mean value of all the product scores from this enterprise
+    name = request.args.get('company_name', None)
+    if not name:
+        return jsonify({'success': False, 'message': 'Missing params company_name'})
+    sub = LoanProduct.query.filter(LoanProduct.EnterpriseName == name).subquery()
+    commentList = db.session.query(sub, LoanProductComment).join(LoanProductComment, LoanProductComment.ProductId == sub.c.Id).subquery()
+    score = db.session.query(func.avg(commentList.c.Score).label("mean_score")).first()
+    result = {'score': float(str(score.mean_score))}
     return jsonify({'success': True, 'content': result})

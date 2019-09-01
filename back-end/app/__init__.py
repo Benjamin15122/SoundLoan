@@ -64,12 +64,12 @@ db.session.add_all([loan_record1, loan_record2, loan_record3])
 db.session.commit()
 
 loan_product_comments = [
-    LoanProductComment.LoanProductComment(ProductId=1, UserId=1, Comment="balabala_1_1"),
-    LoanProductComment.LoanProductComment(ProductId=2, UserId=1, Comment="balabala_1_2"),
-    LoanProductComment.LoanProductComment(ProductId=3, UserId=1, Comment="balabala_1_3"),
-    LoanProductComment.LoanProductComment(ProductId=1, UserId=2, Comment="balabala_2_1"),
-    LoanProductComment.LoanProductComment(ProductId=2, UserId=2, Comment="balabala_2_2"),
-    LoanProductComment.LoanProductComment(ProductId=3, UserId=2, Comment="balabala_2_3"),
+    LoanProductComment.LoanProductComment(ProductId=1, UserId=1, Comment="balabala_1_1", Score=1),
+    LoanProductComment.LoanProductComment(ProductId=2, UserId=1, Comment="balabala_1_2", Score=2),
+    LoanProductComment.LoanProductComment(ProductId=3, UserId=1, Comment="balabala_1_3", Score=3),
+    LoanProductComment.LoanProductComment(ProductId=1, UserId=2, Comment="balabala_2_1", Score=4),
+    LoanProductComment.LoanProductComment(ProductId=2, UserId=2, Comment="balabala_2_2", Score=5),
+    LoanProductComment.LoanProductComment(ProductId=3, UserId=2, Comment="balabala_2_3", Score=4),
 ]
 db.session.add_all(loan_product_comments)
 db.session.commit()
