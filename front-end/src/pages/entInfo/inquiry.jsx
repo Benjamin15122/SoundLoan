@@ -7,9 +7,16 @@ class EntInfoInquiry extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       searchInput: '',
-      enterpriseEntries: [],
+      showSearchResult: false,
+      searchResult: [],
+      recommendedResult: [],
     }
+  }
+
+  componentDidMount() {
+    // TODO: get & set recommended result
   }
 
   static columns = [
@@ -21,22 +28,29 @@ class EntInfoInquiry extends Component {
     this.setState({ searchInput: e.target.value });
   };
 
-  onEnter = (e) => {
-    alert('search!:' + this.state.searchInput);
+  onSearch = () => {
+    alert('[TODO]search!:' + this.state.searchInput);
+    // TODO: get & set search result
+    this.setState({ showSearchResult: true });
+  };
+
+  onCancel = () => {
+    this.setState({ showSearchResult: false });
   };
 
   render() {
-    const { enterpriseEntries } = this.state;
+    const { loading, showSearchResult, searchResult, recommendedResult } = this.state;
     return <div>
       <div style={{ textAlign: 'center' }}>
         <Input addonBefore={<Icon type='search'/>} style={{ width: '60%' }}
-               onChange={this.onChange} onPressEnter={this.onEnter}/>
-        <Button style={{ marginLeft: '5px' }} onClick={this.onEnter}>
+               onChange={this.onChange} onPressEnter={this.onSearch}/>
+        <Button style={{ marginLeft: '5px' }} onClick={this.onSearch}>
           企业搜索
         </Button>
       </div>
       <div style={{ paddingTop: '10px' }}>
-        <Table title={() => <b>企业推荐</b>} dataSource={enterpriseEntries} />
+        <Table title={() => <b>企业推荐</b>} loading={loading}
+               dataSource={showSearchResult? searchResult: recommendedResult} />
       </div>
     </div>
   }
