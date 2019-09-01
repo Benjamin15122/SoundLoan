@@ -60,5 +60,17 @@ export default {
           '发布日期'
       },
     ]
+  },
+  'GET /enterprise/recommendation': {
+    success: true,
+    message: '',
+    content: [
+      {
+        name: '大企业',
+        address: '江苏省南京市',
+        website: 'www.bigEnterprise.com',
+        contact: '13876876768'
+      }
+    ]
   }
 }

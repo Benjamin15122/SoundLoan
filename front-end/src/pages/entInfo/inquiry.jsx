@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Button, Table, Icon } from 'antd';
+import { getRecommendedEnterprises } from '@/services/entInfo';
 
 
 class EntInfoInquiry extends Component {
@@ -15,8 +16,12 @@ class EntInfoInquiry extends Component {
     }
   }
 
-  componentDidMount() {
-    // TODO: get & set recommended result
+  async componentDidMount() {
+    const asyncRes = getRecommendedEnterprises();
+    this.setState({ loading: true });
+    const results = await asyncRes;
+    console.log(results);
+    this.setState({ loading: false, recommendedResult: results });
   }
 
   static columns = [
@@ -51,7 +56,8 @@ class EntInfoInquiry extends Component {
         </Button>
       </div>
       <div style={{ paddingTop: '10px' }}>
-        <Table title={() => <b>企业推荐</b>} loading={loading} columns={EntInfoInquiry.columns}
+        <Table title={() => <b>企业推荐</b>} loading={loading}
+               columns={EntInfoInquiry.columns} rowKey='name'
                dataSource={showSearchResult? searchResult: recommendedResult} />
       </div>
     </div>
