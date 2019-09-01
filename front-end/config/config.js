@@ -140,6 +140,11 @@ export default {
           path: '/entInfo',
           routes: [
             {
+              name: '企业查询',
+              path: 'inquiry',
+              component: './entInfo/inquiry'
+            },
+            {
               name: '企业详情',
               path: 'details',
               component: './entInfo/details'

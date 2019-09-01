@@ -41,7 +41,7 @@ class EntInfoDetails extends Component {
               <List>
               {news.map(({ news_title, news_link, distribution_date }, index) =>
                 <List.Item>
-                  <NewsItem key={index}
+                  <NewsItem key={'' + index}
                             title={news_title} link={news_link} date={distribution_date}/>
                 </List.Item>)}
               </List>
