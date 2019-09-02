@@ -1,4 +1,5 @@
 import os
+from utils.alipay_api_utils import *
 basedir = os.path.abspath(os.path.dirname(__file__))
 URI_FORMAT = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'
 
@@ -49,3 +50,23 @@ class Config(object):
             'seconds': 24*60*60,
         }
     ]
+
+    # 支付宝配置
+    BASE_DIR = './'
+    # 初始化操作
+    # 设置秘钥公钥的存放路径
+    app_private_key_path = os.path.join(BASE_DIR, 'external_api_keys/myapp_private_key.txt')
+    alipay_public_key_path = os.path.join(BASE_DIR, 'external_api_keys/alipay_public_key.txt')
+    # TODO：前端完成后修改这个地址
+    redirect_url = "http://47.103.113.144:"+str(PORT)+"/alipay/completed"
+    notification_url = "http://47.103.113.144:"+str(PORT)+"/alipay/notification"
+    # 根据自己申请的进行设置
+    alipay = AliPay(
+        appid="2016101400682600",  # 设置签约的appid
+        app_notify_url=notification_url,  # 异步支付通知url
+        app_private_key_path=app_private_key_path,  # 设置应用私钥
+        alipay_public_key_path=alipay_public_key_path,  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+        debug=True,  # 默认False,            # 设置是否是沙箱环境，True是沙箱环境
+        return_url=redirect_url,  # 同步支付通知url,在这个页面可以展示给用户看，只有付款成功后才会跳转
+    )
+

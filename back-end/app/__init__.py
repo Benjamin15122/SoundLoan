@@ -17,6 +17,9 @@ online_users = {}
 
 from app.manage import routes
 from app.loan_match import routes
+from app.loan_recommendation import routes
+from app.citi_money_transfer import routes
+from app.alipay_payoff import routes
 from app.contract_analyze import routes
 from app.loan_recommendation import routes
 from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract, LoanProductComment
