@@ -2,6 +2,7 @@ import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 
 import slash from 'slash2';
 import webpackPlugin from './plugin.config';
+import { Icon } from 'antd';
 const { pwa, primaryColor } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
@@ -135,6 +136,37 @@ export default {
           ],
         },
         {
+          name: '个人信息',
+          icon: 'profile',
+          path: '/personalManagement',
+          routes: [
+            {
+              name: '个人空间',
+              path: 'center',
+              icon: 'user',
+              component: './personalManagement/center',
+            },
+            {
+              name: '我的贷款',
+              path: 'loans',
+              icon: 'pay-circle',
+              component: './personalManagement/loans',
+            },
+            {
+              name: '我的合同',
+              path: 'contracts',
+              icon: 'audit',
+              component: './personalManagement/contracts',
+            },
+            {
+              name: '账户设置',
+              path: 'settings',
+              icon: 'setting',
+              component: './personalManagement/settings',
+            },
+          ],
+        },
+        {
           name: '企业信息',
           icon: 'database',
           path: '/entInfo',
@@ -142,12 +174,12 @@ export default {
             {
               name: '企业详情',
               path: 'details',
-              component: './entInfo/details'
+              component: './entInfo/details',
             },
             {
               component: './404',
-            }
-          ]
+            },
+          ],
         },
         {
           path: '/',
