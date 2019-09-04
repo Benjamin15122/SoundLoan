@@ -6,6 +6,8 @@ class Contract(db.Model):
 
     Id = db.Column(db.Integer, primary_key=True)
 
+    LoanRecordId = db.Column(db.Integer)
+
     # UserId = db.Column(db.Integer, db.ForeignKey('user_individual.Id'))
     IndividualName = db.Column(db.String(80), db.ForeignKey('user_individual.Nickname'))
     EnterpriseName = db.Column(db.String(80), db.ForeignKey('user_enterprise.Name'))
@@ -20,12 +22,13 @@ class Contract(db.Model):
     AnalyzeState = db.Column(db.String(20))
 
     # 用户的数字签名，如果合同是平台签订的话
-    LenderSign = db.Column(db.String(2000))
-    BorrowerSign = db.Column(db.String(2000))
+    IndividualSign = db.Column(db.String(2000))
+    EnterpriseSign = db.Column(db.String(2000))
 
     def to_dict(self):
         return {
             'id': self.Id,
+            'loan_record_id': self.LoanRecordId,
             'individual_name': self.IndividualName,
             'enterprise_name': self.EnterpriseName,
             'sign_state': self.SignState,

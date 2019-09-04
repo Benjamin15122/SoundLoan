@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from app import app, db
 from models.Contract import Contract
+from models.LoanRecord import LoanRecord
 from config import Config
 from utils.contract_assignment_utils import *
 
@@ -62,6 +63,39 @@ def get_contract_content():
             'success': True,
             'message': '',
             'content': contract.Text
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e),
+            'content': None
+        })
+
+
+@app.route('/contract/upload')
+def upload_contract():
+    try:
+        individual_name = request.form.get('individual_name')
+        enterprise_name = request.form.get('enterprise_name')
+        contract_content = request.form.get('contract_content')
+        apply_id = request.form.get('apply_id')
+        contract = Contract(
+            LoanRecordId=apply_id,
+            IndividualName=individual_name,
+            EnterpriseName=enterprise_name,
+            Text=contract_content,
+            loan_record=apply_id
+        )
+        db.session.add(contract)
+        db.commit()
+        loan_record = LoanRecord.query.get(apply_id)
+        loan_record.OrderStatus = 'uploading_contract'
+        loan_record.ContractId = contract.Id
+        db.commit()
+        return jsonify({
+            'success': True,
+            'message': '',
+            'content': contract.to_dict()
         })
     except Exception as e:
         return jsonify({
