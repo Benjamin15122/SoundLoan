@@ -24,6 +24,7 @@ class LoanRecord(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.Id,
             'lender_id': self.LenderId,
             'debtor_id': self.DebtorId,
             'product_id': self.ProductId,

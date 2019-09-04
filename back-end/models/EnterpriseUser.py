@@ -52,6 +52,7 @@ class EnterpriseUser(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.Id,
             'name': self.Name,
 
             'foundation_date': self.FoundationDate.strftime('%Y-%m-%d'),

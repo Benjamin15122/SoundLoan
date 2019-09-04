@@ -11,6 +11,7 @@ class Contract(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.Id,
             'user_id': self.UserId,
             'text': self.Text,
             'record': self.Record,

@@ -151,6 +151,13 @@ def ent_score():
     return jsonify({'success': True, 'content': result})
     
 
+@app.route("/infoMan/allLoan", methods=["GET"])
+def all_loan():
+    loan_records = LoanRecord.query.all()
+    result = [r.to_dict() for r in loan_records]
+    return jsonify({'success': True, 'content': result})
+
+
 @app.route("/infoMan/userAppliedLoan", methods=["GET"])
 def user_applied_loan():
     user_name = request.args.get('user_name', None)
@@ -187,7 +194,7 @@ def effective_loan():
     ).all()
     result = [r.to_dict() for r in loan_records]
     return jsonify({'success': True, 'content': result})
- 
+
 
 @app.route("/infoMan/finishedLoan", methods=["GET"])
 def finished_loan():
@@ -206,3 +213,38 @@ def finished_loan():
     ).all()
     result = [r.to_dict() for r in loan_records]
     return jsonify({'success': True, 'content': result})
+
+
+@app.route("/infoMan/loanApply", methods=["POST"])
+def loan_apply():
+    try:
+        params = request.form.to_dict()
+
+        new_record = LoanRecord(**params)
+
+        db.session.add(new_record)
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'content': {
+                'id': new_record.Id
+            }
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
+@app.route("/infoMan/loanApplyPass", methods=["POST"])
+def loan_apply_pass():
+    recordId = request.form.get('record_id', None)
+    if not recordId:
+        return jsonify({'success': False, 'message': 'Missing params record_id'})
+    record = LoanRecord.query.filter(LoanRecord.Id == recordId).first()
+    if not record:
+        return jsonify({'success': False, 'message': 'No such loan record found'})
+
+    record.OrderStatus = 'uploading_contract'
+    db.session.commit()
+    
+    return jsonify({'success': True})
