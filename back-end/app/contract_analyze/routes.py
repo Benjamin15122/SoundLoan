@@ -15,8 +15,8 @@ def contract_analyze():
 
         # 解析用户Id
         nickname = contract_data['nickname']
-        user = IndividualUser.query.filter(IndividualUser.Nickname == nickname).first()
-        user_id = user.Id
+        # user = IndividualUser.query.filter(IndividualUser.Nickname == nickname).first()
+        # user_id = user.Id
 
         # 解析请求中用户自己选择的字段
         loan_consistent_with_actual = contract_data['loan_consistent_with_actual']
@@ -27,7 +27,7 @@ def contract_analyze():
                                  loan_consistent_with_actual,
                                  fake_advertising, 'text')
 
-            new_contract = Contract(UserId=user_id, Text=contract_analyze['text_data'], Record=str(return_obj))
+            new_contract = Contract(IndividualName=nickname, Text=contract_analyze['text_data'], Record=str(return_obj), AnalyzeState='Yes')
             db.session.add(new_contract)
             db.session.commit()
 
@@ -43,7 +43,7 @@ def contract_analyze():
                                  loan_consistent_with_actual,
                                  fake_advertising, 'image')
 
-            new_contract = Contract(UserId=user_id, Text=text, Record=str(return_obj))
+            new_contract = Contract(IndividualName=nickname, Text=text, Record=str(return_obj), AnalyzeState='Yes')
             db.session.add(new_contract)
             db.session.commit()
 
