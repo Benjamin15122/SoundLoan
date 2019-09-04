@@ -84,7 +84,8 @@ def upload_contract():
             IndividualName=individual_name,
             EnterpriseName=enterprise_name,
             Text=contract_content,
-            loan_record=apply_id
+            SignState='None',
+            AnalyzeState='No'
         )
         db.session.add(contract)
         db.commit()

@@ -6,7 +6,7 @@ class Contract(db.Model):
 
     Id = db.Column(db.Integer, primary_key=True)
 
-    LoanRecordId = db.Column(db.Integer)
+    LoanRecordId = db.Column(db.Integer, db.ForeignKey('loan_record.Id'))
 
     # UserId = db.Column(db.Integer, db.ForeignKey('user_individual.Id'))
     IndividualName = db.Column(db.String(80), db.ForeignKey('user_individual.Nickname'))
@@ -17,9 +17,9 @@ class Contract(db.Model):
     # 合同的状态
     # SignState取值为'NoSign, Individual, Enterprise, BothSign, None'
     # 表示“没有签订，个人已签订，企业已签订，双方均已签订生效, 外部合同（仅用作检测）”
-    SignState = db.Column(db.String(20))
+    SignState = db.Column(db.Enum('NoSign', 'Individual', 'Enterprise', 'BothSign', 'None'))
     # AnalyzeState表示合同状态，取值为'Yes, No', 分别表示已分析和还没分析
-    AnalyzeState = db.Column(db.String(20))
+    AnalyzeState = db.Column(db.Enum('Yes', 'No'))
 
     # 用户的数字签名，如果合同是平台签订的话
     IndividualSign = db.Column(db.String(2000))

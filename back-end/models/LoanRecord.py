@@ -20,7 +20,7 @@ class LoanRecord(db.Model):
 
     RepayStatus = db.Column(db.Enum('overdue', 'ongoing', 'done'))
     OrderStatus = db.Column(db.Enum('applied', 'auditing', 'uploading_contract', 'effective', 'finished'))
-    ContractId = db.Column(db.Integer)
+    ContractId = db.Column(db.Integer, db.ForeignKey('contract.Id'))
 
     def to_dict(self):
         return {
