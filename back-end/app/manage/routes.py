@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from sqlalchemy import func
+from sqlalchemy import func, and_
 
 from flask import Response, jsonify
 from app import app, db
@@ -148,4 +148,61 @@ def ent_score():
     commentList = db.session.query(sub, LoanProductComment).join(LoanProductComment, LoanProductComment.ProductId == sub.c.Id).subquery()
     score = db.session.query(func.avg(commentList.c.Score).label("mean_score")).first()
     result = {'score': float(str(score.mean_score))}
+    return jsonify({'success': True, 'content': result})
+    
+
+@app.route("/infoMan/userAppliedLoan", methods=["GET"])
+def user_applied_loan():
+    user_name = request.args.get('user_name', None)
+    if not user_name:
+        return jsonify({'success': False, 'message': 'Missing params user_name'})
+    user = IndividualUser.query.filter(IndividualUser.Nickname == user_name).first()
+    if not user:
+        return jsonify({'success': False, 'message': 'No such user found'})
+    userId = user.Id
+    loan_records = LoanRecord.query.filter(
+        and_(
+            LoanRecord.DebtorId == userId,
+            LoanRecord.OrderStatus.in_(['applied', 'auditing', 'uploading_contract'])
+        )
+    ).all()
+    result = [r.to_dict() for r in loan_records]
+    return jsonify({'success': True, 'content': result})
+
+
+@app.route("/infoMan/effectiveLoan", methods=["GET"])
+def effective_loan():
+    user_name = request.args.get('user_name', None)
+    if not user_name:
+        return jsonify({'success': False, 'message': 'Missing params user_name'})
+    user = IndividualUser.query.filter(IndividualUser.Nickname == user_name).first()
+    if not user:
+        return jsonify({'success': False, 'message': 'No such user found'})
+    userId = user.Id
+    loan_records = LoanRecord.query.filter(
+        and_(
+            LoanRecord.DebtorId == userId,
+            LoanRecord.OrderStatus.in_(['effective'])
+        )
+    ).all()
+    result = [r.to_dict() for r in loan_records]
+    return jsonify({'success': True, 'content': result})
+ 
+
+@app.route("/infoMan/finishedLoan", methods=["GET"])
+def finished_loan():
+    user_name = request.args.get('user_name', None)
+    if not user_name:
+        return jsonify({'success': False, 'message': 'Missing params user_name'})
+    user = IndividualUser.query.filter(IndividualUser.Nickname == user_name).first()
+    if not user:
+        return jsonify({'success': False, 'message': 'No such user found'})
+    userId = user.Id
+    loan_records = LoanRecord.query.filter(
+        and_(
+            LoanRecord.DebtorId == userId,
+            LoanRecord.OrderStatus.in_(['finished'])
+        )
+    ).all()
+    result = [r.to_dict() for r in loan_records]
     return jsonify({'success': True, 'content': result})
