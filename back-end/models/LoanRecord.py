@@ -13,21 +13,29 @@ class LoanRecord(db.Model):
     DebtorId = db.Column(db.Integer, db.ForeignKey('user_individual.Id'))
     ProductId = db.Column(db.Integer, db.ForeignKey('loan_product.Id'))
 
-    AppDate = db.Column(db.TIMESTAMP)
-    DueDate = db.Column(db.TIMESTAMP)
-    StartDate = db.Column(db.TIMESTAMP)
-    EndDate = db.Column(db.TIMESTAMP)
-    RepayStatus = db.Column(db.Enum('overdue ', 'ongoing', 'done'))
+    AppDateTimestamp = db.Column(db.BIGINT)
+    DueDateTimestamp = db.Column(db.BIGINT)
+    StartDateTimestamp = db.Column(db.BIGINT)
+    EndDateTimestamp = db.Column(db.BIGINT)
+
+    RepayStatus = db.Column(db.Enum('overdue', 'ongoing', 'done'))
+    OrderStatus = db.Column(db.Enum('applied', 'auditing', 'uploading_contract', 'effective', 'finished'))
     ContractId = db.Column(db.Integer, db.ForeignKey('contract.Id'))
 
     def to_dict(self):
         return {
+            'id': self.Id,
             'lender_id': self.LenderId,
             'debtor_id': self.DebtorId,
             'product_id': self.ProductId,
-            'LoanMoney': self.LoanMoney,
+            'contract_id': self.ContractId,
+            'loan_money': self.LoanMoney,
             'rate': self.Rate,
-            'app_date': self.AppDate.strftime('%Y-%m-%d'),
-            'repay_date': self.RepayDate.strftime('%Y-%m-%d')
+            'app_date_timestamp': self.AppDateTimestamp,
+            'due_date_timestamp': self.DueDateTimestamp,
+            'start_date_timestamp': self.StartDateTimestamp,
+            'end_date_timestamp': self.EndDateTimestamp,
+            'repay_status': self.RepayStatus,
+            'order_status': self.OrderStatus,
         }
 

@@ -12,6 +12,7 @@ class ContractOrderFee(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.Id,
             'order_id': self.OrderId,
             'paid': True if self.Paid == 1 else False
         }

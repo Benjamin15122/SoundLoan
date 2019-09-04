@@ -30,10 +30,11 @@ from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Cont
 db.drop_all()
 db.create_all()
 
-loan1 = LoanProduct.LoanProduct(Name=u'金利来小额贷', EnterpriseName="狼厂", AmountMin=1000, AmountMax=30000, RateMin=0.12, RateMax=0.23, DurationMin=6, DurationMax=24)
-loan2 = LoanProduct.LoanProduct(Name=u'生活无忧小额贷', EnterpriseName="阿里", AmountMin=3000, AmountMax=20000, RateMin=0.13, RateMax=0.33, DurationMin=3, DurationMax=36)
-loan3 = LoanProduct.LoanProduct(Name=u'要你命3000贷', EnterpriseName="狼厂", AmountMin=3000, AmountMax=300000, RateMin=0.24, RateMax=0.36, DurationMin=1, DurationMax=12)
-db.session.add_all([loan1, loan2, loan3])
+# 目前暂定每个公司只有一个贷款产品，贷款产品的名称与公司名称一致
+loan1 = LoanProduct.LoanProduct(Name=u'狼厂', EnterpriseName="狼厂", AmountMin=1000, AmountMax=30000, RateMin=0.12, RateMax=0.23, DurationMin=6, DurationMax=24)
+loan2 = LoanProduct.LoanProduct(Name=u'阿里', EnterpriseName="阿里", AmountMin=3000, AmountMax=20000, RateMin=0.13, RateMax=0.33, DurationMin=3, DurationMax=36)
+loan3 = LoanProduct.LoanProduct(Name=u'Dio面包坊', EnterpriseName="Dio面包坊", AmountMin=3000, AmountMax=300000, RateMin=0.24, RateMax=0.36, DurationMin=1, DurationMax=12)
+db.session.add_all([loan1, loan2])
 db.session.commit()
 
 user1 = IndividualUser.IndividualUser(
@@ -57,14 +58,10 @@ db.session.commit()
 
 company1 = EnterpriseUser.EnterpriseUser("狼厂", "123", "19960901", 12, "Robin Li", 13, "0.11", "0.35", "北京市中关村", "www.baidu.com", "110", "陆奇来救我~")
 company2 = EnterpriseUser.EnterpriseUser("阿里", "123", "19960901", 13, "Jack Ma", 13, "0.11", "0.35", "杭州某某", "www.alibaba.com", "120", "做福娃，修福报")
-db.session.add_all([company1, company2])
+company3 = EnterpriseUser.EnterpriseUser("Dio面包坊", "123", "19960901", 13, "Dio Brando", 13, "0.11", "0.35", "埃及", "www.ningenoyameruzo.com", "120", "你记得自己吃过多少片面包吗")
+db.session.add_all([company1, company2, company3])
 db.session.commit()
 
-loan_record1 = LoanRecord.LoanRecord(LoanMoney=10000, DebtorId=user1.Id, ProductId=loan1.Id, LenderId=company1.Id)
-loan_record2 = LoanRecord.LoanRecord(LoanMoney=5000, DebtorId=user1.Id, ProductId=loan2.Id, LenderId=company2.Id)
-loan_record3 = LoanRecord.LoanRecord(LoanMoney=20000, DebtorId=user2.Id, ProductId=loan2.Id, LenderId=company2.Id)
-db.session.add_all([loan_record1, loan_record2, loan_record3])
-db.session.commit()
 
 loan_product_comments = [
     LoanProductComment.LoanProductComment(ProductId=1, UserId=1, Comment="balabala_1_1", Score=1),
@@ -75,4 +72,29 @@ loan_product_comments = [
     LoanProductComment.LoanProductComment(ProductId=3, UserId=2, Comment="balabala_2_3", Score=4),
 ]
 db.session.add_all(loan_product_comments)
+db.session.commit()
+
+loan_records = [
+    LoanRecord.LoanRecord(
+        LoanMoney=100000, Rate=0.4, LenderId=company1.Id, DebtorId=user1.Id, ProductId=loan1.Id,
+        AppDateTimestamp=1, DueDateTimestamp=1, StartDateTimestamp=1, EndDateTimestamp=1,
+        RepayStatus='ongoing', OrderStatus='applied', ContractId=None
+    ),
+    LoanRecord.LoanRecord(
+        LoanMoney=100000, Rate=0.4, LenderId=company3.Id, DebtorId=user1.Id, ProductId=loan3.Id,
+        AppDateTimestamp=1, DueDateTimestamp=1, StartDateTimestamp=1, EndDateTimestamp=1,
+        RepayStatus='ongoing', OrderStatus='uploading_contract', ContractId=None
+    ),
+    LoanRecord.LoanRecord(
+        LoanMoney=100000, Rate=0.4, LenderId=company1.Id, DebtorId=user2.Id, ProductId=loan1.Id,
+        AppDateTimestamp=1, DueDateTimestamp=1, StartDateTimestamp=1, EndDateTimestamp=1,
+        RepayStatus='ongoing', OrderStatus='effective', ContractId=None
+    ),
+    LoanRecord.LoanRecord(
+        LoanMoney=100000, Rate=0.4, LenderId=company3.Id, DebtorId=user2.Id, ProductId=loan3.Id,
+        AppDateTimestamp=1, DueDateTimestamp=1, StartDateTimestamp=1, EndDateTimestamp=1,
+        RepayStatus='ongoing', OrderStatus='finished', ContractId=None
+    ),
+]
+db.session.add_all(loan_records)
 db.session.commit()

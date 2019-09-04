@@ -103,6 +103,7 @@ class IndividualUser(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.Id,
             'name': self.Name,
             'sex':  self.Sex,
             'birth': self.Birth,
