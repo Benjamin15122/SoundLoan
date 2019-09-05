@@ -2,6 +2,17 @@ import requests
 import json
 import hashlib
 from config import *
+from models.Contract import Contract
+import os
+
+
+def write_contract_to_file(contract: Contract, path):
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(contract.Text)
+        if contract.IndividualSign is not None:
+            f.write('\n 个人电子签名'+contract.IndividualSign)
+        if contract.EnterpriseSign is not None:
+            f.write('\n 企业电子签名'+contract.EnterpriseSign)
 
 
 def register(user_name):

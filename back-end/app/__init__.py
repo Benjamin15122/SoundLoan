@@ -22,6 +22,7 @@ from app.citi_money_transfer import routes
 from app.alipay_payoff import routes
 from app.contract_analyze import routes
 from app.loan_recommendation import routes
+from app.contract_assignment import routes
 from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract, LoanProductComment
 
 #db.create_all()
@@ -56,7 +57,7 @@ user2 = IndividualUser.IndividualUser(
 db.session.add_all([user1, user2])
 db.session.commit()
 
-company1 = EnterpriseUser.EnterpriseUser("狼厂", "123", "19960901", 12, "Robin Li", 13, "0.11", "0.35", "北京市中关村", "www.baidu.com", "110", "陆奇来救我~")
+company1 = EnterpriseUser.EnterpriseUser("狼厂", "123", "19960901", 12, "Robin Li", 13, "0.11", "0.35", "北京市中关村", "www.baidu.com", "110", "彦宏好帅好帅的")
 company2 = EnterpriseUser.EnterpriseUser("阿里", "123", "19960901", 13, "Jack Ma", 13, "0.11", "0.35", "杭州某某", "www.alibaba.com", "120", "做福娃，修福报")
 company3 = EnterpriseUser.EnterpriseUser("Dio面包坊", "123", "19960901", 13, "Dio Brando", 13, "0.11", "0.35", "埃及", "www.ningenoyameruzo.com", "120", "你记得自己吃过多少片面包吗")
 db.session.add_all([company1, company2, company3])
@@ -81,12 +82,12 @@ loan_records = [
         RepayStatus='ongoing', OrderStatus='applied', ContractId=None
     ),
     LoanRecord.LoanRecord(
-        LoanMoney=100000, Rate=0.4, LenderId=company3.Id, DebtorId=user1.Id, ProductId=loan3.Id,
+        LoanMoney=100000, Rate=0.14, LenderId=company3.Id, DebtorId=user1.Id, ProductId=loan3.Id,
         AppDateTimestamp=1, DueDateTimestamp=1, StartDateTimestamp=1, EndDateTimestamp=1,
         RepayStatus='ongoing', OrderStatus='uploading_contract', ContractId=None
     ),
     LoanRecord.LoanRecord(
-        LoanMoney=100000, Rate=0.4, LenderId=company1.Id, DebtorId=user2.Id, ProductId=loan1.Id,
+        LoanMoney=100000, Rate=0.14, LenderId=company1.Id, DebtorId=user2.Id, ProductId=loan1.Id,
         AppDateTimestamp=1, DueDateTimestamp=1, StartDateTimestamp=1, EndDateTimestamp=1,
         RepayStatus='ongoing', OrderStatus='effective', ContractId=None
     ),
@@ -97,4 +98,15 @@ loan_records = [
     ),
 ]
 db.session.add_all(loan_records)
+db.session.commit()
+
+contract1 = Contract.Contract(
+    LoanRecordId=loan_records[1].Id,
+    IndividualName=user1.Nickname,
+    EnterpriseName=company3.Name,
+    Text='借款人：%s\n放贷者：%s\n借款金额：100000\n借款利息：0.14\n' % (user1.Nickname, company3.Name),
+    SignState='NoSign',
+    AnalyzeState='No'
+)
+db.session.add(contract1)
 db.session.commit()

@@ -1,9 +1,10 @@
-from flask import jsonify, request
+from flask import jsonify, request, send_from_directory
 from app import app, db
 from models.Contract import Contract
 from models.LoanRecord import LoanRecord
 from config import Config
 from utils.contract_assignment_utils import *
+from utils.contract_analyze_utils import *
 
 
 @app.route("/contract/getAll", methods=["POST"])
@@ -44,7 +45,7 @@ def get_contract_analysis():
             return jsonify({
                 'success': True,
                 'message': '',
-                'content': contract.Record
+                'content': [contract.Title, contract.Record]
             })
     except Exception as e:
         return jsonify({
@@ -62,7 +63,7 @@ def get_contract_content():
         return jsonify({
             'success': True,
             'message': '',
-            'content': contract.Text
+            'content': [contract.Title, contract.Text]
         })
     except Exception as e:
         return jsonify({
@@ -72,26 +73,23 @@ def get_contract_content():
         })
 
 
-@app.route('/contract/upload')
-def upload_contract():
+@app.route('/contract/uploadImage', methods=['POST'])
+def upload_contract_image():
     try:
         individual_name = request.form.get('individual_name')
         enterprise_name = request.form.get('enterprise_name')
         contract_content = request.form.get('contract_content')
-        apply_id = request.form.get('apply_id')
+        title = request.form.get('contract_title')
+        text = image_to_text([contract_content])
         contract = Contract(
-            LoanRecordId=apply_id,
             IndividualName=individual_name,
             EnterpriseName=enterprise_name,
-            Text=contract_content,
+            Text=text,
             SignState='None',
-            AnalyzeState='No'
+            AnalyzeState='No',
+            Title=title
         )
         db.session.add(contract)
-        db.commit()
-        loan_record = LoanRecord.query.get(apply_id)
-        loan_record.OrderStatus = 'uploading_contract'
-        loan_record.ContractId = contract.Id
         db.commit()
         return jsonify({
             'success': True,
@@ -106,7 +104,56 @@ def upload_contract():
         })
 
 
-@app.route('/contract/sign')
+@app.route('/contract/uploadText', methods=['POST'])
+def upload_contract_text():
+    try:
+        individual_name = request.form.get('individual_name')
+        enterprise_name = request.form.get('enterprise_name')
+        contract_content = request.form.get('contract_content')
+        title = request.form.get('contract_title')
+        contract = Contract(
+            IndividualName=individual_name,
+            EnterpriseName=enterprise_name,
+            Text=contract_content,
+            SignState='None',
+            AnalyzeState='No',
+            Title=title
+        )
+        db.session.add(contract)
+        db.commit()
+        return jsonify({
+            'success': True,
+            'message': '',
+            'content': contract.to_dict()
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e),
+            'content': None
+        })
+
+
+@app.route('/contract/download', methods=['GET'])
+def download_contract():
+    try:
+        contract_id = int(request.headers.get('contract_id'))
+        contract = Contract.query.get(contract_id)
+        dirpath = './resources/tmp_contract_files'
+        filename = str(contract_id)+'-contract.txt'
+        write_contract_to_file(contract, dirpath+'/'+filename)
+        dir = os.path.join(os.getcwd(), 'resources', 'tmp_contract_files')
+        print(dir)
+        return send_from_directory(dir, filename)
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e),
+            'content': None
+        })
+
+
+@app.route('/contract/sign', methods=['POST'])
 def sign_contract():
     try:
         user_name = request.form.get('user_name')

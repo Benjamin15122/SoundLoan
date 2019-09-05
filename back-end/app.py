@@ -7,7 +7,7 @@ from app.loan_recommendation.routes import *
 from app import app, db
 
 api = Api(app)
-api.add_resource(LoanRecommendation, '/loan/recommendation')
+api.add_resource(LoanRecommendation, '/enterprise/recommendation')
 
 if __name__ == "__main__":
     scheduler = APScheduler()

@@ -6,11 +6,13 @@ class Contract(db.Model):
 
     Id = db.Column(db.Integer, primary_key=True)
 
-    LoanRecordId = db.Column(db.Integer, db.ForeignKey('loan_record.Id'))
+    # 这里不能有外键约束否则会报循环外键约束的错误
+    LoanRecordId = db.Column(db.Integer)
 
     # UserId = db.Column(db.Integer, db.ForeignKey('user_individual.Id'))
     IndividualName = db.Column(db.String(80), db.ForeignKey('user_individual.Nickname'))
     EnterpriseName = db.Column(db.String(80), db.ForeignKey('user_enterprise.Name'))
+    Title = db.Column(db.String(100))
     Text = db.Column(db.String(2000))
     Record = db.Column(db.String(2000))
 
@@ -29,6 +31,7 @@ class Contract(db.Model):
         return {
             'id': self.Id,
             'loan_record_id': self.LoanRecordId,
+            'title': self.Title,
             'individual_name': self.IndividualName,
             'enterprise_name': self.EnterpriseName,
             'sign_state': self.SignState,
