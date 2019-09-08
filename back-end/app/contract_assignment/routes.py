@@ -2,6 +2,8 @@ from flask import jsonify, request, send_from_directory
 from app import app, db
 from models.Contract import Contract
 from models.LoanRecord import LoanRecord
+from models.IndividualUser import IndividualUser
+from models.EnterpriseUser import EnterpriseUser
 from config import Config
 from utils.contract_assignment_utils import *
 from utils.contract_analyze_utils import *
@@ -35,7 +37,7 @@ def get_contract_analysis():
     try:
         contract_id = int(request.headers.get('contract_id'))
         contract = Contract.query.get(contract_id)
-        if contract.AnalyzeState=='No':
+        if contract.AnalyzeState is None or contract.AnalyzeState == 'No':
             return jsonify({
                 'success': False,
                 'message': 'This contract haven\'t been analyzed yet. ',
@@ -60,6 +62,12 @@ def get_contract_content():
     try:
         contract_id = int(request.headers.get('contract_id'))
         contract = Contract.query.get(contract_id)
+        if contract is None:
+            return jsonify({
+                'success': False,
+                'message': "数据库中找不到对应id的合同文本",
+                'content': None
+            })
         return jsonify({
             'success': True,
             'message': '',
@@ -85,12 +93,12 @@ def upload_contract_image():
             IndividualName=individual_name,
             EnterpriseName=enterprise_name,
             Text=text,
-            SignState='None',
+            SignState='NoSign',
             AnalyzeState='No',
             Title=title
         )
         db.session.add(contract)
-        db.commit()
+        db.session.commit()
         return jsonify({
             'success': True,
             'message': '',
@@ -115,12 +123,12 @@ def upload_contract_text():
             IndividualName=individual_name,
             EnterpriseName=enterprise_name,
             Text=contract_content,
-            SignState='None',
+            SignState='NoSign',
             AnalyzeState='No',
             Title=title
         )
         db.session.add(contract)
-        db.commit()
+        db.session.commit()
         return jsonify({
             'success': True,
             'message': '',
@@ -159,20 +167,37 @@ def sign_contract():
         user_name = request.form.get('user_name')
         user_type = request.form.get('user_type')
         contract_id = int(request.form.get('contract_id'))
+        password = request.form.get('user_passwd')
+        if user_type == 'individual':
+            user = IndividualUser.query.filter(IndividualUser.Nickname==user_name).first()
+            if not user.verify_password(password):
+                return jsonify({
+                    'success': False,
+                    'message': '用户密码错误',
+                    'content': None
+                })
+        elif user_type == 'enterprise':
+            user = EnterpriseUser.query.filter(EnterpriseUser.Name==user_name).first()
+            if not user.verify_password(password):
+                return jsonify({
+                    'success': False,
+                    'message': '用户密码错误',
+                    'content': None
+                })
         contract = Contract.query.get(contract_id)
         signature = get_signature(user_name, contract.Text)
         if user_type == 'individual':
-            contract.BorrowerSign = signature
-            if contract.SignState == 'NoSign':
+            contract.IndividualSign = signature
+            if contract.SignState is None or contract.SignState == 'NoSign':
                 contract.SignState = 'Individual'
             else:
-                contract.SignState = 'Both'
+                contract.SignState = 'BothSign'
         else:
-            contract.LenderSign = signature
-            if contract.SignState == 'NoSign':
+            contract.EnterpriseSign = signature
+            if contract.SignState is None or contract.SignState == 'NoSign':
                 contract.SignState = 'Enterprise'
             else:
-                contract.SignState = 'Both'
+                contract.SignState = 'BothSign'
         db.session.commit()
         return jsonify({
             'success': True,

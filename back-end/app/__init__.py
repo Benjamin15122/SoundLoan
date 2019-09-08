@@ -104,6 +104,7 @@ contract1 = Contract.Contract(
     LoanRecordId=loan_records[1].Id,
     IndividualName=user1.Nickname,
     EnterpriseName=company3.Name,
+    Title='测试借款合同',
     Text='借款人：%s\n放贷者：%s\n借款金额：100000\n借款利息：0.14\n' % (user1.Nickname, company3.Name),
     SignState='NoSign',
     AnalyzeState='No'
