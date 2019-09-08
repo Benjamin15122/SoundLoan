@@ -28,7 +28,8 @@ def query_individual_user():
     return jsonify({'success': True, 'content': user.to_dict()})
 
 
-@app.route("/infoMan/createIndUser", methods=["POST"])
+@app.route("/infoMan/createIndUserComplete", methods=["POST"])
+@app.route("/infoMan/createIndUserSimplified", methods=["POST"])
 def create_individual_user():
     try:
         params = request.form.to_dict()
@@ -47,12 +48,53 @@ def create_individual_user():
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
 
+
+def changeUserInfo(user, arg_dict, exclude_dict):
+    def str2Hump(text):
+        arr = filter(None, text.lower().split('_'))
+        res = ''
+        for i in arr:
+            res =  res + i[0].upper() + i[1:]
+        return res
+
+    for a in arg_dict:
+        if a in exclude_dict:
+            continue
+        arg_name = str2Hump(a)
+        # If there is a field in the body that does not exist in IndividualUser, an Exception will be raised
+        getattr(user, arg_name)
+        setattr(user, arg_name, request.form[a])
+
+    db.session.commit()
+
+@app.route("/infoMan/changeIndUser", methods=["POST"])
+def change_individual_user():
+    user_id = request.form.get('id', None)
+    user_name = request.form.get('nickname', None)
+    if user_id is None and user_name is None:
+        return jsonify({'success': False, 'message': 'Missing param id and nickname.'})
+
+    if user_id is not None:
+        user = IndividualUser.query.filter(IndividualUser.Id == user_id).first()
+    else:
+        user = IndividualUser.query.filter(IndividualUser.Name == user_name).first()
+    if user is None:
+        return jsonify({'success': False, 'message': 'Failed to find a qualified user.'})
+
+    try:
+        changeUserInfo(user, request.form, ['id', 'nickname'])
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+    return jsonify({'success': True})
+
+
 @app.route("/infoMan/indLogin", methods=["POST"])
 def login_individual_user():
     nickname = request.form.get('nickname', None)
     password = request.form.get('password', None)
     if not nickname or not password:
-        return jsonify({'success': False, 'message': 'Missing params nickname or password！'})
+        return jsonify({'success': False, 'message': 'Missing params nickname or passwor.'})
     user = IndividualUser.query.filter(IndividualUser.Nickname == nickname).first()
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
@@ -60,6 +102,17 @@ def login_individual_user():
         return jsonify({'success': True, 'token': user.gen_auth_token()})
     else:
         return jsonify({'success': False, 'message': 'Wrong password！'})
+ 
+
+@app.route("/infoMan/indLoginPhone", methods=["POST"])
+def login_individual_user_phone():
+    phone_number = request.form.get('phone_number', None)
+    if not phone_number:
+        return jsonify({'success': False, 'message': 'Missing params phone_number.'})
+    user = IndividualUser.query.filter(IndividualUser.PhoneNumber == phone_number).first()
+    if not user:
+        return jsonify({'success': False, 'message': 'User does not exist！'})
+    return jsonify({'success': True, 'token': user.gen_auth_token()})
 
 
 @app.route("/infoMan/entUserInfo", methods=["GET"])
@@ -98,6 +151,59 @@ def create_enterprise_user():
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
 
+
+@app.route("/infoMan/changeEntUser", methods=["POST"])
+def change_enterprise_user():
+    user_id = request.form.get('id', None)
+    user_name = request.form.get('name', None)
+    if user_id is None and user_name is None:
+        return jsonify({'success': False, 'message': 'Missing param id and name.'})
+
+    if user_id is not None:
+        user = EnterpriseUser.query.filter(EnterpriseUser.Id == user_id).first()
+    else:
+        user = EnterpriseUser.query.filter(EnterpriseUser.Name == user_name).first()
+    if user is None:
+        return jsonify({'success': False, 'message': 'Failed to find a qualified user.'})
+
+    try:
+        changeUserInfo(user, request.form, ['id', 'name'])
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+    return jsonify({'success': True})
+
+
+@app.route("/infoMan/changePW", methods=["POST"])
+def change_password():
+    user_name = request.form.get('user_name', None)
+    user_type = request.form.get('user_type', None)
+    origin_password = request.form.get('origin_password', None)
+    new_password = request.form.get('new_password', None)
+    if new_password is None or new_password is None or \
+            origin_password is None or new_password is None:
+        return jsonify({
+            'success': False,
+            'message': 'Missing param user_name/user_type/origin_password/new_password.'
+        })
+    
+    if user_type == 'individual':
+        user = IndividualUser.query.filter(IndividualUser.Nickname == user_name).first()
+    elif user_type == 'enterprise':
+        user = EnterpriseUser.query.filter(EnterpriseUser.Name == user_name).first()
+    else:
+        return jsonify({'success': False, 'message': 'Unrecognized user_type.'})
+    
+    if user is None:
+        return jsonify({'success': False, 'message': 'Failed to find a qualified user.'})
+    
+    if not user.verify_password(origin_password):
+        return jsonify({'success': False, 'message': 'Wrong origin_password.'})
+    
+    user.hash_password(new_password)
+    db.session.commit()
+    
+    return jsonify({'success': True})
 
 @app.route("/infoMan/entLogin", methods=["POST"])
 def login_enterprise_user():
@@ -212,7 +318,7 @@ def all_loan():
     return jsonify({'success': True, 'content': result})
 
 
-@app.route("/infoMan/userAppliedLoan", methods=["GET"])
+@app.route("/infoMan/getMyApply", methods=["GET"])
 def user_applied_loan():
     user_name = request.args.get('user_name', None)
     if not user_name:
@@ -231,7 +337,7 @@ def user_applied_loan():
     return jsonify({'success': True, 'content': result})
 
 
-@app.route("/infoMan/effectiveLoan", methods=["GET"])
+@app.route("/infoMan/getMyCurrentLoan", methods=["GET"])
 def effective_loan():
     user_name = request.args.get('user_name', None)
     if not user_name:
@@ -250,7 +356,7 @@ def effective_loan():
     return jsonify({'success': True, 'content': result})
 
 
-@app.route("/infoMan/finishedLoan", methods=["GET"])
+@app.route("/infoMan/getMyFinishedLoan", methods=["GET"])
 def finished_loan():
     user_name = request.args.get('user_name', None)
     if not user_name:
