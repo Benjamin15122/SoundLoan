@@ -16,15 +16,15 @@ class IndividualUser(db.Model):
     PasswordHash = db.Column(db.String(255), nullable=False)
 
     Name = db.Column(db.String(20))
-    Sex = db.Column(db.Enum('male', 'female'))
+    Sex = db.Column(db.Enum('male', 'female', 'unknown'))
     Birth = db.Column(db.String(20))
     ResidenceAddress = db.Column(db.String(256))
-    Education = db.Column(db.Enum('primary ','middle','high','bachelor','master','doctor'))
+    Education = db.Column(db.Enum('primary ','middle','high','bachelor','master','doctor', 'unknown'))
     School = db.Column(db.String(80))
     WorkAddress = db.Column(db.String(256))
     LiveAddress = db.Column(db.String(256))
 
-    Marriage = db.Column(db.Enum('married','single'))
+    Marriage = db.Column(db.Enum('married','single', 'unknown'))
     Salary = db.Column(db.Integer)
     VehicleProperty = db.Column(db.Integer)
     HouseProperty = db.Column(db.Integer)
@@ -32,10 +32,10 @@ class IndividualUser(db.Model):
     HouseLoan = db.Column(db.Integer)
     WorkYear = db.Column(db.Integer)
 
-    Job = db.Column(db.Enum('student','whiteCollar','farmer','other'))
+    Job = db.Column(db.Enum('student','whiteCollar','farmer','other', 'unknown'))
 
     IsAuthenticated = db.Column(db.Boolean)
-    PhoneNumber = db.Column(db.Integer)
+    PhoneNumber = db.Column(db.String(11), unique=True)
     IDCardNumber = db.Column(db.String(18))
     BankCardNumber = db.Column(db.String(19))
 
@@ -55,11 +55,12 @@ class IndividualUser(db.Model):
     aes = AES.new(extend_to_16(app.config['SECRET_KEY']), AES.MODE_ECB)
 
 
-    def __init__(self, nickname, password,
-                    name, sex, birth, residence_address,
-                    education, school, work_address, live_address,
-                    marriage, salary, vehicle_property, house_property, vehicle_loan, house_loan, work_year,
-                    job):
+    def __init__(self,
+                    nickname, password, phone_number,
+                    name='unknown', sex='unknown', birth='unknown', residence_address='unknown',
+                    education='unknown', school='unknown', work_address='unknown', live_address='unknown',
+                    marriage='unknown', salary=-1, vehicle_property=-1, house_property=-1, vehicle_loan=-1, house_loan=-1, work_year=-1,
+                    job='unknown'):
         self.Nickname = nickname
         self.hash_password(password)
 
@@ -97,13 +98,14 @@ class IndividualUser(db.Model):
         # Authentication info is not set when user is initialized,
         # fill these fields in Authentication process
         self.IsAuthenticated = False
-        self.PhoneNumber = -1
+        self.PhoneNumber = phone_number
         self.IDCardNumber = 'xxxxxxxxxxxxxxxxxx'
         self.BankCardNumber = 'xxxxxxxxxxxxxxxxxx'
 
     def to_dict(self):
         return {
             'id': self.Id,
+            'nickname': self.Nickname,
             'name': self.Name,
             'sex':  self.Sex,
             'birth': self.Birth,
