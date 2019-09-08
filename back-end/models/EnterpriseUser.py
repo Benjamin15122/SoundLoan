@@ -38,7 +38,7 @@ class EnterpriseUser(db.Model):
 
         self.FoundationDate = foundation_date
         self.CorporateCapital = corporate_capital
-        self.LegalPpersonName = legal_person_name
+        self.LegalPersonName = legal_person_name
         self.RegisterCapital = register_capital
         self.LoanRateMin = loan_rate_min
         self.LoanRateMax = loan_rate_max
@@ -57,7 +57,7 @@ class EnterpriseUser(db.Model):
 
             'foundation_date': self.FoundationDate.strftime('%Y-%m-%d'),
             'corporate_capital': self.CorporateCapital,
-            'legal_person_name': self.LegalPpersonName,
+            'legal_person_name': self.LegalPersonName,
             'register_capital': self.RegisterCapital,
             'loan_rate_min': self.LoanRateMin,
             'loan_rate_max': self.LoanRateMax,

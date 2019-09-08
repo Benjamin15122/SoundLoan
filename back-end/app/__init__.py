@@ -61,7 +61,7 @@ user3 = IndividualUser.IndividualUser(
     education='bachelor', school='NJU', work_address='NJU',
     live_address='NJU', marriage='married', salary='3000',
     vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
-    work_year='3', job='whiteCollar'
+    work_year='3', job='whiteCollar', phone_number='11111111113'
 )
 db.session.add_all([user1, user2])
 db.session.commit()
