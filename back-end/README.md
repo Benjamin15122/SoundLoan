@@ -5,3 +5,4 @@
 + flask_restful
 + flask_sqlalchemy
 + flask_apscheduler
++ tencentcloud
