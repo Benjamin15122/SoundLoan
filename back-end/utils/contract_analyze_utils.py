@@ -24,16 +24,13 @@ def get_image_base64(path):
     return base64_data
 
 
-def text_splitter(text: str, data_type):
+def text_splitter(text: str):
     """
     :param text: 需要切分的文字片段
     :param data_type: 文字片段的来源，可能是纯文本，可能是从图片中提取出来的
     :return: 返回切分后的文本list
     """
-    if data_type == 'image':
-        text = re.split(r'。|；|;|\?', text)
-    else:
-        text = re.split(r'\n|。|；|;|\?', text)
+    text = re.split(r'。|；|;|\?', text)
     text = list(map(lambda s: s.replace('\n', '').replace(' ',  ''), text))
     text = list(filter(lambda x: x != '', text))
     return text
