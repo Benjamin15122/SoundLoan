@@ -307,7 +307,7 @@ def all_loan():
     return jsonify({'success': True, 'content': result})
 
 
-@app.route("/infoMan/userAppliedLoan", methods=["GET"])
+@app.route("/infoMan/getMyApply", methods=["GET"])
 def user_applied_loan():
     user_name = request.args.get('user_name', None)
     if not user_name:
@@ -326,7 +326,7 @@ def user_applied_loan():
     return jsonify({'success': True, 'content': result})
 
 
-@app.route("/infoMan/effectiveLoan", methods=["GET"])
+@app.route("/infoMan/getMyCurrentLoan", methods=["GET"])
 def effective_loan():
     user_name = request.args.get('user_name', None)
     if not user_name:
@@ -345,7 +345,7 @@ def effective_loan():
     return jsonify({'success': True, 'content': result})
 
 
-@app.route("/infoMan/finishedLoan", methods=["GET"])
+@app.route("/infoMan/getMyFinishedLoan", methods=["GET"])
 def finished_loan():
     user_name = request.args.get('user_name', None)
     if not user_name:
