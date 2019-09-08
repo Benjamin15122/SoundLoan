@@ -30,7 +30,7 @@ def demand_loan_match():
             })
 
         products = match_products(demand, loan_products)
-        enterprises = [EnterpriseUser.query.filter(EnterpriseUser.Name == each.Name).first()
+        enterprises = [EnterpriseUser.query.filter(EnterpriseUser.Name == each['enterprise_name']).first()
                        for each in products]
         return jsonify({
             'success': True,
