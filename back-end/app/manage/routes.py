@@ -87,14 +87,14 @@ def change_individual_user():
         return jsonify({'success': False, 'message': str(e)})
 
     return jsonify({'success': True})
-    
+
 
 @app.route("/infoMan/indLogin", methods=["POST"])
 def login_individual_user():
     nickname = request.form.get('nickname', None)
     password = request.form.get('password', None)
     if not nickname or not password:
-        return jsonify({'success': False, 'message': 'Missing params nickname or password！'})
+        return jsonify({'success': False, 'message': 'Missing params nickname or passwor.'})
     user = IndividualUser.query.filter(IndividualUser.Nickname == nickname).first()
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
@@ -102,6 +102,17 @@ def login_individual_user():
         return jsonify({'success': True, 'token': user.gen_auth_token()})
     else:
         return jsonify({'success': False, 'message': 'Wrong password！'})
+ 
+
+@app.route("/infoMan/indLoginPhone", methods=["POST"])
+def login_individual_user_phone():
+    phone_number = request.form.get('phone_number', None)
+    if not phone_number:
+        return jsonify({'success': False, 'message': 'Missing params phone_number.'})
+    user = IndividualUser.query.filter(IndividualUser.PhoneNumber == phone_number).first()
+    if not user:
+        return jsonify({'success': False, 'message': 'User does not exist！'})
+    return jsonify({'success': True, 'token': user.gen_auth_token()})
 
 
 @app.route("/infoMan/entUserInfo", methods=["GET"])
