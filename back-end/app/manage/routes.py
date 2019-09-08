@@ -138,8 +138,62 @@ def ent_product_comment():
     return jsonify({'success': True, 'content': result})
 
 
+def update_ent_score(ent_name):
+    # update the credit score of an enterprise, should be called every time a user comment is added
+    # entScore is the mean value of all the product scores from this enterprise
+    try:
+        sub = LoanProduct.query.filter(LoanProduct.EnterpriseName == ent_name).subquery()
+        commentList = db.session.query(sub, LoanProductComment).join(LoanProductComment, LoanProductComment.ProductId == sub.c.Id).subquery()
+        record = db.session.query(func.avg(commentList.c.Score).label("mean_score")).first()
+        new_score = float(str(record.mean_score))
+        ent_user = EnterpriseUser.query.filter(EnterpriseUser.Name==ent_name).first()
+        ent_user.CreditScore = new_score
+        
+        db.session.commit()
+    except Exception as e:
+        raise e 
+
+@app.route("/infoMan/addProductComment", methods=["POST"])
+def add_product_comment():
+    company_name = request.form.get('company_name', None)
+    product_name = request.form.get('product_name', None)
+    user_name = request.form.get('user_name', None)
+    comment = request.form.get('comment', None)
+    score = request.form.get('score', None)
+    if not company_name or not product_name or not user_name or not comment or not score:
+        return jsonify({'success': False, 'message': 'Missing params company_name/product_name/user_name/comment/score.'})
+    
+    # prepare a new comment record
+    product = LoanProduct.query.filter(LoanProduct.Name == product_name).first()
+    if not product:
+        return jsonify({'success': False, 'message': 'No such loan product found.'})
+    product_id = product.Id
+
+    user = IndividualUser.query.filter(IndividualUser.Nickname == user_name).first()
+    if not user:
+        return jsonify({'success': False, 'message': 'No such individual user found.'})
+    user_id = user.Id
+
+    new_comment = LoanProductComment(ProductId=product_id, UserId=user_id, Comment=comment, Score=score)
+
+    # add and update record in database 
+    try:
+        db.session.add(new_comment)
+        db.session.commit()
+
+        update_ent_score(company_name)
+
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+    return jsonify({'success': True})
+
+
 @app.route("/infoMan/entScore", methods=["GET"])
 def ent_score():
+    '''
+    Diplicated, use CreditScore of EnterpriseUser instead
+    '''
     # entScore is the mean value of all the product scores from this enterprise
     name = request.args.get('company_name', None)
     if not name:
