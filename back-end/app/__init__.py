@@ -61,7 +61,7 @@ company1 = EnterpriseUser.EnterpriseUser("狼厂", "123", "19960901", 12, "Robin
 company2 = EnterpriseUser.EnterpriseUser("阿里", "123", "19960901", 13, "Jack Ma", 13, "0.14", "0.35", "杭州某某", "www.alibaba.com", "120", "做福娃，修福报")
 company3 = EnterpriseUser.EnterpriseUser("Dio面包坊", "123", "19960901", 13, "Dio Brando", 13, "0.10", "0.35", "埃及", "www.ningenoyameruzo.com", "120", "你记得自己吃过多少片面包吗")
 companies = [company1, company2, company3]
-db.session.add_all([company1, company2, company3])
+db.session.add_all(companies)
 db.session.commit()
 
 

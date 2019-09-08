@@ -251,11 +251,12 @@ def update_ent_score(ent_name):
         sub = LoanProduct.query.filter(LoanProduct.EnterpriseName == ent_name).subquery()
         commentList = db.session.query(sub, LoanProductComment).join(LoanProductComment, LoanProductComment.ProductId == sub.c.Id).subquery()
         record = db.session.query(func.avg(commentList.c.Score).label("mean_score")).first()
-        new_score = float(str(record.mean_score))
-        ent_user = EnterpriseUser.query.filter(EnterpriseUser.Name==ent_name).first()
-        ent_user.CreditScore = new_score
-        
-        db.session.commit()
+        if record.mean_score is not None:
+            new_score = float(str(record.mean_score))
+            ent_user = EnterpriseUser.query.filter(EnterpriseUser.Name==ent_name).first()
+            ent_user.CreditScore = new_score
+            
+            db.session.commit()
     except Exception as e:
         raise e 
 
@@ -408,3 +409,13 @@ def loan_apply_pass():
     db.session.commit()
     
     return jsonify({'success': True})
+
+
+@app.route("/infoMan/searchEnt", methods=["GET"])
+def search_enterprise():
+    company_name = request.args.get('company_name', None)
+    words = ['%{}%'.format(w) for w in company_name.split(' ')]
+    rule = and_(*[EnterpriseUser.Name.like(w) for w in words])
+    ents = EnterpriseUser.query.filter(rule).all()
+    result = [e.to_dict() for e in ents]
+    return jsonify({'success': True, 'content': result})
