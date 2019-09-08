@@ -15,7 +15,7 @@ class EnterpriseUser(db.Model):
 
     FoundationDate = db.Column(db.TIMESTAMP)
     CorporateCapital = db.Column(db.BIGINT)
-    LegalPpersonName = db.Column(db.String(80))
+    LegalPersonName = db.Column(db.String(80))
     RegisterCapital = db.Column(db.BIGINT)
     LoanRateMin = db.Column(db.Float)
     LoanRateMax = db.Column(db.Float)

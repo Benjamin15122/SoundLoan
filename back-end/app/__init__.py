@@ -22,6 +22,7 @@ from app.citi_money_transfer import routes
 from app.alipay_payoff import routes
 from app.contract_analyze import routes
 from app.loan_recommendation import routes
+from app.authentication import routes
 from app.contract_assignment import routes
 from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract, LoanProductComment
 
@@ -53,6 +54,14 @@ user2 = IndividualUser.IndividualUser(
     live_address='NJU', marriage='married', salary='3000',
     vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
     work_year='3', job='whiteCollar', phone_number='11111111112'
+)
+user3 = IndividualUser.IndividualUser(
+    nickname='grignard', password='1211', sex='male',
+    name='mx', birth='1996.02.01', residence_address='Nanjing University',
+    education='bachelor', school='NJU', work_address='NJU',
+    live_address='NJU', marriage='married', salary='3000',
+    vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
+    work_year='3', job='whiteCollar'
 )
 db.session.add_all([user1, user2])
 db.session.commit()

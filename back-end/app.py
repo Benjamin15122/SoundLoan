@@ -5,6 +5,7 @@ from flask_apscheduler import APScheduler
 from flask_restful import Api
 from app.loan_recommendation.routes import *
 from app import app, db
+from flask_caching import Cache
 
 api = Api(app)
 api.add_resource(LoanRecommendation, '/enterprise/recommendation')

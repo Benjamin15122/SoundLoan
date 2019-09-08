@@ -1,4 +1,5 @@
 from flask import jsonify, request
+from app import app
 from sqlalchemy import func, and_
 
 from flask import Response, jsonify
