@@ -49,6 +49,24 @@ def create_individual_user():
         return jsonify({'success': False, 'message': str(e)})
 
 
+def changeUserInfo(user, arg_dict, exclude_dict):
+    def str2Hump(text):
+        arr = filter(None, text.lower().split('_'))
+        res = ''
+        for i in arr:
+            res =  res + i[0].upper() + i[1:]
+        return res
+
+    for a in arg_dict:
+        if a in exclude_dict:
+            continue
+        arg_name = str2Hump(a)
+        # If there is a field in the body that does not exist in IndividualUser, an Exception will be raised
+        getattr(user, arg_name)
+        setattr(user, arg_name, request.form[a])
+
+    db.session.commit()
+
 @app.route("/infoMan/changeIndUser", methods=["POST"])
 def change_individual_user():
     user_id = request.form.get('id', None)
@@ -63,23 +81,8 @@ def change_individual_user():
     if user is None:
         return jsonify({'success': False, 'message': 'Failed to find a qualified user.'})
 
-    def str2Hump(text):
-        arr = filter(None, text.lower().split('_'))
-        res = ''
-        for i in arr:
-            res =  res + i[0].upper() + i[1:]
-        return res
-        
     try:
-        for a in request.form:
-            if a in ['id', 'nickname']:
-                continue
-            arg_name = str2Hump(a)
-            # If there is a field in the body that does not exist in IndividualUser, an Exception will be raised
-            getattr(user, arg_name)
-            setattr(user, arg_name, request.form[a])
-
-        db.session.commit()
+        changeUserInfo(user, request.form, ['id', 'nickname'])
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
 
@@ -136,6 +139,28 @@ def create_enterprise_user():
         })
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
+
+
+@app.route("/infoMan/changeEntUser", methods=["POST"])
+def change_enterprise_user():
+    user_id = request.form.get('id', None)
+    user_name = request.form.get('name', None)
+    if user_id is None and user_name is None:
+        return jsonify({'success': False, 'message': 'Missing param id and name.'})
+
+    if user_id is not None:
+        user = EnterpriseUser.query.filter(EnterpriseUser.Id == user_id).first()
+    else:
+        user = EnterpriseUser.query.filter(EnterpriseUser.Name == user_name).first()
+    if user is None:
+        return jsonify({'success': False, 'message': 'Failed to find a qualified user.'})
+
+    try:
+        changeUserInfo(user, request.form, ['id', 'name'])
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+    return jsonify({'success': True})
 
 
 @app.route("/infoMan/entLogin", methods=["POST"])
