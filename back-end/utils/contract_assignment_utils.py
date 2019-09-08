@@ -10,9 +10,9 @@ def write_contract_to_file(contract: Contract, path):
     with open(path, 'w', encoding='utf-8') as f:
         f.write(contract.Text)
         if contract.IndividualSign is not None:
-            f.write('\n 个人电子签名'+contract.IndividualSign)
+            f.write('\n 个人电子签名: \t'+contract.IndividualSign)
         if contract.EnterpriseSign is not None:
-            f.write('\n 企业电子签名'+contract.EnterpriseSign)
+            f.write('\n 企业电子签名: \t'+contract.EnterpriseSign)
 
 
 def register(user_name):

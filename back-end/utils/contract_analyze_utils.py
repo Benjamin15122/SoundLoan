@@ -30,7 +30,7 @@ def text_splitter(text: str):
     :param data_type: 文字片段的来源，可能是纯文本，可能是从图片中提取出来的
     :return: 返回切分后的文本list
     """
-    text = re.split(r'。|；|;|\?', text)
+    text = re.split(r'\n|。|；|;|\?', text)
     text = list(map(lambda s: s.replace('\n', '').replace(' ',  ''), text))
     text = list(filter(lambda x: x != '', text))
     return text
@@ -79,3 +79,12 @@ def image_to_text(image_base64_data: list):
             text += each.DetectedText
 
     return text
+
+
+def analyze_obj2str(return_obj):
+    result = ''
+    for each in return_obj:
+        result += str(each)+':\n'
+        result += '\t'+return_obj[each][0]+'\n'
+        result += '\t'+return_obj[each][1]+'\n'
+    return result

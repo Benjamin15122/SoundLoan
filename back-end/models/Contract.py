@@ -13,8 +13,8 @@ class Contract(db.Model):
     IndividualName = db.Column(db.String(80), db.ForeignKey('user_individual.Nickname'))
     EnterpriseName = db.Column(db.String(80), db.ForeignKey('user_enterprise.Name'))
     Title = db.Column(db.String(100))
-    Text = db.Column(db.String(2000))
-    Record = db.Column(db.String(2000))
+    Text = db.Column(db.Text)
+    Record = db.Column(db.Text)
 
     # 合同的状态
     # SignState取值为'NoSign, Individual, Enterprise, BothSign, None'

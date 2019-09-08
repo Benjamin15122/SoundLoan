@@ -22,8 +22,16 @@ def contract_analyze():
         fake_advertising = contract_data['fake_advertising']
 
         contract_obj = Contract.query.get(contract_data['contract_id'])
+        if contract_obj is None:
+            return jsonify({
+                'success': False,
+                'message': '数据库中没有对应id的合同',
+                'content': None
+            })
         return_obj = analyze(contract_obj.Text, loan_consistent_with_actual, fake_advertising)
-
+        contract_obj.Record = analyze_obj2str(return_obj)
+        contract_obj.AnalyzeState = 'Yes'
+        db.session.commit()
         return jsonify({
             'success': True,
             'message': '',

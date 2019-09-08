@@ -57,9 +57,9 @@ user2 = IndividualUser.IndividualUser(
 db.session.add_all([user1, user2])
 db.session.commit()
 
-company1 = EnterpriseUser.EnterpriseUser("狼厂", "123", "19960901", 12, "Robin Li", 13, "0.11", "0.35", "北京市中关村", "www.baidu.com", "110", "彦宏好帅好帅的")
-company2 = EnterpriseUser.EnterpriseUser("阿里", "123", "19960901", 13, "Jack Ma", 13, "0.11", "0.35", "杭州某某", "www.alibaba.com", "120", "做福娃，修福报")
-company3 = EnterpriseUser.EnterpriseUser("Dio面包坊", "123", "19960901", 13, "Dio Brando", 13, "0.11", "0.35", "埃及", "www.ningenoyameruzo.com", "120", "你记得自己吃过多少片面包吗")
+company1 = EnterpriseUser.EnterpriseUser("狼厂", "123", "19960901", 12, "Robin Li", 13, "0.09", "0.35", "北京市中关村", "www.baidu.com", "110", "彦宏好帅好帅的")
+company2 = EnterpriseUser.EnterpriseUser("阿里", "123", "19960901", 13, "Jack Ma", 13, "0.14", "0.35", "杭州某某", "www.alibaba.com", "120", "做福娃，修福报")
+company3 = EnterpriseUser.EnterpriseUser("Dio面包坊", "123", "19960901", 13, "Dio Brando", 13, "0.10", "0.35", "埃及", "www.ningenoyameruzo.com", "120", "你记得自己吃过多少片面包吗")
 companies = [company1, company2, company3]
 db.session.add_all([company1, company2, company3])
 db.session.commit()
@@ -110,6 +110,7 @@ contract1 = Contract.Contract(
     LoanRecordId=loan_records[1].Id,
     IndividualName=user1.Nickname,
     EnterpriseName=company3.Name,
+    Title='测试借款合同',
     Text='借款人：%s\n放贷者：%s\n借款金额：100000\n借款利息：0.14\n' % (user1.Nickname, company3.Name),
     SignState='NoSign',
     AnalyzeState='No'
