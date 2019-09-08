@@ -21,7 +21,6 @@ def get_access_refresh_tokens(auth_code):
         'code': auth_code,
         'redirect_uri': "http://47.103.113.144:6006/CitiAuthCodeRedirect"
     }
-
     r = requests.post("https://sandbox.apihub.citi.com/gcb/api/authCode/oauth2/token/hk/gcb",
                       data=payload,
                       headers=headers)

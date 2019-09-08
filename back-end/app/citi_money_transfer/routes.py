@@ -4,7 +4,7 @@ from config import *
 from app import app
 
 
-@app("/citi/moneymovement")
+@app.route("/citi/moneymovement", methods=['POST'])
 def citi_moneymovement():
     try:
         access_token, _ = get_access_refresh_tokens(request.form.get('auth_code'))

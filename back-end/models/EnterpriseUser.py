@@ -24,7 +24,7 @@ class EnterpriseUser(db.Model):
     Contact = db.Column(db.String(256))
     Description = db.Column(db.String(1000))
 
-    CreditScore = db.Column(db.Integer)
+    CreditScore = db.Column(db.Float)
     
     aes = AES.new(extend_to_16(app.config['SECRET_KEY']), AES.MODE_ECB)
 
@@ -52,6 +52,7 @@ class EnterpriseUser(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.Id,
             'name': self.Name,
 
             'foundation_date': self.FoundationDate.strftime('%Y-%m-%d'),

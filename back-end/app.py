@@ -8,7 +8,7 @@ from app import app, db
 from flask_caching import Cache
 
 api = Api(app)
-api.add_resource(LoanRecommendation, '/loan/recommendation')
+api.add_resource(LoanRecommendation, '/enterprise/recommendation')
 
 if __name__ == "__main__":
     scheduler = APScheduler()

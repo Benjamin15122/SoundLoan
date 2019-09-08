@@ -153,10 +153,9 @@ class InterestRule(Rule):
 
 def analyze(text: str,
             loan_consistent_with_actual: bool,
-            fake_advertising: bool,
-            data_type: str):
+            fake_advertising: bool):
 
-    text = text_splitter(text, data_type)
+    text = text_splitter(text)
     rules = (LenderRule(),
              AmountRule(),
              PeriodRule(),
