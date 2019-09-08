@@ -163,6 +163,37 @@ def change_enterprise_user():
     return jsonify({'success': True})
 
 
+@app.route("/infoMan/changePW", methods=["POST"])
+def change_password():
+    user_name = request.form.get('user_name', None)
+    user_type = request.form.get('user_type', None)
+    origin_password = request.form.get('origin_password', None)
+    new_password = request.form.get('new_password', None)
+    if new_password is None or new_password is None or \
+            origin_password is None or new_password is None:
+        return jsonify({
+            'success': False,
+            'message': 'Missing param user_name/user_type/origin_password/new_password.'
+        })
+    
+    if user_type == 'individual':
+        user = IndividualUser.query.filter(IndividualUser.Nickname == user_name).first()
+    elif user_type == 'enterprise':
+        user = EnterpriseUser.query.filter(EnterpriseUser.Name == user_name).first()
+    else:
+        return jsonify({'success': False, 'message': 'Unrecognized user_type.'})
+    
+    if user is None:
+        return jsonify({'success': False, 'message': 'Failed to find a qualified user.'})
+    
+    if not user.verify_password(origin_password):
+        return jsonify({'success': False, 'message': 'Wrong origin_password.'})
+    
+    user.hash_password(new_password)
+    db.session.commit()
+    
+    return jsonify({'success': True})
+
 @app.route("/infoMan/entLogin", methods=["POST"])
 def login_enterprise_user():
     name = request.form.get('name', None)
