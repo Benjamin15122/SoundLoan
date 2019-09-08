@@ -1,4 +1,5 @@
 from flask import jsonify, request
+from app import app
 
 from flask import Response, jsonify
 from app import app, db

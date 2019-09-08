@@ -35,7 +35,7 @@ class IndividualUser(db.Model):
     Job = db.Column(db.Enum('student','whiteCollar','farmer','other'))
 
     IsAuthenticated = db.Column(db.Boolean)
-    PhoneNumber = db.Column(db.Integer)
+    PhoneNumber = db.Column(db.String(11))
     IDCardNumber = db.Column(db.String(18))
     BankCardNumber = db.Column(db.String(19))
 
