@@ -5,7 +5,7 @@ URI_FORMAT = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'
 
 
 class Config(object):
-    HOST = "0.0.0.0"
+    HOST = "127.0.0.1"
     PORT = 5000
 
     SECRET_KEY = "gTzSygPGe^#v6N7W"  # used for password encryption
@@ -21,9 +21,9 @@ class Config(object):
     # MYSQL_DATABASE = 'sound_loan'
     ## TODO: 本地测试时配置自己的mysql参数
     MYSQL_USER = 'root'
-    MYSQL_PASSWD = 'yanfan'
+    MYSQL_PASSWD = 'root'
     MYSQL_HOST = '127.0.0.1'
-    MYSQL_PORT = 3308
+    MYSQL_PORT = 3306
     MYSQL_DATABASE = 'sound_loan'
 
     # example 'mysql+pymysql://mdpmonitor:X7_mJw12m8UW@168.61.2.7:3306/mdpmonitor?charset=utf8'
@@ -71,3 +71,5 @@ class Config(object):
     )
 
     signature_server = 'http://47.103.113.144:6008'
+    # 爬取地址暂定为这个
+    COURT_URL_TEMPLATE = 'https://rmfygg.court.gov.cn/web/rmfyportal/noticeinfo'

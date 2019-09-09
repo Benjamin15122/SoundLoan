@@ -1,4 +1,5 @@
 from flask import jsonify, request
+from app import app
 from sqlalchemy import func, and_
 
 from flask import Response, jsonify
@@ -29,7 +30,7 @@ def query_individual_user():
 
 
 @app.route("/infoMan/createIndUserComplete", methods=["POST"])
-@app.route("/infoMan/createIndUserSimplified", methods=["POST"])
+@app.route("/infoMan/newCreateIndUser", methods=["POST"])
 def create_individual_user():
     try:
         params = request.form.to_dict()
@@ -220,6 +221,20 @@ def login_enterprise_user():
         return jsonify({'success': False, 'message': 'Wrong password！'})
 
 
+@app.route("/infoMan/allIndUsers", methods=["GET"])
+def all_individual_users():
+    users = IndividualUser.query.all()
+    result = [u.to_dict() for u in users]
+    return jsonify({'success': True, 'content': result})
+
+
+@app.route("/infoMan/allEntUsers", methods=["GET"])
+def all_enterprise_users():
+    users = EnterpriseUser.query.all()
+    result = [u.to_dict() for u in users]
+    return jsonify({'success': True, 'content': result})
+
+
 @app.route("/infoMan/allLoanProductComment", methods=["GET"])
 def all_loan_product_comment():
     comments = LoanProductComment.query.all()
@@ -251,11 +266,12 @@ def update_ent_score(ent_name):
         sub = LoanProduct.query.filter(LoanProduct.EnterpriseName == ent_name).subquery()
         commentList = db.session.query(sub, LoanProductComment).join(LoanProductComment, LoanProductComment.ProductId == sub.c.Id).subquery()
         record = db.session.query(func.avg(commentList.c.Score).label("mean_score")).first()
-        new_score = float(str(record.mean_score))
-        ent_user = EnterpriseUser.query.filter(EnterpriseUser.Name==ent_name).first()
-        ent_user.CreditScore = new_score
-        
-        db.session.commit()
+        if record.mean_score is not None:
+            new_score = float(str(record.mean_score))
+            ent_user = EnterpriseUser.query.filter(EnterpriseUser.Name==ent_name).first()
+            ent_user.CreditScore = new_score
+            
+            db.session.commit()
     except Exception as e:
         raise e 
 
@@ -309,7 +325,7 @@ def ent_score():
     score = db.session.query(func.avg(commentList.c.Score).label("mean_score")).first()
     result = {'score': float(str(score.mean_score))}
     return jsonify({'success': True, 'content': result})
-    
+
 
 @app.route("/infoMan/allLoan", methods=["GET"])
 def all_loan():
@@ -317,6 +333,20 @@ def all_loan():
     result = [r.to_dict() for r in loan_records]
     return jsonify({'success': True, 'content': result})
 
+
+@app.route("/infoMan/entLoanApply", methods=["GET"])
+def ent_loan_apply():
+    name = request.args.get('company_name', None)
+    
+    user = EnterpriseUser.query.filter(EnterpriseUser.Name == name).first()
+    if not user:
+        return jsonify({'success': False, 'message': 'No such company found.'})
+    userId = user.Id
+
+    loans = LoanRecord.query.filter(LoanRecord.LenderId == userId).all()
+    result = [l.to_dict() for l in loans]
+
+    return jsonify({'success': True, 'content': result})
 
 @app.route("/infoMan/getMyApply", methods=["GET"])
 def user_applied_loan():
@@ -408,3 +438,13 @@ def loan_apply_pass():
     db.session.commit()
     
     return jsonify({'success': True})
+
+
+@app.route("/infoMan/searchEnt", methods=["GET"])
+def search_enterprise():
+    company_name = request.args.get('company_name', None)
+    words = ['%{}%'.format(w) for w in company_name.split(' ')]
+    rule = and_(*[EnterpriseUser.Name.like(w) for w in words])
+    ents = EnterpriseUser.query.filter(rule).all()
+    result = [e.to_dict() for e in ents]
+    return jsonify({'success': True, 'content': result})
