@@ -1,0 +1,11 @@
+.container {
+  min-height: 90vh;
+}
+
+.contractFilterDiv {
+  display: inline;
+}
+
+.contractSelector {
+  min-width: 20px;
+}

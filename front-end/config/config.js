@@ -2,6 +2,7 @@ import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 
 import slash from 'slash2';
 import webpackPlugin from './plugin.config';
+import { Icon } from 'antd';
 const { pwa, primaryColor } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
@@ -106,31 +107,32 @@ export default {
       routes: [
         {
           name: '个人信息',
-          icon: 'user',
-          path: '/account',
+          icon: 'profile',
+          path: '/personalManagement',
           routes: [
             {
               name: '个人空间',
               path: 'center',
-              component: './account/center',
+              icon: 'user',
+              component: './personalManagement/center',
             },
             {
               name: '我的贷款',
               path: 'loans',
-              component: './account/loans',
+              icon: 'pay-circle',
+              component: './personalManagement/loans',
             },
             {
               name: '我的合同',
               path: 'contracts',
-              component: './account/contracts',
+              icon: 'audit',
+              component: './personalManagement/contracts',
             },
             {
               name: '账户设置',
               path: 'settings',
-              component: './account/settings',
-            },
-            {
-              component: './404',
+              icon: 'setting',
+              component: './personalManagement/settings',
             },
           ],
         },
@@ -147,12 +149,12 @@ export default {
             {
               name: '企业详情',
               path: 'details',
-              component: './entInfo/details'
+              component: './entInfo/details',
             },
             {
               component: './404',
-            }
-          ]
+            },
+          ],
         },
         {
           path: '/',
@@ -211,13 +213,12 @@ export default {
     basePath: '/',
   },
   chainWebpack: webpackPlugin,
-  /*
+
   proxy: {
-    '/server/api/': {
-      target: 'https://preview.pro.ant.design/',
+    '/api/': {
+      target: 'http://47.103.113.144:7777/',
       changeOrigin: true,
-      pathRewrite: { '^/server': '' },
+      pathRewrite: { '^/api': '' },
     },
   },
-  */
 };
