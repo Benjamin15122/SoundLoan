@@ -6,14 +6,26 @@ from app import app, db
 from models.IndividualUser import IndividualUser
 from models.LoanRecord import LoanRecord
 
+
+def update_ind_user_credit_score(user_id, score):
+    user = IndividualUser.query.filter(IndividualUser.Id==user_id).first()
+    user.CreditScore = score
+    db.session.commit()
+
+
+def all_individual_users():
+    users = IndividualUser.query.all()
+    result = [u.to_dict() for u in users]
+    return result
+
 def update_ind_user_credit_all():
     for u in IndividualUser.query.all():
         update_ind_user_credit(u.Id)
 
 
 def update_ind_user_credit(user_id):
-    # user_loan = db.session.query(IndividualUser, LoanRecord).join(IndividualUser.Id == LoanRecord.DebtorId).subquery()
-    # record = db.session.query(func.count(commentList.c.Score).label("mean_score")).first()
+
+    # update dynamical user info related to computation of user credit score
 
     arg_dict = {}
     user_loan = db.session.query(LoanRecord).filter(LoanRecord.DebtorId==user_id).subquery()
