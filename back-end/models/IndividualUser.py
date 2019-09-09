@@ -43,12 +43,10 @@ class IndividualUser(db.Model):
     ApplyPassTime = db.Column(db.Integer)
     PayTime = db.Column(db.Integer)
     OverdueTime = db.Column(db.Integer)
-    SevereOverdueTime = db.Column(db.Integer)
-    OtherDebtAmount = db.Column(db.Integer)
     RepayCapitalAmount = db.Column(db.Integer)
     UnrepayCapitalAmount = db.Column(db.Integer)
     OverdueCapitalAmount = db.Column(db.Integer)
-    RepayIntersetAmount = db.Column(db.Integer)
+    RepayInteresetAmount = db.Column(db.Integer)
     UnrepayInterestAmount = db.Column(db.Integer)
     OverdueInterestAmount = db.Column(db.Integer)
     CreditScore = db.Column(db.Integer)
@@ -127,12 +125,12 @@ class IndividualUser(db.Model):
             'apply_pass_time': self.ApplyPassTime,
             'pay_time': self.PayTime,
             'overdue_time': self.OverdueTime,
-            'severe_overdue_time': self.SevereOverdueTime,
-            'other_debt_amount': self.OtherDebtAmount,
             'repay_capital_amount': self.RepayCapitalAmount,
             'unrepay_capital_amount': self.UnrepayCapitalAmount,
-            'repay_interset_amount': self.RepayIntersetAmount,
+            'overdue_capital_amount': self.OverdueCapitalAmount,
+            'repay_interset_amount': self.RepayInteresetAmount,
             'unrepay_interest_amount': self.UnrepayInterestAmount,
+            'overdue_interest_amount': self.OverdueInterestAmount,
             'credit_score': self.CreditScore
         }
 
