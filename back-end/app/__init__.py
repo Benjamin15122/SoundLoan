@@ -44,7 +44,7 @@ user1 = IndividualUser.IndividualUser(
     nickname='Lucy', password='123', sex='female',
     name='Lucy', birth='1996.01.01', residence_address='Nanjing University',
     education='bachelor', school='NJU', work_address='NJU',
-    live_address='NJU', marriage='married', salary='3000',
+    live_address='NJU', marriage='married', salary='20005000元',
     vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
     work_year='3', job='whiteCollar', phone_number='11111111111'
 )
@@ -52,7 +52,7 @@ user2 = IndividualUser.IndividualUser(
     nickname='Mike', password='123', sex='male',
     name='Mike', birth='1996.02.01', residence_address='Nanjing University',
     education='bachelor', school='NJU', work_address='NJU',
-    live_address='NJU', marriage='married', salary='3000',
+    live_address='NJU', marriage='married', salary='20005000元',
     vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
     work_year='3', job='whiteCollar', phone_number='11111111112'
 )
@@ -60,7 +60,7 @@ user3 = IndividualUser.IndividualUser(
     nickname='grignard', password='1211', sex='male',
     name='mx', birth='1996.02.01', residence_address='Nanjing University',
     education='bachelor', school='NJU', work_address='NJU',
-    live_address='NJU', marriage='married', salary='3000',
+    live_address='NJU', marriage='married', salary='20005000元',
     vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
     work_year='3', job='whiteCollar', phone_number='11111111113'
 )

@@ -10,3 +10,7 @@ def update_credit_scores():
     credit_scores = model.predict(users)
     for user, credit_score in zip(users, credit_scores):
         update_ind_user_credit_score(user['id'], credit_score)
+
+
+if __name__ == '__main__':
+    update_credit_scores()
