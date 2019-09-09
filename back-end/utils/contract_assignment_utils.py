@@ -39,6 +39,15 @@ def get_signature(user_name, contract):
     return data['content']
 
 
+def get_time_signature(contract):
+    payload = {
+        'hash_data': get_md5_abstract(contract)
+    }
+    r = requests.post(Config.signature_server+'/timeSignatureGenerate', data=payload)
+    data = json.loads(str(r.text))
+    return data['content']
+
+
 def verify_signature(user_name, contract, signature):
     payload = {
         'user_name': user_name,

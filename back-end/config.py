@@ -70,7 +70,6 @@ class Config(object):
         return_url=redirect_url,  # 同步支付通知url,在这个页面可以展示给用户看，只有付款成功后才会跳转
     )
 
-    signature_server = 'http://127.0.0.1:6008'
+    signature_server = 'http://47.103.113.144:6008'
     # 爬取地址暂定为这个
     COURT_URL_TEMPLATE = 'https://rmfygg.court.gov.cn/web/rmfyportal/noticeinfo'
-

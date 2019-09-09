@@ -24,8 +24,10 @@ class Contract(db.Model):
     AnalyzeState = db.Column(db.Enum('Yes', 'No'))
 
     # 用户的数字签名，如果合同是平台签订的话
-    IndividualSign = db.Column(db.String(2000))
-    EnterpriseSign = db.Column(db.String(2000))
+    IndividualSign = db.Column(db.Text)
+    EnterpriseSign = db.Column(db.Text)
+
+    TimeSignature = db.Column(db.Text)
 
     def to_dict(self):
         return {
