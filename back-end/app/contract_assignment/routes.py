@@ -185,6 +185,9 @@ def sign_contract():
                     'content': None
                 })
         contract = Contract.query.get(contract_id)
+        if contract.TimeSignature is None:
+            contract.TimeSignature = get_time_signature(contract.Text)
+
         signature = get_signature(user_name, contract.Text)
         if user_type == 'individual':
             contract.IndividualSign = signature
