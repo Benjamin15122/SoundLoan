@@ -5,3 +5,9 @@
 .avatir {
   height: 150px;
 }
+
+.editSwitch {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}

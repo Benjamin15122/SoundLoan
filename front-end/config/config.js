@@ -107,36 +107,6 @@ export default {
       routes: [
         {
           name: '个人信息',
-          icon: 'user',
-          path: '/account',
-          routes: [
-            {
-              name: '个人空间',
-              path: 'center',
-              component: './account/center',
-            },
-            {
-              name: '我的贷款',
-              path: 'loans',
-              component: './account/loans',
-            },
-            {
-              name: '我的合同',
-              path: 'contracts',
-              component: './account/contracts',
-            },
-            {
-              name: '账户设置',
-              path: 'settings',
-              component: './account/settings',
-            },
-            {
-              component: './404',
-            },
-          ],
-        },
-        {
-          name: '个人信息',
           icon: 'profile',
           path: '/personalManagement',
           routes: [
@@ -238,13 +208,12 @@ export default {
     basePath: '/',
   },
   chainWebpack: webpackPlugin,
-  /*
+
   proxy: {
-    '/server/api/': {
-      target: 'https://preview.pro.ant.design/',
+    '/api/': {
+      target: 'http://47.103.113.144:7777/',
       changeOrigin: true,
-      pathRewrite: { '^/server': '' },
+      pathRewrite: { '^/api': '' },
     },
   },
-  */
 };
