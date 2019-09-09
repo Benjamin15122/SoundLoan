@@ -24,7 +24,8 @@ from app.contract_analyze import routes
 from app.loan_recommendation import routes
 from app.authentication import routes
 from app.contract_assignment import routes
-from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract, LoanProductComment
+from news_crawl import routes
+from models import IndividualUser, EnterpriseUser, LoanProduct, LoanRecord, Contract, LoanProductComment, EnterpriseNews
 
 #db.create_all()
 

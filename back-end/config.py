@@ -5,7 +5,7 @@ URI_FORMAT = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'
 
 
 class Config(object):
-    HOST = "0.0.0.0"
+    HOST = "127.0.0.1"
     PORT = 5000
 
     SECRET_KEY = "gTzSygPGe^#v6N7W"  # used for password encryption
@@ -71,3 +71,6 @@ class Config(object):
     )
 
     signature_server = 'http://127.0.0.1:6008'
+    # 爬取地址暂定为这个
+    COURT_URL_TEMPLATE = 'https://rmfygg.court.gov.cn/web/rmfyportal/noticeinfo'
+
