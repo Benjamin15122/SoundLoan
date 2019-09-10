@@ -42,7 +42,7 @@ db.session.commit()
 
 user1 = IndividualUser.IndividualUser(
     nickname='Lucy', password='123', sex='female',
-    name='Lucy', birth='1996.01.01', residence_address='Nanjing University',
+    name='Lucy', birth='1996.01.01', residence_address='重庆:重庆市',
     education='bachelor', school='NJU', work_address='NJU',
     live_address='NJU', marriage='married', salary='20005000元',
     vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
@@ -50,7 +50,7 @@ user1 = IndividualUser.IndividualUser(
 )
 user2 = IndividualUser.IndividualUser(
     nickname='Mike', password='123', sex='male',
-    name='Mike', birth='1996.02.01', residence_address='Nanjing University',
+    name='Mike', birth='1996.02.01', residence_address='江苏:南京市',
     education='bachelor', school='NJU', work_address='NJU',
     live_address='NJU', marriage='married', salary='20005000元',
     vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
@@ -58,7 +58,7 @@ user2 = IndividualUser.IndividualUser(
 )
 user3 = IndividualUser.IndividualUser(
     nickname='grignard', password='1211', sex='male',
-    name='mx', birth='1996.02.01', residence_address='Nanjing University',
+    name='mx', birth='1996.02.01', residence_address='上海:上海市',
     education='bachelor', school='NJU', work_address='NJU',
     live_address='NJU', marriage='married', salary='20005000元',
     vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
