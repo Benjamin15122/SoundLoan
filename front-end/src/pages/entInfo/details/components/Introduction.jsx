@@ -32,7 +32,7 @@ export default class Introduction extends Component {
   };
 
   render() {
-    const {logoUrl, descriptions} = this.props;
+    const { descriptions } = this.props;
     return <>
       <Row>
         <Col span={24}>

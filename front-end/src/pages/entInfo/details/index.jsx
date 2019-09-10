@@ -11,10 +11,6 @@ const TabPane = Tabs.TabPane;
 
 class EntInfoDetails extends Component {
 
-  static defaultProps = {
-    company_name: '要查看的企业名称'
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +21,7 @@ class EntInfoDetails extends Component {
   }
 
   componentDidMount() {
-    const { company_name } = this.props;
+    const { company_name } = this.props.location.query;
     (async () => {
       const entUserInfo = await getEntUserInfo(company_name);
       this.setState({ entUserInfo });

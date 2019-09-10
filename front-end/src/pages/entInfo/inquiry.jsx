@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Icon, Input, Table } from 'antd';
 import { getRecommendedEnterprises, searchEnterprises } from '@/services/entInfo';
 import { connect } from 'dva';
-
+import Link from 'umi/link';
 
 @connect(({ user }) => ({ user }))
 class EntInfoInquiry extends Component {
@@ -25,8 +25,16 @@ class EntInfoInquiry extends Component {
     this.setState({ loading: false, recommendedResult: results });
   }
 
+  static gotoDetails = (company_name) => {
+
+  };
+
   static columns = [
-    { title: '企业名称', dataIndex: 'name' },
+    {
+      title: '企业名称',
+      dataIndex: 'name',
+      render: (text) => <Link to={'/entInfo/details?company_name=' + text}>{text}</Link>,
+    },
     { title: '用户评分', dataIndex: 'credit_score' },
     { title: '企业地址', dataIndex: 'address' },
     { title: '企业官网', dataIndex: 'website' },

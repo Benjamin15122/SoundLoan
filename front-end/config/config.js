@@ -137,24 +137,15 @@ export default {
           ],
         },
         {
-          name: '企业信息',
+          name: '企业查询',
           icon: 'database',
-          path: '/entInfo',
-          routes: [
-            {
-              name: '企业查询',
-              path: 'inquiry',
-              component: './entInfo/inquiry'
-            },
-            {
-              name: '企业详情',
-              path: 'details',
-              component: './entInfo/details',
-            },
-            {
-              component: './404',
-            },
-          ],
+          path: '/entInfo/inquiry',
+          component: './entInfo/inquiry'
+        },
+        {
+          path: '/entInfo/details',
+          hideInMenu: true,
+          component: './entInfo/details',
         },
         {
           path: '/requireLoan',
@@ -162,12 +153,12 @@ export default {
           icon: 'money-collect',
           component: './requireLoan/loanInfo',
         },
-        {
-          path: '/',
-          name: 'welcome',
-          icon: 'smile',
-          component: './Welcome',
-        },
+        // {
+        //   path: '/',
+        //   name: 'welcome',
+        //   icon: 'smile',
+        //   component: './Welcome',
+        // },
         {
           component: './404',
         },
