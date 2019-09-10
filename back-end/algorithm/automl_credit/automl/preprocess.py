@@ -1,8 +1,8 @@
-from automl.tools import timeit, log
+from algorithm.automl_credit.automl.tools import timeit, log
 import datetime
 from pandas import DataFrame
 from sklearn.preprocessing import LabelEncoder
-from util.constant import *
+from algorithm.automl_credit.util.constant import *
 
 @timeit
 def clean_df(df, info):
@@ -10,7 +10,7 @@ def clean_df(df, info):
 
 
 @timeit
-def fill_na(df, info):
+def fill_na(df, info, train):
     for c in [c for c in df if info[c][TYPE] == NUM_TYPE]:
         df[c].fillna(-1, inplace=True)
 
@@ -26,7 +26,7 @@ def fill_na(df, info):
 
 
 @timeit
-def multi_cat_split(df: DataFrame, info):
+def multi_cat_split(df: DataFrame, info, train):
     # 对multi category进行拆分，搜索分隔符(',' ':'等)，拆分为cat类型添加到info中
     multi_cat_cols = [c for c in df if info[c][TYPE] == MULTI_CAT_TYPE]
     for c in multi_cat_cols:
@@ -42,7 +42,7 @@ def multi_cat_split(df: DataFrame, info):
 
 
 @timeit
-def time_translate(df: DataFrame, info):
+def time_translate(df: DataFrame, info, train):
     time_cols = [c for c in df if info[c][TYPE] == TIME_TYPE]
     for time_col in time_cols:
         df[time_col] = df[time_col].apply(lambda x: datetime.datetime.fromtimestamp(x / 1000))
@@ -50,8 +50,21 @@ def time_translate(df: DataFrame, info):
     return df
 
 
+def directly_encode(df, info):
+    cat_cols = [c for c in df if info[c][TYPE] == CAT_TYPE]
+    for cat in cat_cols:
+        if ENCODER in info[cat]:
+            enc = info[cat][ENCODER]
+            df[cat] = enc.transform(df[cat])
+        else:
+            df.drop(cat, axis=1, inplace=True)
+    return df
+
+
 @timeit
-def cat_encode(df: DataFrame, info):
+def cat_encode(df: DataFrame, info, train):
+    if not train:
+        return directly_encode(df, info)
     # 对category类型进行编码
     cat_cols = [c for c in df if info[c][TYPE] == CAT_TYPE]
     threshold = df.shape[0] * CATEGORY_NUM_THRESHOLD
@@ -68,10 +81,10 @@ def cat_encode(df: DataFrame, info):
 
 
 @timeit
-def pipeline(df, info):
-    df = fill_na(df, info)
-    df = time_translate(df, info)
-    df = multi_cat_split(df, info)
-    df = fill_na(df, info)
-    df = cat_encode(df, info)
+def pipeline(df, info, train=True):
+    df = fill_na(df, info, train)
+    df = time_translate(df, info, train)
+    df = multi_cat_split(df, info, train)
+    df = fill_na(df, info, train)
+    df = cat_encode(df, info, train)
     return df

@@ -10,7 +10,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import KFold, train_test_split
 
 
-from automl.tools import log, timeit
+from algorithm.automl_credit.automl.tools import log, timeit
 
 
 def get_random_seed():
