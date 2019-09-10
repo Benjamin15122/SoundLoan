@@ -21,9 +21,9 @@ class Config(object):
     # MYSQL_DATABASE = 'sound_loan'
     ## TODO: 本地测试时配置自己的mysql参数
     MYSQL_USER = 'root'
-    MYSQL_PASSWD = 'root'
+    MYSQL_PASSWD = 'yanfan'
     MYSQL_HOST = '127.0.0.1'
-    MYSQL_PORT = 3306
+    MYSQL_PORT = 3308
     MYSQL_DATABASE = 'sound_loan'
 
     # example 'mysql+pymysql://mdpmonitor:X7_mJw12m8UW@168.61.2.7:3306/mdpmonitor?charset=utf8'
@@ -49,12 +49,12 @@ class Config(object):
             'trigger': 'interval',  # interval表示循环任务
             'seconds': 24*60*60,
         },
-        {
-            'id': 'Job1: Update_recommendation_model',
-            'func': 'utils.credit_score_utils:update_credit_scores',
-            'trigger': 'interval',  # interval表示循环任务
-            'seconds': 24 * 60 * 60,
-        }
+        # {
+        #     'id': 'Job1: Update_recommendation_model',
+        #     'func': 'utils.credit_score_utils:update_credit_scores',
+        #     'trigger': 'interval',  # interval表示循环任务
+        #     'seconds': 24 * 60 * 60,
+        # }
     ]
 
     # 支付宝配置
