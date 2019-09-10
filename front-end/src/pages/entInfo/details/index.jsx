@@ -40,7 +40,7 @@ class EntInfoDetails extends Component {
     const { entUserInfo, news, comments } = this.state;
 
     return <>
-      <PageHeaderWrapper>
+      <PageHeaderWrapper title='企业信息详情'>
         <Card>
           <Introduction descriptions={entUserInfo} />
         </Card>
