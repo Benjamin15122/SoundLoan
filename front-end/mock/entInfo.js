@@ -69,7 +69,21 @@ export default {
         name: '大企业',
         address: '江苏省南京市',
         website: 'www.bigEnterprise.com',
-        contact: '13876876768'
+        contact: '13876876768',
+        credit_score: 3,
+      }
+    ]
+  },
+  'GET /infoMan/searchEnt': {
+    success: true,
+    message: '',
+    content: [
+      {
+        name: '搜索到的企业',
+        address: '江苏省南京市',
+        website: 'www.bigEnterprise.com',
+        contact: '13876876768',
+        credit_score: 3,
       }
     ]
   }
