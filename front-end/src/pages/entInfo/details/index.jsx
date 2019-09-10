@@ -3,10 +3,11 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Card, List, Tabs } from 'antd';
 
 import Introduction from './components/Introduction';
-import { getComments, getEntUserInfo, getNews, getChanges } from '@/services/entInfo';
+import { getComments, getEntUserInfo, getNews, getChanges, getRelations } from '@/services/entInfo';
 import NewsItem from '@/pages/entInfo/details/components/NewsItem';
 import CommentItem from '@/pages/entInfo/details/components/CommentItem';
 import ChangeItem from '@/pages/entInfo/details/components/ChangeItem';
+import RelationItem from '@/pages/entInfo/details/components/RelationItem';
 
 const TabPane = Tabs.TabPane;
 
@@ -19,6 +20,7 @@ class EntInfoDetails extends Component {
       news: [],
       comments: [],
       changes: [],
+      relations: [],
     }
   }
 
@@ -40,10 +42,14 @@ class EntInfoDetails extends Component {
       const changes = await getChanges(company_name);
       this.setState({ changes });
     })();
+    (async () => {
+      const relations = await getRelations(company_name);
+      this.setState({ relations });
+    })();
   }
 
   render() {
-    const { entUserInfo, news, comments, changes } = this.state;
+    const { entUserInfo, news, comments, changes, relations } = this.state;
 
     return <>
       <PageHeaderWrapper title='企业信息详情'>
@@ -68,7 +74,14 @@ class EntInfoDetails extends Component {
                   </List.Item>)}
               </List>
             </TabPane>
-            <TabPane key='relation' tab='关联关系'/>
+            <TabPane key='relation' tab='关联关系'>
+              <List>
+                {relations.map((relationContent, index) =>
+                  <List.Item key={'r' + index}>
+                    <RelationItem {...relationContent}/>
+                  </List.Item>)}
+              </List>
+            </TabPane>
             <TabPane key='comments' tab='用户评价'>
               <List>
                 {comments.map((commentContent, index) =>

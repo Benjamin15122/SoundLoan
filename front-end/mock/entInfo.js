@@ -136,5 +136,14 @@ export default {
         content_after: '现在的值',
       }
     ]
+  },
+  'GET /authen/getEnterpriseRelation': {
+    content: [
+      { 'name': '关联主体的名字',
+        'label': '关联主体的标签',
+        'properties': '关系标签，如法人，参股，监事',
+        'type': '关系类型',
+      }
+    ]
   }
 }

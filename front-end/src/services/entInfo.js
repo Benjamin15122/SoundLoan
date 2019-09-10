@@ -30,3 +30,8 @@ export const getChanges = async (ent_name) => {
   const res = await request.get('/authen/getEnterpriseChange', { params: { ent_name }});
   return res['content'];
 };
+
+export const getRelations = async (ent_name) => {
+  const res = await request.get('/authen/getEnterpriseRelation', { params: { ent_name }});
+  return res['content'];
+};
