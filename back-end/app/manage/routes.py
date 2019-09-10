@@ -49,15 +49,15 @@ def create_individual_user():
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
 
-
-def changeUserInfo(user, arg_dict, exclude_dict):
-    def str2Hump(text):
+def str2Hump(text):
         arr = filter(None, text.lower().split('_'))
         res = ''
         for i in arr:
             res =  res + i[0].upper() + i[1:]
         return res
 
+def changeUserInfo(user, arg_dict, exclude_dict):
+    
     for a in arg_dict:
         if a in exclude_dict:
             continue
@@ -147,6 +147,50 @@ def create_enterprise_user():
             'success': True,
             'content': {
                 'id': new_user.Id
+            }
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
+@app.route("/infoMan/createLoanRecord", methods=["POST"])
+def create_loan_record():
+    try:
+        params = request.form.to_dict()
+        args = {}
+        for a in params:
+            args[str2Hump(a)] = params[a]
+        new_record = LoanRecord(**args)
+
+        db.session.add(new_record)
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'content': {
+                'id': new_record.Id
+            }
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
+@app.route("/infoMan/createLoanProduct", methods=["POST"])
+def create_loan_product():
+    try:
+        params = request.form.to_dict()
+        args = {}
+        for a in params:
+            args[str2Hump(a)] = params[a]
+        new_product = LoanProduct(**args)
+
+        db.session.add(new_product)
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'content': {
+                'id': new_product.Id
             }
         })
     except Exception as e:

@@ -64,7 +64,7 @@ user3 = IndividualUser.IndividualUser(
     vehicle_property='300000', house_property='0', vehicle_loan='0', house_loan='0',
     work_year='3', job='whiteCollar', phone_number='11111111113'
 )
-db.session.add_all([user1, user2])
+db.session.add_all([user1, user2, user3])
 db.session.commit()
 
 company1 = EnterpriseUser.EnterpriseUser("狼厂", "123", "19960901", 12, "Robin Li", 13, "0.09", "0.35", "北京市中关村", "www.baidu.com", "110", "彦宏好帅好帅的")
