@@ -63,7 +63,7 @@ def update_ind_user_credit(user_id):
     arg_dict['UnrepayInterestAmount'] = 0 if UnrepayInterestAmount is None else int(float(str(UnrepayInterestAmount)))
 
     RepayInterestAmount = db.session.query(
-        func.sum(user_loan.c.LoanMoney * user_loan.c.Rate * (time.time()-user_loan.c.StartDateTimestamp)/(3600*24*365)).label("sum")
+        func.sum(user_loan.c.LoanMoney * user_loan.c.Rate * (user_loan.c.EndDateTimestamp-user_loan.c.StartDateTimestamp)/(3600*24*365)).label("sum")
     ).filter(
         user_loan.c.RepayStatus.in_(['done'])
     ).first().sum
