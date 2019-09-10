@@ -22,7 +22,6 @@ class EntInfoInquiry extends Component {
     const asyncRes = getRecommendedEnterprises(this.props.user.currentUser.nickname);
     this.setState({ loading: true });
     const results = await asyncRes;
-    console.log(results);
     this.setState({ loading: false, recommendedResult: results });
   }
 

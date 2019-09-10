@@ -3,7 +3,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Card, List, Tabs } from 'antd';
 
 import Introduction from './components/Introduction';
-import { getComments, getNews } from '@/services/entInfo';
+import { getComments, getEntUserInfo, getNews } from '@/services/entInfo';
 import NewsItem from '@/pages/entInfo/details/components/NewsItem';
 import CommentItem from '@/pages/entInfo/details/components/CommentItem';
 
@@ -18,6 +18,7 @@ class EntInfoDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      entUserInfo: {},
       news: [],
       comments: [],
     }
@@ -25,6 +26,10 @@ class EntInfoDetails extends Component {
 
   componentDidMount() {
     const { company_name } = this.props;
+    (async () => {
+      const entUserInfo = await getEntUserInfo(company_name);
+      this.setState({ entUserInfo });
+    })();
     (async () => {
       const news = await getNews(company_name);
       this.setState({ news });
@@ -36,21 +41,20 @@ class EntInfoDetails extends Component {
   }
 
   render() {
-    const { news, comments } = this.state;
+    const { entUserInfo, news, comments } = this.state;
 
     return <>
       <PageHeaderWrapper>
         <Card>
-          <Introduction />
+          <Introduction descriptions={entUserInfo} />
         </Card>
         <Card>
           <Tabs>
             <TabPane key='news' tab='企业新闻'>
               <List>
                 {news.map(({ news_title, news_link, distribution_date }, index) =>
-                  <List.Item>
-                    <NewsItem key={'' + index}
-                              title={news_title} link={news_link} date={distribution_date}/>
+                  <List.Item key={'n' + index}>
+                    <NewsItem title={news_title} link={news_link} date={distribution_date}/>
                   </List.Item>)}
               </List>
             </TabPane>
@@ -59,8 +63,8 @@ class EntInfoDetails extends Component {
             <TabPane key='comments' tab='用户评价'>
               <List>
                 {comments.map((commentContent, index) =>
-                  <List.Item>
-                    <CommentItem key={'' + index} {...commentContent}/>
+                  <List.Item key={'c' + index}>
+                    <CommentItem {...commentContent}/>
                   </List.Item>)}
               </List>
             </TabPane>

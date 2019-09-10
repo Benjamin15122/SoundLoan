@@ -112,5 +112,18 @@ export default {
       }
     ],
     'success': true
+  },
+  'GET /infoMan/entUserInfo': {
+    content: {
+      'name': '某某企业',
+      'foundation_date': '某年某月某日',
+      'corporate_capital': '很多',
+      'register_capital': '大量',
+      'legal_person_name': '某人',
+      'contact': '150xxxx9999',
+      'website': 'www.mm.com',
+      'address': '某省某市某某区',
+      'description': '企业介绍...',
+    }
   }
 }
