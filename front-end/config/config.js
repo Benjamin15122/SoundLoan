@@ -152,10 +152,10 @@ export default {
           ],
         },
         {
-          path: '/',
-          name: 'welcome',
-          icon: 'smile',
-          component: './Welcome',
+          path: '/contractDetect',
+          name: '合同检测',
+          icon: 'audit',
+          component: './contractDetect',
         },
         {
           component: './404',

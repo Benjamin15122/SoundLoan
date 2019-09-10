@@ -1,0 +1,29 @@
+.container {
+}
+
+.title {
+  text-align: center;
+  height: 80px;
+  line-height: 60px;
+  font-size: 30px;
+}
+
+.dropzone {
+  border-style: dashed;
+  border-radius: 15px;
+  min-height: 200px;
+  position: relative;
+}
+
+.uploadIcon {
+  width: 90px;
+  height: 60px;
+
+  background-image: url('@/assets/upload.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  position: absolute;
+  left: calc(50% - 45px);
+  top: calc(50% - 30px);
+}

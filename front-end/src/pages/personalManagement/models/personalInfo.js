@@ -17,15 +17,9 @@ export default {
     },
 
     *updatePersonalInfo({ id, property, value }, { call, put }) {
-      let body = {};
-      body['id'] = id;
-      body[property] = value;
-
-      const response = yield call(request, `/api/infoMan/changeIndUser`, {
-        headers: {
-          'Content-type': 'application/json,charset=utf-8',
-        },
-        body: JSON.stringify(body),
+      const response = yield call(request.post, `/api/infoMan/changeIndUser`, {
+        data: { id: 1, name: 'haha' },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       debugger;
