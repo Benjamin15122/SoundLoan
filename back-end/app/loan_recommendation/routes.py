@@ -22,8 +22,8 @@ class LoanRecommendation(Resource):
         try:
             # user_data = json.loads(request.get_data(), strict=False)
             user_data = {
-                'user_name': request.headers.get('user_name'),
-                'num_max': int(request.headers.get('num_max'))
+                'user_name': request.args.get('user_name'),
+                'num_max': int(request.args.get('num_max'))
             }
             if LoanRecommendation.recommend_model is None:
                 init_model()

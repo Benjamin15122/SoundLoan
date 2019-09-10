@@ -128,7 +128,7 @@ class IndividualUser(db.Model):
             'repay_capital_amount': self.RepayCapitalAmount,
             'unrepay_capital_amount': self.UnrepayCapitalAmount,
             'overdue_capital_amount': self.OverdueCapitalAmount,
-            'repay_interset_amount': self.RepayInteresetAmount,
+            'repay_interest_amount': self.RepayInteresetAmount,
             'unrepay_interest_amount': self.UnrepayInterestAmount,
             'overdue_interest_amount': self.OverdueInterestAmount,
             'credit_score': self.CreditScore

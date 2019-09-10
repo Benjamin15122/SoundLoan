@@ -1,9 +1,10 @@
 import copy
-from automl.tools import timeit, log
-from automl.preprocess import pipeline as pp_pipeline
-from automl.feature_engineering import pipeline as fe_pipeline
-from automl.hyper_train import train, predict
-from util.constant import TARGET
+import pickle
+from tools import timeit, log
+from preprocess import pipeline as pp_pipeline
+from feature_engineering import pipeline as fe_pipeline
+from hyper_train import train, predict
+from constant import TARGET
 
 
 class Model:
@@ -28,12 +29,20 @@ class Model:
             preds = predict(self.x, self.info)
             log(preds)
         else:
+            x_test = pp_pipeline(x_test, self.info, train=False)
+            x_test = fe_pipeline(x_test, self.info)
             return predict(x_test, self.info)
 
     @timeit
     def save(self):
-        self.info["model"].save_model("lgbm.txt")
+        self.x = None
+        self.y = None
+        self.data = None
+        with open('model.txt', 'wb') as f:
+            pickle.dump(self, f)
 
 
 if __name__ == "__main__":
-    pass
+    with open('/Users/xuzhuoer/Project/Citi/util/model.txt', 'rb') as f:
+        model = pickle.load(f)
+    print('here')

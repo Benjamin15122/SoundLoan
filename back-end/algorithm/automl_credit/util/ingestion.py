@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import sys
 import pandas as pd
-from automl.model import Model
+from model import Model
 
 
 def m_print(msg):
@@ -49,8 +49,66 @@ def main():
     info = read_info(dirs['input'])
 
     m_print(f"Read data: {dirs['input']}")
+    # amount? failedcount? graduation == eduction? notpaytotalamount? overduetotalamount? totalcount?
     data = read_data(dirs['input'], info)
-
+    data.drop(['availablecredits',
+               'borrowtype',
+               'creditlevel',
+               'description',
+               'graduatedyear',
+               'graduation',
+               'hasothdebt',
+               'idno',
+               'interest',
+               'loanid',
+               'loantype',
+               'months',
+               'officedomain',
+               'officescale',
+               'officetype',
+               'repayabilityinfo',
+               'repaysource',
+               'repaytype',
+               'status',
+               'successcount',
+               'title',
+               'position'
+               ],
+              axis=1, inplace=True)
+    data.rename(columns={
+        'gender': 'sex',
+        'realname': 'name',
+        'alreadypaycount': 'pay_time',
+        'carloan': 'vehicle_loan',
+        'hascar': 'vehicle_property',
+        'hashouse': 'house_property',
+        'houseloan': 'house_loan',
+        'office': 'work_address',
+        'overduecount': 'overdue_time',
+        'university': 'school',
+        'workyears': 'work_year',
+        'hometown': 'residence_address'
+    }, inplace=True)
+    data['sex'] = data['sex'].apply(lambda each: 'male' if each == '男' else 'female')
+    data['marriage'] = data['marriage'].apply(lambda each: 'married' if each == '已婚' else 'single')
+    info['sex'] = info['gender']
+    info['name'] = info['realname']
+    info['pay_time'] = info['alreadypaycount']
+    info['vehicle_loan'] = info['carloan']
+    info['vehicle_property'] = info['hascar']
+    info['house_property'] = info['hashouse']
+    info['house_loan'] = info['houseloan']
+    info['work_address'] = info['office']
+    info['overdue_time'] = info['overduecount']
+    info['school'] = info['university']
+    info['work_year'] = info['workyears']
+    info['residence_address'] = info['hometown']
+    # import pickle
+    # with open('/Users/xuzhuoer/Project/Citi/util/model.txt', 'rb') as f:
+    #     model = pickle.load(f)
+    # preds = model.predict(data)
+    # m_print(preds[-10:])
+    # m_print(data['sumcreditpoint'])
     m_print('Initialize model')
     model = Model(info, data)
 

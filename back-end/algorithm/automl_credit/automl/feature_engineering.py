@@ -1,6 +1,6 @@
-from automl.tools import timeit
+from tools import timeit
 
 
 @timeit
-def pipeline(df, info):
+def pipeline(df, info, train=True):
     return df
