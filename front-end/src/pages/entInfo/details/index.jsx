@@ -1,34 +1,42 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Card, Tabs, List } from 'antd';
+import { Card, List, Tabs } from 'antd';
 
 import Introduction from './components/Introduction';
-import { getNews } from '@/services/entInfo';
+import { getComments, getNews } from '@/services/entInfo';
 import NewsItem from '@/pages/entInfo/details/components/NewsItem';
+import CommentItem from '@/pages/entInfo/details/components/CommentItem';
 
 const TabPane = Tabs.TabPane;
 
 class EntInfoDetails extends Component {
 
+  static defaultProps = {
+    company_name: '要查看的企业名称'
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       news: [],
+      comments: [],
     }
   }
 
-  getNews = async (company_name) => {
-    const news = await getNews(company_name);
-    console.debug(news);
-    this.setState({ news });
-  };
-
   componentDidMount() {
-    this.getNews();
+    const { company_name } = this.props;
+    (async () => {
+      const news = await getNews(company_name);
+      this.setState({ news });
+    })();
+    (async () => {
+      const comments = await getComments(company_name);
+      this.setState({ comments });
+    })();
   }
 
   render() {
-    const { news } = this.state;
+    const { news, comments } = this.state;
 
     return <>
       <PageHeaderWrapper>
@@ -39,16 +47,23 @@ class EntInfoDetails extends Component {
           <Tabs>
             <TabPane key='news' tab='企业新闻'>
               <List>
-              {news.map(({ news_title, news_link, distribution_date }, index) =>
-                <List.Item>
-                  <NewsItem key={'' + index}
-                            title={news_title} link={news_link} date={distribution_date}/>
-                </List.Item>)}
+                {news.map(({ news_title, news_link, distribution_date }, index) =>
+                  <List.Item>
+                    <NewsItem key={'' + index}
+                              title={news_title} link={news_link} date={distribution_date}/>
+                  </List.Item>)}
               </List>
             </TabPane>
             <TabPane key='change' tab='信息变更'/>
             <TabPane key='relation' tab='关联关系'/>
-            <TabPane key='comments' tab='用户评价'/>
+            <TabPane key='comments' tab='用户评价'>
+              <List>
+                {comments.map((commentContent, index) =>
+                  <List.Item>
+                    <CommentItem key={'' + index} {...commentContent}/>
+                  </List.Item>)}
+              </List>
+            </TabPane>
           </Tabs>
         </Card>
       </PageHeaderWrapper>

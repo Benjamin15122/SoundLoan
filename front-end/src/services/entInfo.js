@@ -15,3 +15,13 @@ export const searchEnterprises = async (name) => {
   const res = await request.get('/infoMan/searchEnt', { data: { company_name: name } });
   return res['content'];
 };
+
+export const getComments = async (company_name) => {
+  const res = await request.get('/infoMan/entProductComment', { data: {company_name }});
+  return res['content'];
+};
+
+export const getEntUserInfo = async (name) => {
+  const res = await request.get('/infoMan/entUserInfo', { params: { name }});
+  return res['content'];
+};
