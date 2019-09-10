@@ -46,7 +46,6 @@ class EntInfoInquiry extends Component {
   };
 
   onSearch = async () => {
-    // TODO: get & set search result
     this.setState({ loading: true });
     const results = await searchEnterprises(this.state.searchInput);
     this.setState({ loading: false, searchResult: results, showSearchResult: true });

@@ -125,5 +125,16 @@ export default {
       'address': '某省某市某某区',
       'description': '企业介绍...',
     }
+  },
+  'GET /authen/getEnterpriseChange': {
+    content: [
+      {
+        change_item: '法人',
+        create_time: '某年末日',
+        change_time: '那年今日',
+        content_before: '之前的值',
+        content_after: '现在的值',
+      }
+    ]
   }
 }

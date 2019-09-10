@@ -25,3 +25,8 @@ export const getEntUserInfo = async (name) => {
   const res = await request.get('/infoMan/entUserInfo', { params: { name }});
   return res['content'];
 };
+
+export const getChanges = async (ent_name) => {
+  const res = await request.get('/authen/getEnterpriseChange', { params: { ent_name }});
+  return res['content'];
+};
