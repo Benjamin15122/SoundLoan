@@ -35,7 +35,7 @@ def get_user_contracts():
 @app.route('/contract/getAnalyze', methods=['GET'])
 def get_contract_analysis():
     try:
-        contract_id = int(request.headers.get('contract_id'))
+        contract_id = int(request.args.get('contract_id'))
         contract = Contract.query.get(contract_id)
         if contract.AnalyzeState is None or contract.AnalyzeState == 'No':
             return jsonify({
@@ -60,7 +60,7 @@ def get_contract_analysis():
 @app.route('/contract/getContent', methods=['GET'])
 def get_contract_content():
     try:
-        contract_id = int(request.headers.get('contract_id'))
+        contract_id = int(request.args.get('contract_id'))
         contract = Contract.query.get(contract_id)
         if contract is None:
             return jsonify({
@@ -145,7 +145,7 @@ def upload_contract_text():
 @app.route('/contract/download', methods=['GET'])
 def download_contract():
     try:
-        contract_id = int(request.headers.get('contract_id'))
+        contract_id = int(request.args.get('contract_id'))
         contract = Contract.query.get(contract_id)
         dirpath = './resources/tmp_contract_files'
         filename = str(contract_id)+'-contract.txt'

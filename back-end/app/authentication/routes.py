@@ -5,6 +5,8 @@ from flask import Response, jsonify
 from app import app, db
 from models.IndividualUser import IndividualUser
 from models.EnterpriseUser import EnterpriseUser
+from models.EnterpriseChanges import EnterpriseChanges
+from models.EnterpriseRelationship import EnterpriseRelationship
 from models.LoanProduct import LoanProduct
 from models.LoanRecord import LoanRecord
 from models.Contract import Contract
@@ -422,23 +424,82 @@ def legalPersonAuthenticateByFace():
 
 @app.route("/authen/getEnterpriseRelation",methods=["GET"])
 def getEnterpriseRelation():
-    id=request.args.get("ent_id")
-    response={}
-    content={}
+    ent_name=request.args.get("ent_name")
+    relations=EnterpriseRelationship.query.filter(EnterpriseRelationship.enterpriseName == ent_name).all()
     try:
-        enter = EnterpriseUser.query.filter(EnterpriseUser.Id == int(id)).first()
-        content["FoundationDate"]=enter.FoundationDate
-        content["CorporateCapital"]=enter.CorporateCapital
-        content["LegalPersonName"]=enter.LegalPersonName
-        response["success"]=True
-        response["message"]=None
-        response["content"]=content
-    except Exception as e:
-        print(e)
-        response["success"]=False
-        response["message"]="未知错误！"
-        response["content"]=None
+        if len(relations) == 0:
 
+            host = 'http://open.api.tianyancha.com/services/open/ic/baseinfo/2.0'
+            path = ''
+            method = 'GET'
+            token = '6d0c19a0-734b-4c26-902d-9ee78512f9e5'
+            querys = 'name=' + ent_name
+            bodys = {}
+            url = host + path + '?' + querys
+            newurl = parse.quote(url, safe=string.printable)
+            print(newurl)
+            req = urllib.request.Request(newurl)
+            req.add_header('Authorization', token)
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            res = urllib.request.urlopen(req, context=ctx)
+            content = res.read()
+            print(content.decode('UTF-8'))
+            content = eval(content.decode('UTF-8').replace("null", "None"))
+            com_id = content["result"]["id"]
+
+            host = 'http://open.api.tianyancha.com/services/v3/open/oneKey/c'
+            path = ''
+            method = 'GET'
+            token = '6d0c19a0-734b-4c26-902d-9ee78512f9e5'
+            querys = 'id=' + str(com_id)
+            com_id = str(com_id)
+            bodys = {}
+            url = host + path + '?' + querys
+            newurl = parse.quote(url, safe=string.printable)
+            print(newurl)
+            req = urllib.request.Request(newurl)
+            req.add_header('Authorization', token)
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            res = urllib.request.urlopen(req, context=ctx)
+            content = res.read()
+            print(content.decode('UTF-8'))
+            content = eval(content.decode('UTF-8').replace("null", "None"))
+            nodes = content['result']
+            nodes = eval(nodes)
+            nodes = nodes["nodes"]
+            print(nodes)
+            relationsdic = content['result']
+            relationsdic = eval(relationsdic)
+            relationsdic = relationsdic['relationships']
+            print(relationsdic)
+            for node in nodes:
+                tem_id = node["id"]
+                properties = []
+                types = []
+                for relationd in relationsdic:
+                    if (relationd['startNode'] == tem_id and relationd['endNode'] == com_id) or (
+                            relationd['startNode'] == com_id and relationd['endNode'] == tem_id):
+                        properties.append(relationd['properties']['labels'][0])
+                        types.append(relationd["type"])
+                properties = ",".join(properties)
+                types = ",".join(types)
+                new_enterpriseCh = EnterpriseRelationship(ent_name, node["properties"]['name'], node["labels"][0],
+                                                          properties, types)
+                if properties != "":
+                    db.session.add(new_enterpriseCh)
+            db.session.commit()
+        relations = EnterpriseRelationship.query.filter(EnterpriseRelationship.enterpriseName == ent_name).all()
+        relations = [relation.to_dict() for relation in relations]
+    except Exception as e:
+        relations=[]
+    response={}
+    response["success"]=True
+    response["message"]=None
+    response["content"]=relations
     return jsonify(response)
 
 # @app.route("/authen/getMessage",methods=["GET"])
@@ -540,6 +601,48 @@ def testt():
     db.session.commit()
     response={}
     return jsonify("1")
+
+
+@app.route("/authen/getEnterpriseChange",methods=["GET"])
+def getEnterpriseChange():
+    ent_name=request.args.get("ent_name")
+    changes=EnterpriseChanges.query.filter(EnterpriseChanges.enterpriseName == ent_name).all()
+    try:
+        if len(changes) == 0:
+            host = 'http://open.api.tianyancha.com/services/open/ic/changeinfo/2.0'
+            path = ''
+            method = 'GET'
+            token = '6d0c19a0-734b-4c26-902d-9ee78512f9e5'
+            querys = 'name=' + ent_name
+            bodys = {}
+            url = host + path + '?' + querys
+            newurl = parse.quote(url, safe=string.printable)
+            print(newurl)
+            req = urllib.request.Request(newurl)
+            req.add_header('Authorization', token)
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+            res = urllib.request.urlopen(req, context=ctx)
+            content = res.read()
+            print(content.decode('UTF-8'))
+            content = eval(content.decode('UTF-8').replace("null", "None"))
+            items = content['result']['items']
+            for item in items:
+                item["enterpriseName"] = ent_name
+                new_enterpriseCh = EnterpriseChanges(**item)
+                db.session.add(new_enterpriseCh)
+            db.session.commit()
+        changes = EnterpriseChanges.query.filter(EnterpriseChanges.enterpriseName == ent_name).all()
+        changes = [change.to_dict() for change in changes]
+    except Exception as e:
+        changes=[]
+    response={}
+    response["success"]=True
+    response["message"]=None
+    response["content"]=changes
+    return jsonify(response)
+
 
 
 

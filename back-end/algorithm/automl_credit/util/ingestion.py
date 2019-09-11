@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import sys
 import pandas as pd
-from algorithm.automl_credit.automl.model import Model
+from model import Model
 
 
 def m_print(msg):
@@ -72,8 +72,7 @@ def main():
                'status',
                'successcount',
                'title',
-               'position',
-               'failedcount'
+               'position'
                ],
               axis=1, inplace=True)
     data.rename(columns={
@@ -87,13 +86,14 @@ def main():
         'office': 'work_address',
         'overduecount': 'overdue_time',
         'university': 'school',
-        'workyears': 'work_year'
+        'workyears': 'work_year',
+        'hometown': 'residence_address'
     }, inplace=True)
     data['sex'] = data['sex'].apply(lambda each: 'male' if each == '男' else 'female')
     data['marriage'] = data['marriage'].apply(lambda each: 'married' if each == '已婚' else 'single')
     info['sex'] = info['gender']
     info['name'] = info['realname']
-    info['paytime'] = info['alreadypaycount']
+    info['pay_time'] = info['alreadypaycount']
     info['vehicle_loan'] = info['carloan']
     info['vehicle_property'] = info['hascar']
     info['house_property'] = info['hashouse']
@@ -102,6 +102,7 @@ def main():
     info['overdue_time'] = info['overduecount']
     info['school'] = info['university']
     info['work_year'] = info['workyears']
+    info['residence_address'] = info['hometown']
     # import pickle
     # with open('/Users/xuzhuoer/Project/Citi/util/model.txt', 'rb') as f:
     #     model = pickle.load(f)

@@ -7,7 +7,7 @@ from app.loan_recommendation.routes import *
 from app import app, db
 from flask_caching import Cache
 from apscheduler.schedulers.background import BackgroundScheduler
-from utils.news_crawl_utils import get_search_results, update_news
+from utils.news_crawl_utils import update_news
 
 api = Api(app)
 api.add_resource(LoanRecommendation, '/enterprise/recommendation')

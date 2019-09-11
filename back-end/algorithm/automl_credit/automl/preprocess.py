@@ -1,8 +1,8 @@
-from algorithm.automl_credit.automl.tools import timeit, log
+from tools import timeit, log
 import datetime
 from pandas import DataFrame
 from sklearn.preprocessing import LabelEncoder
-from algorithm.automl_credit.util.constant import *
+from constant import *
 
 @timeit
 def clean_df(df, info):
@@ -55,7 +55,8 @@ def directly_encode(df, info):
     for cat in cat_cols:
         if ENCODER in info[cat]:
             enc = info[cat][ENCODER]
-            df[cat] = enc.transform(df[cat])
+            le_dict = dict(zip(enc.classes_, enc.transform(enc.classes_)))
+            df[cat] = df[cat].apply(lambda x: le_dict.get(x, -1))
         else:
             df.drop(cat, axis=1, inplace=True)
     return df
