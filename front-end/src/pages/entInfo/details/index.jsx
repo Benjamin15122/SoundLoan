@@ -60,9 +60,11 @@ class EntInfoDetails extends Component {
           <Tabs>
             <TabPane key='news' tab='企业新闻'>
               <List>
-                {news.map(({ news_title, news_link, distribution_date }, index) =>
+                {news.map(({ news_title, news_link, distribution_date, news_source, news_extract },
+                           index) =>
                   <List.Item key={'n' + index}>
-                    <NewsItem title={news_title} link={news_link} date={distribution_date}/>
+                    <NewsItem title={news_title} link={news_link} date={distribution_date}
+                              source={news_source} extract={news_extract}/>
                   </List.Item>)}
               </List>
             </TabPane>
