@@ -30,4 +30,9 @@ export const createEntUser = async (postData) => {
   return res['success'];
 };
 
+export const newCreateIndUser = async (postData) => {
+  const res = await request.post('/infoMan/newCreateIndUser', { data: postData });
+  return res['success'];
+};
+
 

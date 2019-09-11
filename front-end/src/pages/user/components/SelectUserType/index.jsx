@@ -5,20 +5,20 @@ import { Link } from 'umi';
 import enterpriseSvg from '../../asset/enterprise.svg';
 import personSvg from '../../asset/person.svg';
 
-const { Meta } = Card
+const { Meta } = Card;
 
 export default class SelectUserType extends Component {
 
     static defaultProps = {
         linkToPerson: '/404',
         linkToEnterprise: '/404',
-    }
+    };
 
     render() {
-        const {linkToPerson, linkToEnterprise} = this.props;
+        const { action, linkToPerson, linkToEnterprise } = this.props;
 
         return  <>
-            <div className={style.title}>请选择您的身份</div>
+            <div className={style.title}>请选择您要{action}的身份</div>
             <div>
                 <Row gutter={32} className={style.pane} align='middle' justify='center' type='flex'>
                     <Col span={4}>
@@ -42,6 +42,6 @@ export default class SelectUserType extends Component {
                 </Row>
             </div>
         </>
-        
+
     }
 }

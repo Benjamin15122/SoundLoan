@@ -17,5 +17,8 @@ export default {
   },
   'POST /infoMan/createEntUser': {
     success: true,
+  },
+  'POST /infoMan/newCreateIndUser': {
+    success: true,
   }
 }

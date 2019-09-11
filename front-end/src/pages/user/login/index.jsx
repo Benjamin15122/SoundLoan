@@ -82,7 +82,8 @@ class Login extends Component {
     const query = getPageQuery();
     let tabPane;
     if (query.type !== 'person' && query.type !== 'enterprise') {
-      return <SelectUserType linkToPerson="?type=person" linkToEnterprise="?type=enterprise" />;
+      return <SelectUserType action='登录'
+                             linkToPerson="?type=person" linkToEnterprise="?type=enterprise" />;
     }
 
     const { userLogin, submitting } = this.props;

@@ -225,7 +225,7 @@ class RegisterForPerson extends Register {
   finalForm = () => {
     const { form } = this.props;
     const { getFieldDecorator } = form;
-    const { formData, imgUrl1, imgUrl2 } = this.state;
+    const { formData } = this.state;
     const handleSubmit = (e) => {
       e.preventDefault();
       form.validateFields(async (err, values) => {
@@ -238,7 +238,6 @@ class RegisterForPerson extends Register {
             return;
           }
           const postData = { ...formData, ...values };
-          console.log(postData);
           const regOk = await createEntUser(postData);
           if (!regOk) {
             message.error('注册失败');
