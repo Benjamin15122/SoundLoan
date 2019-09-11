@@ -27,7 +27,7 @@ class RegisterForPerson extends Register {
     this.state = {
       ...this.state,
       formData: {},
-      currentStep: 1,
+      currentStep: 0,
       imgUrl1: '',
       imgUrl2: '',
     }
