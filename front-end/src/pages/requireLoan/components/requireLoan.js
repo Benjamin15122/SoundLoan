@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import LoanInfo from './loanInfo';
+import ChooseEnt from './chooseEnt';
 
 export class requireLoan extends Component {
 
@@ -34,8 +35,8 @@ export class requireLoan extends Component {
         switch(step) {
             case 1:
                 return (
-                    <LoanInfo
-                    handleSubmit = {this.handleSubmit}
+                    <ChooseEnt
+                     handleSubmit = {this.handleSubmit}
                     />
                 )
             case 2:
