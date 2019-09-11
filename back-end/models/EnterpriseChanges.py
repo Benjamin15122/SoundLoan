@@ -5,30 +5,30 @@ class EnterpriseChanges(db.Model):
     __tablename__ = "enterprise_changes"
 
     Id = db.Column(db.Integer, primary_key=True)
-    EnterpriseId = db.Column(db.Integer, db.foreignKey('user_enterprise.Id'))
+    enterpriseName = db.Column(db.String(100))
 
-    ChangeItem = db.Column(db.String(1000))
-    CreateTime = db.Column(db.String(20))
-    ContentBefore = db.Column(db.Text)
-    ContentAfter = db.Column(db.Text)
-    ChangeTime = db.Column(db.String(20))
+    changeItem = db.Column(db.String(1000))
+    createTime = db.Column(db.String(20))
+    contentBefore = db.Column(db.Text)
+    contentAfter = db.Column(db.Text)
+    changeTime = db.Column(db.String(20))
 
-    def __init__(self, EnterpriseId, ChangeItem, CreateTime, ContentBefore, ContentAfter, ChangeTime):
-        self.EnterpriseId = EnterpriseId
-        self.ChangeItem = ChangeItem
-        self.CreateTime = CreateTime
-        self.ContentBefore = ContentBefore
-        self.ContentAfter = ContentAfter
-        self.ChangeTime = ChangeTime
+    def __init__(self, enterpriseName, changeItem, createTime, contentBefore, contentAfter, changeTime):
+        self.enterpriseName = enterpriseName
+        self.changeItem = changeItem
+        self.createTime = createTime
+        self.contentBefore = contentBefore
+        self.contentAfter = contentAfter
+        self.changeTime = changeTime
 
     def to_dict(self):
         return {
             'id': self.Id,
-            'enterprise_id': self.EnterpriseId,
-            'change_item': self.ChangeItem,
-            'create_time':self.CreateTime,
-            'change_time':self.ChangeTime,
-            'content_before': self.ContentBefore,
-            'content_after': self.ContentAfter
+            'enterprise_name': self.enterpriseName,
+            'change_item': self.changeItem,
+            'create_time':self.createTime,
+            'change_time':self.changeTime,
+            'content_before': self.contentBefore,
+            'content_after': self.contentAfter
         }
 
