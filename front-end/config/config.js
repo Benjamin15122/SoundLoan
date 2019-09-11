@@ -21,7 +21,7 @@ const plugins = [
         // default zh-CN
         default: 'zh-CN',
         // default true, when it is true, will use `navigator.language` overwrite default
-        baseNavigator: true,
+        baseNavigator: false,
       },
       dynamicImport: {
         loadingComponent: './components/PageLoading/index',
@@ -86,14 +86,15 @@ export default {
       component: '../layouts/UserLayout',
       routes: [
         {
-          name: 'login',
-          path: '/user/login',
+          path: 'login',
           component: './user/login',
         },
         {
-          name: 'register',
-          path: '/user/register',
+          path: 'register',
           component: './user/register',
+        },
+        {
+          component: './404',
         },
       ],
     },
@@ -103,6 +104,51 @@ export default {
       Routes: ['src/pages/Authorized'],
       authority: ['admin', 'user'],
       routes: [
+        {
+          name: '个人信息',
+          icon: 'user',
+          path: '/account',
+          routes: [
+            {
+              name: '个人空间',
+              path: 'center',
+              component: './account/center',
+            },
+            {
+              name: '我的贷款',
+              path: 'loans',
+              component: './account/loans',
+            },
+            {
+              name: '我的合同',
+              path: 'contracts',
+              component: './account/contracts',
+            },
+            {
+              name: '账户设置',
+              path: 'settings',
+              component: './account/settings',
+            },
+            {
+              component: './404',
+            },
+          ],
+        },
+        {
+          name: '企业信息',
+          icon: 'database',
+          path: '/entInfo',
+          routes: [
+            {
+              name: '企业详情',
+              path: 'details',
+              component: './entInfo/details'
+            },
+            {
+              component: './404',
+            }
+          ]
+        },
         {
           path: '/',
           name: 'welcome',

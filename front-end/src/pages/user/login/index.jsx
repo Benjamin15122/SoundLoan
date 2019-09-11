@@ -5,6 +5,8 @@ import Link from 'umi/link';
 import { connect } from 'dva';
 import LoginComponents from './components/Login';
 import styles from './style.less';
+import { getPageQuery } from '@/pages/user/utils/utils';
+import SelectUserType from '@/pages/user/components/SelectUserType';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
 
@@ -77,6 +79,12 @@ class Login extends Component {
   );
 
   render() {
+    const query = getPageQuery();
+    let tabPane;
+    if (query.type !== 'person' && query.type !== 'enterprise') {
+      return <SelectUserType linkToPerson="?type=person" linkToEnterprise="?type=enterprise" />;
+    }
+
     const { userLogin, submitting } = this.props;
     const { status, type: loginType } = userLogin;
     const { type, autoLogin } = this.state;
@@ -90,110 +98,42 @@ class Login extends Component {
             this.loginForm = form;
           }}
         >
-          <Tab
-            key="account"
-            tab={formatMessage({
-              id: 'user-login.login.tab-login-credentials',
-            })}
-          >
-            {status === 'error' &&
-              loginType === 'account' &&
-              !submitting &&
-              this.renderMessage(
-                formatMessage({
-                  id: 'user-login.login.message-invalid-credentials',
-                }),
-              )}
-            <UserName
-              name="userName"
-              placeholder={`${formatMessage({
-                id: 'user-login.login.userName',
-              })}: admin or user`}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.userName.required',
-                  }),
-                },
-              ]}
-            />
-            <Password
-              name="password"
-              placeholder={`${formatMessage({
-                id: 'user-login.login.password',
-              })}: ant.design`}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.password.required',
-                  }),
-                },
-              ]}
-              onPressEnter={e => {
-                e.preventDefault();
-                this.loginForm.validateFields(this.handleSubmit);
-              }}
-            />
-          </Tab>
-          <Tab
-            key="mobile"
-            tab={formatMessage({
-              id: 'user-login.login.tab-login-mobile',
-            })}
-          >
-            {status === 'error' &&
-              loginType === 'mobile' &&
-              !submitting &&
-              this.renderMessage(
-                formatMessage({
-                  id: 'user-login.login.message-invalid-verification-code',
-                }),
-              )}
-            <Mobile
-              name="mobile"
-              placeholder={formatMessage({
-                id: 'user-login.phone-number.placeholder',
+          {query.type === 'person' || query.type === 'enterprise' ? (
+            <Tab
+              key="account"
+              tab={formatMessage({
+                id: 'user-login.login.tab-login-credentials',
               })}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.phone-number.required',
+            >
+              {status === 'error' &&
+                !submitting &&
+                this.renderMessage(
+                  formatMessage({
+                    id: 'user-login.login.message-invalid-credentials',
                   }),
-                },
-                {
-                  pattern: /^1\d{10}$/,
-                  message: formatMessage({
-                    id: 'user-login.phone-number.wrong-format',
+                )}
+              <UserName />
+              <Password />
+            </Tab>
+          ) : null}
+          {query.type === 'person' ? (
+            <Tab
+              key="mobile"
+              tab={formatMessage({
+                id: 'user-login.login.tab-login-mobile',
+              })}
+            >
+              {status === 'error' &&
+                !submitting &&
+                this.renderMessage(
+                  formatMessage({
+                    id: 'user-login.login.message-invalid-verification-code',
                   }),
-                },
-              ]}
-            />
-            <Captcha
-              name="captcha"
-              placeholder={formatMessage({
-                id: 'user-login.verification-code.placeholder',
-              })}
-              countDown={120}
-              onGetCaptcha={this.onGetCaptcha}
-              getCaptchaButtonText={formatMessage({
-                id: 'user-login.form.get-captcha',
-              })}
-              getCaptchaSecondText={formatMessage({
-                id: 'user-login.captcha.second',
-              })}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.verification-code.required',
-                  }),
-                },
-              ]}
-            />
-          </Tab>
+                )}
+              <Mobile />
+              <Captcha onGetCaptcha={this.onGetCaptcha} />
+            </Tab>
+          ) : null}
           <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               <FormattedMessage id="user-login.login.remember-me" />
