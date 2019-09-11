@@ -17,6 +17,7 @@ class Register extends Component {
     }
     else {
       return <SelectUserType
+        action='注册'
         linkToPerson="?type=person"
         linkToEnterprise="?type=enterprise"
       />;
