@@ -61,12 +61,17 @@
   color:#000000;
   text-align:left;
 }
+.marker {
+  color:#FFFFFF;
+}
 ._流程形状 {
 }
 .paragraph {
   text-align:left;
 }
 .line {
+}
+.arrow {
 }
 .heading_1 {
   font-family:'Arial Negreta', 'Arial Normal', 'Arial';
