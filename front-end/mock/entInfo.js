@@ -7,57 +7,25 @@ export default {
         'enterprise_name': '企业名称',
         'news_title': '新闻标题',
         'news_link': '新闻链接',
-        'distribution_date': '发布日期'
+        'distribution_date': '发布日期',
+        'news_source': '来源 xx 社',
+        'news_extract': '新...闻...摘...要...新...闻...摘...要...'
       },
       {
-        'enterprise_name':
-          '企业名称',
-        'news_title':
-          '新闻标题',
-        'news_link':
-          '新闻链接',
-        'distribution_date':
-          '发布日期'
+        'enterprise_name': '企业名称',
+        'news_title': '新闻标题',
+        'news_link': '新闻链接',
+        'distribution_date': '发布日期',
+        'news_source': '来源 xx 社',
+        'news_extract': '新...闻...摘...要...新...闻...摘...要...'
       },
       {
-        'enterprise_name':
-          '企业名称',
-        'news_title':
-          '新闻标题',
-        'news_link':
-          '新闻链接',
-        'distribution_date':
-          '发布日期'
-      },
-      {
-        'enterprise_name':
-          '企业名称',
-        'news_title':
-          '新闻标题',
-        'news_link':
-          '新闻链接',
-        'distribution_date':
-          '发布日期'
-      },
-      {
-        'enterprise_name':
-          '企业名称',
-        'news_title':
-          '新闻标题',
-        'news_link':
-          '新闻链接',
-        'distribution_date':
-          '发布日期'
-      },
-      {
-        'enterprise_name':
-          '企业名称',
-        'news_title':
-          '新闻标题',
-        'news_link':
-          '新闻链接',
-        'distribution_date':
-          '发布日期'
+        'enterprise_name': '企业名称',
+        'news_title': '新闻标题',
+        'news_link': '新闻链接',
+        'distribution_date': '发布日期',
+        'news_source': '来源 xx 社',
+        'news_extract': '新...闻...摘...要...新...闻...摘...要...'
       },
     ]
   },
