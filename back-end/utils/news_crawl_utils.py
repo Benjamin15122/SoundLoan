@@ -17,20 +17,40 @@ def get_search_results(company_name):
         driver = webdriver.Chrome()
 
     driver.get(Config.COURT_URL_TEMPLATE)
-    driver.find_element_by_id('rmfy-form').send_keys(company_name)
-    driver.find_element_by_id('searchButton').click()
+    driver.find_element_by_id('contentKey').send_keys(company_name)
+    driver.find_element_by_name('search').click()
     WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.CLASS_NAME, "oddd"))
+        EC.presence_of_element_located((By.ID, "result_list"))
     )
-    time.sleep(2)
-    for i in range(1, 16):
+    time.sleep(5)
+
+    for i in range(1, 21):
         result_row = {}
-        row = driver.find_elements_by_css_selector('#gg-list > tr:nth-child(%d) > td > a' % i)
-        result_row['reporter'] = row[0].get_attribute('title')
-        result_row['reportee'] = row[1].get_attribute('title')
-        result_row['link'] = row[0].get_attribute('href')
-        result_row['distribution_date'] = row[3].text
+        a_element = driver.find_element_by_css_selector(
+            '#result_list > table:nth-child(3) > tbody > tr:nth-child(%d) > td > a:nth-child(1)' % i)
+        href = a_element.get_attribute('href')
+        title = a_element.text
+        if 'wap' in href:
+            continue
+        driver.get(href)
+        news_source = driver.find_element_by_css_selector(
+            'body > div.wrap > div.mbox02.overh.mb30 > div.Rbox.f-l > div > div.tag > span:nth-child(3)')
+        distribution_date = driver.find_element_by_css_selector(
+            'body > div.wrap > div.mbox02.overh.mb30 > div.Rbox.f-l > div > div.tag > span:nth-child(4)')
+        extract = driver.find_element_by_css_selector(
+            'body > div.wrap > div.mbox02.overh.mb30 > div.Rbox.f-l > div > div.des')
+        result_row['link'] = href
+        result_row['news_title'] = title.split(' - ')[0]
+        result_row['news_source'] = news_source.text
+        result_row['distribution_date'] = distribution_date.text
+        result_row['news_extract'] = extract.text
         results.append(result_row)
+        driver.get(Config.COURT_URL_TEMPLATE)
+        time.sleep(1)
+        driver.find_element_by_id('contentKey').send_keys(company_name)
+        driver.find_element_by_name('search').click()
+        time.sleep(1)
+        print(result_row)
     return results
 
 
@@ -40,11 +60,14 @@ def update_news():
     for enterprise_name in all_enterprises:
         crawled_news = get_search_results(enterprise_name)
         for news in crawled_news:
-            enterprise_news = EnterpriseNews(enterprise_name, news['reportee'], news['link'], news['distribution_date'])
+            # enterprise_news = EnterpriseNews(enterprise_name, news['reportee'], news['link'], news['distribution_date'])
+            enterprise_news = EnterpriseNews(enterprise_name, news['news_title'],
+                                             news['link'], news['distribution_date'],
+                                             news['news_source'], news['news_extract'])
             all_news.append(enterprise_news)
     db.session.add_all(all_news)
     db.session.commit()
-    print('all news collected.')
+    print('all news collected!')
 
 
 

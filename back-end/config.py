@@ -78,4 +78,5 @@ class Config(object):
 
     signature_server = 'http://47.103.113.144:6008'
     # 爬取地址暂定为这个
-    COURT_URL_TEMPLATE = 'https://rmfygg.court.gov.cn/web/rmfyportal/noticeinfo'
+    # COURT_URL_TEMPLATE = 'https://rmfygg.court.gov.cn/web/rmfyportal/noticeinfo'
+    COURT_URL_TEMPLATE = 'http://www.zqcn.com.cn/search/servlet/SearchServlet.do'
