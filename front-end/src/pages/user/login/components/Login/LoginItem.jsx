@@ -153,8 +153,7 @@ Object.keys(ItemMap).forEach(key => {
     <LoginContext.Consumer>
       {context => (
         <WrapFormItem
-          customProps={item.props}
-          rules={item.rules}
+          {...item}
           {...props}
           type={key}
           {...context}
