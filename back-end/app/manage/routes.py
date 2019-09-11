@@ -10,6 +10,7 @@ from models.LoanProduct import LoanProduct
 from models.LoanRecord import LoanRecord
 from models.Contract import Contract
 from models.LoanProductComment import LoanProductComment
+from models.LoanCommentComplain import LoanCommentComplain
 
 
 @app.route("/infoMan/indUserInfo", methods=["GET"])
@@ -251,6 +252,7 @@ def ent_product_comment():
     commentList = db.session.query(sub, LoanProductComment).join(LoanProductComment, LoanProductComment.ProductId == sub.c.Id).all()
     result = [{
         'product_name': c.Name,
+        'product_id': c.ProductId,
         'user_id': c.LoanProductComment.UserId,
         'comment': c.LoanProductComment.Comment,
         'score': c.LoanProductComment.Score,
@@ -448,3 +450,27 @@ def search_enterprise():
     ents = EnterpriseUser.query.filter(rule).all()
     result = [e.to_dict() for e in ents]
     return jsonify({'success': True, 'content': result})
+
+
+@app.route('/infoMan/addCommentComplain', methods=['POST'])
+def add_comment_complain():
+    try:
+        ent_id = request.form.get('ent_id')
+        product_id = request.form.get('comment_product_id')
+        user_id = request.form.get('comment_user_id')
+        complain = request.form.get('complain_content')
+        new_complain = LoanCommentComplain(EnterpriseId=ent_id,
+                                           ProductId=product_id,
+                                           UserId=user_id,
+                                           ComplainContent=complain)
+        db.session.add(new_complain)
+        db.commit()
+        return jsonify({
+            'success': True,
+            'message': 'add complain successfully. '
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        })
