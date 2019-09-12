@@ -11,6 +11,7 @@ from models.LoanRecord import LoanRecord
 from models.Contract import Contract
 from models.LoanProductComment import LoanProductComment
 from models.LoanCommentComplain import LoanCommentComplain
+from models.LoanRequiredMaterial import LoanRequiredMaterial
 
 
 @app.route("/infoMan/indUserInfo", methods=["GET"])
@@ -538,4 +539,45 @@ def add_comment_complain():
         return jsonify({
             'success': False,
             'message': str(e)
+        })
+
+
+@app.route('/infoMan/entAskMaterial', methods=['POST'])
+def enterprise_ask_material():
+    try:
+        loan_record_id = request.form.get('loan_record_id')
+        essential = request.form.get('essential')
+        content = request.form.get('content')
+        send_addr = request.form.get('send_addr')
+        item = LoanRequiredMaterial(LoanRecordId=loan_record_id, Content=content,
+                                    Essential=essential, SendAddr=send_addr)
+        db.session.add(item)
+        db.commit()
+        return jsonify({
+            'success': True,
+            'message': 'add requirement successfully. '
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        })
+
+
+@app.route('/infoMan/getAskMaterial', methods=['GET'])
+def get_asked_materials():
+    try:
+        loan_record_id = request.args.get('loan_record_id')
+        all_requirements = LoanRequiredMaterial.query.filter(LoanRequiredMaterial.LoanRecordId == loan_record_id).all()
+        rtn = [each.to_dict() for each in all_requirements]
+        return jsonify({
+            'success': True,
+            'message': '',
+            'content': rtn
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e),
+            'content': None
         })
