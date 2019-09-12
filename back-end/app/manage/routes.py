@@ -101,7 +101,14 @@ def login_individual_user():
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
     if user.verify_password(password):
-        return jsonify({'success': True, 'token': user.gen_auth_token()})
+        return jsonify({
+            'success': True,
+            'content': {
+                'id': user.Id,
+                'nickname': user.Nickname,
+                'token': user.gen_auth_token(),
+            },
+        })
     else:
         return jsonify({'success': False, 'message': 'Wrong password！'})
  
@@ -114,7 +121,14 @@ def login_individual_user_phone():
     user = IndividualUser.query.filter(IndividualUser.PhoneNumber == phone_number).first()
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
-    return jsonify({'success': True, 'token': user.gen_auth_token()})
+    return jsonify({
+        'success': True,
+        'content': {
+            'id': user.Id,
+            'nickname': user.Nickname,
+            'token': user.gen_auth_token(),
+        },
+    })
 
 
 @app.route("/infoMan/entUserInfo", methods=["GET"])
@@ -261,7 +275,14 @@ def login_enterprise_user():
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
     if user.verify_password(password):
-        return jsonify({'success': True, 'token': user.gen_auth_token()})
+        return jsonify({
+            'success': True,
+            'content': {
+                'id': user.Id,
+                'name': user.Name,
+                'token': user.gen_auth_token(),
+            },
+        })
     else:
         return jsonify({'success': False, 'message': 'Wrong password！'})
 
