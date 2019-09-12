@@ -151,7 +151,11 @@ export default {
           path: '/requireLoan',
           name: '我要借款',
           icon: 'money-collect',
-          component: './requireLoan/components/chooseEnt',
+          component: './requireLoan/components/requireLoan',
+        },
+        {
+          path: '/askLoanInfo',
+          component: './requireLoan/components/loanInfo'
         },
         {
           path: '/',
@@ -163,6 +167,7 @@ export default {
         },
       ],
     },
+    
     {
       component: './404',
     },

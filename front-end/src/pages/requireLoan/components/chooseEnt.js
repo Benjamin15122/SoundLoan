@@ -3,6 +3,7 @@ import { Button, Icon, Input, Table } from 'antd';
 import { getRecommendedEnterprises, searchEnterprises } from '@/services/entInfo';
 import { connect } from 'dva';
 import Link from 'umi/link';
+import LoanInfo from './loanInfo';
 
 @connect(({ user }) => ({ user }))
 class ChooseEnt extends Component {
@@ -39,6 +40,10 @@ class ChooseEnt extends Component {
     { title: '企业地址', dataIndex: 'address' },
     { title: '企业官网', dataIndex: 'website' },
     { title: '联系方式', dataIndex: 'contact' },
+    { title: '是否申请', 
+      dataIndex: 'apply_state',
+      render: () => <Link to={'/askLoanInfo'}>立即申请</Link>,
+    },
   ];
 
   onChange = (e) => {
