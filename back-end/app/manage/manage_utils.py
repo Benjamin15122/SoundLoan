@@ -7,6 +7,14 @@ from models.IndividualUser import IndividualUser
 from models.LoanRecord import LoanRecord
 
 
+def get_default_prob_info(loanRecord):
+    user = IndividualUser.query.filter(IndividualUser.Id==loanRecord.DebtorId).first()
+    return {
+        'user': user.to_dict(),
+        'loan_record': loanRecord.to_dict(),
+    }
+
+
 def update_ind_user_credit_score(user_id, score):
     user = IndividualUser.query.filter(IndividualUser.Id==user_id).first()
     user.CreditScore = score
