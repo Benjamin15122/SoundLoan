@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
-import { Button, Icon, Input, Table } from 'antd';
+import { Form, Input, Select, InputNumber, Button, Icon, Table } from 'antd';
+
 import { getRecommendedEnterprises, searchEnterprises } from '@/services/entInfo';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import LoanInfo from './loanInfo';
+import { SSL_OP_SINGLE_DH_USE } from 'constants';
+
+const { Option } = Select;
+
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 5 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 12 },
+  },
+};
 
 @connect(({ user }) => ({ user }))
 class ChooseEnt extends Component {
@@ -42,7 +57,7 @@ class ChooseEnt extends Component {
     { title: '联系方式', dataIndex: 'contact' },
     { title: '是否申请', 
       dataIndex: 'apply_state',
-      render: () => <Link to={'/askLoanInfo'}>立即申请</Link>,
+      render: () => <Button type='primary'><Link to={'/askLoanInfo'}>立即申请</Link></Button>,
     },
   ];
 
@@ -73,13 +88,31 @@ class ChooseEnt extends Component {
     render() {
     const { loading, showSearchResult, searchResult, recommendedResult } = this.state;
     return <div>
-      <div style={{ textAlign: 'center' }}>
-        <Input prefix={<Icon type='search'/>} style={{ width: '60%' }}
-               onChange={this.onChange} onPressEnter={this.onSearch}/>
-        <Button style={{ marginLeft: '5px' }} onClick={this.onSearch}>
-          企业搜索
-        </Button>
-      </div>
+      <Form layout='inline'>
+        <Form.Item label="排序方式">
+          <Select defaultValue="1" style={{width:'100%'}}>
+            <Option value="1">评价</Option>
+            <Option value="2">时间</Option>
+            <Option value="3">地址</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item label="筛选条件：城市 ">
+          <Select defaultValue="1">
+            <Option value="1">北京</Option>
+            <Option value="2">上海</Option>
+            <Option value="3">南京</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item label="可接受年利率上限">
+          <Form.Item>
+             <InputNumber placeholder="请输入"/>
+          </Form.Item>
+          <span style={{ display: 'inline-block', width: '24px', textAlign: 'center' }}>%</span>
+        </Form.Item>
+      </Form>
+      
       <div style={{ paddingTop: '10px' }}>
         <Table title={() => this.getTableTitle(showSearchResult)} loading={loading}
                columns={ChooseEnt.columns} rowKey='name'
