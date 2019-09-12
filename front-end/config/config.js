@@ -153,12 +153,11 @@ export default {
           icon: 'money-collect',
           component: './requireLoan/components/chooseEnt',
         },
-        // {
-        //   path: '/',
-        //   name: 'welcome',
-        //   icon: 'smile',
-        //   component: './Welcome',
-        // },
+        {
+          path: '/',
+          hideInMenu: true,
+          component: './Welcome',
+        },
         {
           component: './404',
         },
