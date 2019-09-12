@@ -99,9 +99,10 @@ class ChooseEnt extends Component {
 
         <Form.Item label="筛选条件：城市 ">
           <Select defaultValue="1">
-            <Option value="1">北京</Option>
-            <Option value="2">上海</Option>
-            <Option value="3">南京</Option>
+            <Option value="1">全部</Option>
+            <Option value="2">北京</Option>
+            <Option value="3">上海</Option>
+            <Option value="4">南京</Option>
           </Select>
         </Form.Item>
 
