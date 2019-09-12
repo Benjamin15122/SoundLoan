@@ -17,6 +17,7 @@ export default {
   'menu.个人信息.账户设置': '账户设置',
   'menu.企业信息': '企业信息',
   'menu.企业信息.企业详情': '企业详情',
+  'menu.合同检测': '合同检测',
   ...globalHeader,
   ...menu,
   ...settingDrawer,

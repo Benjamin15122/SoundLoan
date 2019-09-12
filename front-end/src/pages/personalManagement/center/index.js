@@ -4,7 +4,7 @@ import { withRouter } from 'umi';
 import { Card, Tabs, Descriptions, Switch, Tooltip } from 'antd';
 import styles from './index.css';
 
-import { infoParser } from '@/utils/Perish/generalUtils';
+import { infoParser, propertyParser } from '@/utils/Perish/generalUtils';
 import CustomInput from '@/components/Perish/CustomInput';
 
 const { TabPane } = Tabs;
@@ -39,7 +39,7 @@ class Center extends React.Component {
               {editMode ? (
                 <CustomInput
                   defaultValue={basic[property]}
-                  onChange={value => this.infoChangeHandler(id, property, value)}
+                  onChange={value => this.infoChangeHandler(id, propertyParser(property), value)}
                 />
               ) : (
                 basic[property]

@@ -31,12 +31,12 @@ class Login extends Component {
   };
 
   handleSubmit = type => async (err, values) => {
-    const loginFunc = type === 'person'? indLogin: entLogin;
+    const loginFunc = type === 'person' ? indLogin : entLogin;
     if (!err) {
       const res = await loginFunc(values['userName'], values['password']);
       if (!res.success) {
         message.error('用户名或密码错误！');
-        return ;
+        return;
       }
       message.success('登录成功，跳转到主页...');
       const { dispatch } = this.props;
@@ -83,8 +83,13 @@ class Login extends Component {
   render() {
     const query = getPageQuery();
     if (query.type !== 'person' && query.type !== 'enterprise') {
-      return <SelectUserType action='登录'
-                             linkToPerson="?type=person" linkToEnterprise="?type=enterprise" />;
+      return (
+        <SelectUserType
+          action="登录"
+          linkToPerson="?type=person"
+          linkToEnterprise="?type=enterprise"
+        />
+      );
     }
 
     const { userLogin, submitting } = this.props;
@@ -93,14 +98,15 @@ class Login extends Component {
     return (
       <div className={styles.main}>
         <LoginComponents
-          defaultActiveKey='account'
+          defaultActiveKey="account"
           onTabChange={() => {}}
           onSubmit={this.handleSubmit(query.type)}
           ref={form => {
             this.loginForm = form;
           }}
         >
-          {<Tab
+          {
+            <Tab
               key="account"
               tab={formatMessage({
                 id: 'user-login.login.tab-login-credentials',

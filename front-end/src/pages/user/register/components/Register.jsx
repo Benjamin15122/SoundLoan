@@ -6,7 +6,6 @@ import styles from './style.less';
 import { formatMessage } from 'umi-plugin-locale';
 
 class Register extends Component {
-
   state = {
     count: 0,
     confirmDirty: false,

@@ -5,9 +5,7 @@ import Link from 'umi/link';
 import { connect } from 'dva';
 import styles from './style.less';
 import Register from './Register';
-import {
-
-} from '@/services/register';
+import {} from '@/services/register';
 import router from 'umi/router';
 import { askForIdCard } from '@/services/register';
 import { legalPersonAuthenByPhone } from '@/services/register';
@@ -21,7 +19,6 @@ const FormItem = Form.Item;
   submitting: loading.effects['userRegister/submit'],
 }))
 class RegisterForPerson extends Register {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -30,21 +27,21 @@ class RegisterForPerson extends Register {
       currentStep: 0,
       imgUrl1: '',
       imgUrl2: '',
-    }
+    };
   }
 
   firstForm = () => {
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
     const { help, visible } = this.state;
-    const handleNext = (e) => {
+    const handleNext = e => {
       e.preventDefault();
       form.validateFields((err, values) => {
         if (!err) {
           const { nickname, password } = values;
           this.setState({ currentStep: 1, formData: { nickname, password } });
         }
-      })
+      });
     };
     return (
       <Form onSubmit={handleNext}>
@@ -56,12 +53,7 @@ class RegisterForPerson extends Register {
                 message: '请输入用户名',
               },
             ],
-          })(
-            <Input
-              size="large"
-              placeholder='用户名'
-            />,
-          )}
+          })(<Input size="large" placeholder="用户名" />)}
         </FormItem>
         <FormItem help={help}>
           <Popover
@@ -147,14 +139,14 @@ class RegisterForPerson extends Register {
           </Button>
         </FormItem>
       </Form>
-    )
+    );
   };
 
   finalForm = () => {
     const { form } = this.props;
     const { getFieldDecorator } = form;
     const { formData, count } = this.state;
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
       e.preventDefault();
       form.validateFields(async (err, values) => {
         if (!err) {
@@ -172,9 +164,9 @@ class RegisterForPerson extends Register {
           message.success('注册成功, 跳转到登录界面...');
           router.replace('/user/login');
         }
-      })
+      });
     };
-    const getCaptcha = async (e) => {
+    const getCaptcha = async e => {
       e.preventDefault();
       const { form } = this.props;
       const { imgUrl1, imgUrl2 } = this.state;
@@ -182,13 +174,15 @@ class RegisterForPerson extends Register {
       const back_pic = imgUrl2.slice(imgUrl2.indexOf(',') + 1);
       const result = await askForIdCard(front_pic, back_pic);
       const ok = await legalPersonAuthenByPhone(
-        form.getFieldValue('name'), result.front.code, form.getFieldValue('contact')
+        form.getFieldValue('name'),
+        result.front.code,
+        form.getFieldValue('contact'),
       );
       if (ok) {
         message.success('发送验证码成功');
       }
     };
-    const beforeUpload = (urlProperty) => async (file) => {
+    const beforeUpload = urlProperty => async file => {
       try {
         const dataUrl = await new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -208,17 +202,18 @@ class RegisterForPerson extends Register {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    const UploadView = (urlProperty) => (
+    const UploadView = urlProperty => (
       <Upload
         listType="picture-card"
         showUploadList={false}
-        accept='.jpg'
+        accept=".jpg"
         beforeUpload={beforeUpload(urlProperty)}
-
       >
-        {this.state[urlProperty] ?
+        {this.state[urlProperty] ? (
           <img src={this.state[urlProperty]} alt="avatar" style={{ width: '100%' }} />
-          : uploadButton}
+        ) : (
+          uploadButton
+        )}
       </Upload>
     );
     return (
@@ -241,10 +236,8 @@ class RegisterForPerson extends Register {
         </FormItem>
         <FormItem>
           {getFieldDecorator('name', {
-            rules: [ { required: true, message: '请输入姓名' }]
-          })(
-            <Input placeholder='姓名'/>
-          )}
+            rules: [{ required: true, message: '请输入姓名' }],
+          })(<Input placeholder="姓名" />)}
         </FormItem>
         <FormItem>
           {getFieldDecorator('contact', {
@@ -294,27 +287,26 @@ class RegisterForPerson extends Register {
               )}
             </Col>
             <Col span={8}>
-              <Button
-                disabled={!!count}
-                onClick={getCaptcha}
-              >
+              <Button disabled={!!count} onClick={getCaptcha}>
                 {count
                   ? `${count} s`
                   : formatMessage({
-                    id: '.-user-register.register.get-verification-code',
-                  })}
+                      id: '.-user-register.register.get-verification-code',
+                    })}
               </Button>
             </Col>
           </Row>
         </FormItem>
         <FormItem>
-          <Button type='primary' htmlType='submit' style={{ width: '100%' }}>注册账户</Button>
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            注册账户
+          </Button>
         </FormItem>
       </Form>
-    )
+    );
   };
 
-  getStepForm = (currentStep) => {
+  getStepForm = currentStep => {
     if (currentStep === 0) {
       return this.firstForm();
     } else {
@@ -337,8 +329,8 @@ class RegisterForPerson extends Register {
           </Col>
         </Row>
         <Steps current={currentStep} style={{ marginBottom: '10px' }}>
-          <Steps.Step title='账号信息'/>
-          <Steps.Step title='个人认证'/>
+          <Steps.Step title="账号信息" />
+          <Steps.Step title="个人认证" />
         </Steps>
         {this.getStepForm(currentStep)}
       </div>

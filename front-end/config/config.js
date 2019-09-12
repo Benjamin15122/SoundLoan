@@ -158,12 +158,13 @@ export default {
         },
         {
           path: '/askLoanInfo',
-          component: './requireLoan/components/loanInfo'
+          component: './requireLoan/components/loanInfo',
         },
         {
-          path: '/',
-          hideInMenu: true,
-          component: './Welcome',
+          path: '/contractDetect',
+          name: '合同检测',
+          icon: 'audit',
+          component: './contractDetect',
         },
         {
           component: './404',
