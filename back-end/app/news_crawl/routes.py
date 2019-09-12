@@ -6,11 +6,10 @@ from models.EnterpriseNews import EnterpriseNews
 
 @app.route("/news/getNews", methods=["GET"])
 def get_news():
-    '''
-    test_name = '阿里'
-    news = EnterpriseNews.query.filter(EnterpriseNews.EnterpriseName == test_name).all()
-    print(news[1].to_dict()['distribution_date'])
-    '''
+
+    # test_name = '阿里'
+    # news = EnterpriseNews.query.filter(EnterpriseNews.EnterpriseName == test_name).all()
+    # print(news[1].to_dict()['distribution_date'])
     company_name = request.args.get('company_name', None)
     if company_name is None:
         return jsonify({'success': False, 'message': '请输入正确的企业名称'})
