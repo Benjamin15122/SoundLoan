@@ -124,6 +124,13 @@ export default {
               component: './personalManagement/loans',
             },
             {
+              name: '合同详情',
+              path: 'content',
+              component: './personalManagement/contracts/content',
+              icon: 'edit',
+              // hideInMenu: true,
+            },
+            {
               name: '我的合同',
               path: 'contracts',
               icon: 'audit',
