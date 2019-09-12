@@ -22,6 +22,31 @@ class LoanRecord(db.Model):
     OrderStatus = db.Column(db.Enum('applied', 'auditing', 'uploading_contract', 'effective', 'finished'))
     ContractId = db.Column(db.Integer, db.ForeignKey('contract.Id'))
 
+    DefaultProb = db.Column(db.Float)
+
+    def __init__(self,
+                    LoanMoney, Rate, LenderId,
+                    DebtorId, ProductId,
+                    AppDateTimestamp, DueDateTimestamp, StartDateTimestamp, EndDateTimestamp,
+                    RepayStatus, OrderStatus, ContractId=None):
+        self.LoanMoney = LoanMoney
+        self.Rate = Rate
+        self.LenderId = LenderId
+        self.DebtorId = DebtorId
+        self.ProductId = ProductId
+        self.AppDateTimestamp = AppDateTimestamp
+        self.DueDateTimestamp = DueDateTimestamp
+        self.StartDateTimestamp = StartDateTimestamp
+        self.EndDateTimestamp = EndDateTimestamp
+        self.RepayStatus = RepayStatus
+        self.OrderStatus = OrderStatus
+        self.ContractId = ContractId
+
+        from app.manage.manage_utils import get_default_prob_info
+
+        default_prob_info = get_default_prob_info(self)
+        # self.DefaultProb = computeDefaultProb(get_default_prob_info())
+
     def to_dict(self):
         return {
             'id': self.Id,

@@ -11,6 +11,7 @@ from models.LoanRecord import LoanRecord
 from models.Contract import Contract
 from models.LoanProductComment import LoanProductComment
 from models.LoanCommentComplain import LoanCommentComplain
+from models.LoanRequiredMaterial import LoanRequiredMaterial
 
 
 @app.route("/infoMan/indUserInfo", methods=["GET"])
@@ -101,7 +102,14 @@ def login_individual_user():
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
     if user.verify_password(password):
-        return jsonify({'success': True, 'token': user.gen_auth_token()})
+        return jsonify({
+            'success': True,
+            'content': {
+                'id': user.Id,
+                'nickname': user.Nickname,
+                'token': user.gen_auth_token(),
+            },
+        })
     else:
         return jsonify({'success': False, 'message': 'Wrong password！'})
  
@@ -114,7 +122,14 @@ def login_individual_user_phone():
     user = IndividualUser.query.filter(IndividualUser.PhoneNumber == phone_number).first()
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
-    return jsonify({'success': True, 'token': user.gen_auth_token()})
+    return jsonify({
+        'success': True,
+        'content': {
+            'id': user.Id,
+            'nickname': user.Nickname,
+            'token': user.gen_auth_token(),
+        },
+    })
 
 
 @app.route("/infoMan/entUserInfo", methods=["GET"])
@@ -261,7 +276,14 @@ def login_enterprise_user():
     if not user:
         return jsonify({'success': False, 'message': 'User does not exist！'})
     if user.verify_password(password):
-        return jsonify({'success': True, 'token': user.gen_auth_token()})
+        return jsonify({
+            'success': True,
+            'content': {
+                'id': user.Id,
+                'name': user.Name,
+                'token': user.gen_auth_token(),
+            },
+        })
     else:
         return jsonify({'success': False, 'message': 'Wrong password！'})
 
@@ -517,4 +539,45 @@ def add_comment_complain():
         return jsonify({
             'success': False,
             'message': str(e)
+        })
+
+
+@app.route('/infoMan/entAskMaterial', methods=['POST'])
+def enterprise_ask_material():
+    try:
+        loan_record_id = request.form.get('loan_record_id')
+        essential = request.form.get('essential')
+        content = request.form.get('content')
+        send_addr = request.form.get('send_addr')
+        item = LoanRequiredMaterial(LoanRecordId=loan_record_id, Content=content,
+                                    Essential=essential, SendAddr=send_addr)
+        db.session.add(item)
+        db.commit()
+        return jsonify({
+            'success': True,
+            'message': 'add requirement successfully. '
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        })
+
+
+@app.route('/infoMan/getAskMaterial', methods=['GET'])
+def get_asked_materials():
+    try:
+        loan_record_id = request.args.get('loan_record_id')
+        all_requirements = LoanRequiredMaterial.query.filter(LoanRequiredMaterial.LoanRecordId == loan_record_id).all()
+        rtn = [each.to_dict() for each in all_requirements]
+        return jsonify({
+            'success': True,
+            'message': '',
+            'content': rtn
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e),
+            'content': None
         })
