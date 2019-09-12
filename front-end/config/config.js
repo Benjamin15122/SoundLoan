@@ -103,12 +103,13 @@ export default {
       path: '/',
       component: '../layouts/BasicLayout',
       // Routes: ['src/pages/Authorized'],
-      authority: ['admin', 'user'],
+      // authority: ['admin', 'user'],
       routes: [
         {
           name: '个人信息',
           icon: 'profile',
           path: '/personalManagement',
+          authority: ['person'],
           routes: [
             {
               name: '个人空间',
@@ -140,7 +141,8 @@ export default {
           name: '企业查询',
           icon: 'database',
           path: '/entInfo/inquiry',
-          component: './entInfo/inquiry'
+          component: './entInfo/inquiry',
+          authority: ['person'],
         },
         {
           path: '/entInfo/details',
@@ -152,6 +154,7 @@ export default {
           name: '我要借款',
           icon: 'money-collect',
           component: './requireLoan/components/requireLoan',
+          authority: ['person'],
         },
         {
           path: '/askLoanInfo',
@@ -167,7 +170,7 @@ export default {
         },
       ],
     },
-    
+
     {
       component: './404',
     },
