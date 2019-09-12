@@ -102,7 +102,7 @@ export default {
     {
       path: '/',
       component: '../layouts/BasicLayout',
-      Routes: ['src/pages/Authorized'],
+      // Routes: ['src/pages/Authorized'],
       authority: ['admin', 'user'],
       routes: [
         {
@@ -137,19 +137,25 @@ export default {
           ],
         },
         {
-          name: '企业信息',
+          name: '企业查询',
           icon: 'database',
-          path: '/entInfo',
-          routes: [
-            {
-              name: '企业详情',
-              path: 'details',
-              component: './entInfo/details',
-            },
-            {
-              component: './404',
-            },
-          ],
+          path: '/entInfo/inquiry',
+          component: './entInfo/inquiry',
+        },
+        {
+          path: '/entInfo/details',
+          hideInMenu: true,
+          component: './entInfo/details',
+        },
+        {
+          path: '/requireLoan',
+          name: '我要借款',
+          icon: 'money-collect',
+          component: './requireLoan/components/requireLoan',
+        },
+        {
+          path: '/askLoanInfo',
+          component: './requireLoan/components/loanInfo',
         },
         {
           path: '/contractDetect',
@@ -162,6 +168,7 @@ export default {
         },
       ],
     },
+
     {
       component: './404',
     },

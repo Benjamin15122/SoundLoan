@@ -25,7 +25,13 @@ const menuDataRender = menuList =>
 const footerRender = (_, defaultDom) => {
   if (!isAntDesignPro()) {
     // return defaultDom;
-    return <div style={{textAlign: 'center'}}>TODO: ADD FOOTER</div>
+    return (
+      <footer style={{ textAlign: 'center', background: 'white' }}>
+        <div>本产品暂不向在校学生提供服务</div>
+        <div>如有问题，请联系xxxxxxx@xxx.com</div>
+        <small>copyright&copy;LoanGuardians</small>
+      </footer>
+    );
   }
 
   return (

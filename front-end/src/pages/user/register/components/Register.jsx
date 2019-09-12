@@ -6,7 +6,6 @@ import styles from './style.less';
 import { formatMessage } from 'umi-plugin-locale';
 
 class Register extends Component {
-
   state = {
     count: 0,
     confirmDirty: false,
@@ -68,27 +67,29 @@ class Register extends Component {
 
     return 'poor';
   };
-  handleSubmit = e => {
-    e.preventDefault();
-    const { form, dispatch } = this.props;
-    form.validateFields(
-      {
-        force: true,
-      },
-      (err, values) => {
-        if (!err) {
-          const { prefix } = this.state;
-          dispatch({
-            type: 'userRegister/submit',
-            payload: {
-              ...values,
-              prefix
-            },
-          });
-        }
-      },
-    );
-  };
+
+  // handleSubmit = e => {
+  //   e.preventDefault();
+  //   const { form, dispatch } = this.props;
+  //   form.validateFields(
+  //     {
+  //       force: true,
+  //     },
+  //     (err, values) => {
+  //       if (!err) {
+  //         const { prefix } = this.state;
+  //         dispatch({
+  //           type: 'userRegister/submit',
+  //           payload: {
+  //             ...values,
+  //             prefix
+  //           },
+  //         });
+  //       }
+  //     },
+  //   );
+  // };
+
   checkConfirm = (rule, value, callback) => {
     const { form } = this.props;
 
