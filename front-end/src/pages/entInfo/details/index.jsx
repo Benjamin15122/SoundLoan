@@ -12,7 +12,6 @@ import RelationItem from '@/pages/entInfo/details/components/RelationItem';
 const TabPane = Tabs.TabPane;
 
 class EntInfoDetails extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +20,7 @@ class EntInfoDetails extends Component {
       comments: [],
       changes: [],
       relations: [],
-    }
+    };
   }
 
   componentDidMount() {
@@ -51,51 +50,66 @@ class EntInfoDetails extends Component {
   render() {
     const { entUserInfo, news, comments, changes, relations } = this.state;
 
-    return <>
-      <PageHeaderWrapper title='企业信息详情'>
-        <Card>
-          <Introduction descriptions={entUserInfo} />
-        </Card>
-        <Card>
-          <Tabs>
-            <TabPane key='news' tab='企业新闻'>
-              <List>
-                {news.map(({ news_title, news_link, distribution_date, news_source, news_extract },
-                           index) =>
-                  <List.Item key={'n' + index}>
-                    <NewsItem title={news_title} link={news_link} date={distribution_date}
-                              source={news_source} extract={news_extract}/>
-                  </List.Item>)}
-              </List>
-            </TabPane>
-            <TabPane key='change' tab='信息变更'>
-              <List>
-                {changes.map((changeContent, index) =>
-                  <List.Item key={'ch' + index}>
-                    <ChangeItem {...changeContent}/>
-                  </List.Item>)}
-              </List>
-            </TabPane>
-            <TabPane key='relation' tab='关联关系'>
-              <List>
-                {relations.map((relationContent, index) =>
-                  <List.Item key={'r' + index}>
-                    <RelationItem {...relationContent}/>
-                  </List.Item>)}
-              </List>
-            </TabPane>
-            <TabPane key='comments' tab='用户评价'>
-              <List>
-                {comments.map((commentContent, index) =>
-                  <List.Item key={'c' + index}>
-                    <CommentItem {...commentContent}/>
-                  </List.Item>)}
-              </List>
-            </TabPane>
-          </Tabs>
-        </Card>
-      </PageHeaderWrapper>
-    </>
+    return (
+      <>
+        <PageHeaderWrapper title="企业信息详情">
+          <Card>
+            <Introduction descriptions={entUserInfo} />
+          </Card>
+          <Card>
+            <Tabs>
+              <TabPane key="news" tab="企业新闻">
+                <List>
+                  {news.map(
+                    (
+                      { news_title, news_link, distribution_date, news_source, news_extract },
+                      index,
+                    ) => (
+                      <List.Item key={'n' + index}>
+                        <NewsItem
+                          title={news_title}
+                          link={news_link}
+                          date={distribution_date}
+                          source={news_source}
+                          extract={news_extract}
+                        />
+                      </List.Item>
+                    ),
+                  )}
+                </List>
+              </TabPane>
+              <TabPane key="change" tab="信息变更">
+                <List>
+                  {changes.map((changeContent, index) => (
+                    <List.Item key={'ch' + index}>
+                      <ChangeItem {...changeContent} />
+                    </List.Item>
+                  ))}
+                </List>
+              </TabPane>
+              <TabPane key="relation" tab="关联关系">
+                <List>
+                  {relations.map((relationContent, index) => (
+                    <List.Item key={'r' + index}>
+                      <RelationItem {...relationContent} />
+                    </List.Item>
+                  ))}
+                </List>
+              </TabPane>
+              <TabPane key="comments" tab="用户评价">
+                <List>
+                  {comments.map((commentContent, index) => (
+                    <List.Item key={'c' + index}>
+                      <CommentItem {...commentContent} />
+                    </List.Item>
+                  ))}
+                </List>
+              </TabPane>
+            </Tabs>
+          </Card>
+        </PageHeaderWrapper>
+      </>
+    );
   }
 }
 

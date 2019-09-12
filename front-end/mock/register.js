@@ -6,8 +6,8 @@ export default {
     content: {
       front: {
         code: '1993209901x22',
-      }
-    }
+      },
+    },
   },
   'GET /authen/legalPersionAuthenticateByPhone': {
     success: true,
@@ -20,5 +20,5 @@ export default {
   },
   'POST /infoMan/newCreateIndUser': {
     success: true,
-  }
-}
+  },
+};

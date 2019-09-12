@@ -43,3 +43,14 @@ export function infoParser(info) {
 
   return result;
 }
+
+export function propertyParser(property) {
+  let result = '';
+  Object.keys(basicInfo).forEach(key => {
+    if (basicInfo[key] === property) result = key;
+  });
+  Object.keys(creditInfo).forEach(key => {
+    if (creditInfo[key] === property) result = key;
+  });
+  return result;
+}
