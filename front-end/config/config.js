@@ -127,8 +127,7 @@ export default {
               name: '合同详情',
               path: 'content',
               component: './personalManagement/contracts/content',
-              icon: 'edit',
-              // hideInMenu: true,
+              icon: 'edit', // hideInMenu: true,
             },
             {
               name: '我的合同',
@@ -178,12 +177,16 @@ export default {
           icon: 'audit',
           component: './contractDetect',
         },
+        // {
+        //   name: 'step-form',
+        //   path: '/step-form',
+        //   component: './step-form',
+        // },
         {
           component: './404',
         },
       ],
     },
-
     {
       component: './404',
     },
@@ -230,12 +233,13 @@ export default {
     basePath: '/',
   },
   chainWebpack: webpackPlugin,
-
   proxy: {
     '/api/': {
       target: 'http://47.103.113.144:7777/',
       changeOrigin: true,
-      pathRewrite: { '^/api': '' },
+      pathRewrite: {
+        '^/api': '',
+      },
     },
   },
 };
