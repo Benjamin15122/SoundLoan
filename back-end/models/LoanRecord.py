@@ -1,5 +1,10 @@
 from app import db, app
-from utils.credit_score_utils import compute_default_prob
+from app.personal_credit_score.routes import DefaultProbabilityModel
+
+
+def compute_default_prob(info):
+    x = info['user'].update(info['loan_record'])
+    return DefaultProbabilityModel.model.predict(x)
 
 
 class LoanRecord(db.Model):
