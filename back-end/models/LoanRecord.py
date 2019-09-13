@@ -1,4 +1,5 @@
 from app import db, app
+from utils.credit_score_utils import compute_default_prob
 
 
 class LoanRecord(db.Model):
@@ -45,7 +46,7 @@ class LoanRecord(db.Model):
         from app.manage.manage_utils import get_default_prob_info
 
         default_prob_info = get_default_prob_info(self)
-        # self.DefaultProb = computeDefaultProb(get_default_prob_info())
+        self.DefaultProb = compute_default_prob(default_prob_info)
 
     def to_dict(self):
         return {

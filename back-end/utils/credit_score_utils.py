@@ -1,5 +1,5 @@
 from app.manage.manage_utils import update_ind_user_credit_all, update_ind_user_credit_score, all_individual_users
-from app.personal_credit_score.routes import PersonalCreditModel
+from app.personal_credit_score.routes import PersonalCreditModel, DefaultProbabilityModel
 
 
 def update_credit_scores():
@@ -10,6 +10,11 @@ def update_credit_scores():
     credit_scores = model.predict(users)
     for user, credit_score in zip(users, credit_scores):
         update_ind_user_credit_score(user['id'], credit_score)
+
+
+def compute_default_prob(info):
+    x = info['user'].update(info['loan_record'])
+    return DefaultProbabilityModel.model.predict(x)
 
 
 if __name__ == '__main__':
