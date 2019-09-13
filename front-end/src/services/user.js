@@ -22,3 +22,8 @@ export const indLogin = async (nickname, password) => {
 export const entLogin = async (nickname, password) => {
   return await request.post('/infoMan/entLogin', { data: { nickname, password }});
 };
+
+export const changePW = async (postData) => {
+  const res = await request.post('/infoMan/changePW', { data: postData });
+  return res['success'];
+};

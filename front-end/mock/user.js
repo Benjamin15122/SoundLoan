@@ -18,6 +18,9 @@ export default {
       authority: 'enterprise',
     }
   },
+  'POST /infoMan/changePW': {
+    success: true,
+  },
   // 支持值为 Object 和 Array
   'GET /api/currentUser': {
     name: 'Serati Ma',
