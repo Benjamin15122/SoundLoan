@@ -68,5 +68,6 @@ class LoanRecord(db.Model):
             'end_date_timestamp': self.EndDateTimestamp,
             'repay_status': self.RepayStatus,
             'order_status': self.OrderStatus,
+            'default_prob': self.DefaultProb
         }
 

@@ -326,9 +326,9 @@ def ent_product_comment():
     } for c in commentList]
 
     # 拿出每条评论的用户名
-    for each in result:
-        ind = IndividualUser.query.get(each['user_id'])
-        each['user_name'] = ind.Nickname
+    for i in range(len(result)):
+        ind = IndividualUser.query.get(result[i]['user_id'])
+        result[i]['user_name'] = ind.Nickname
 
     return jsonify({'success': True, 'content': result})
 
@@ -419,8 +419,13 @@ def ent_loan_apply():
 
     loans = LoanRecord.query.filter(LoanRecord.LenderId == userId).all()
     result = [l.to_dict() for l in loans]
+    for i in range(len(result)):
+        indUserId = result[i]['user_id']
+        ind = IndividualUser.query.filter(IndividualUser.Id == indUserId).first()
+        result[i]['ind_user_name'] = ind.Nickname
 
     return jsonify({'success': True, 'content': result})
+
 
 @app.route("/infoMan/getMyApply", methods=["GET"])
 def user_applied_loan():
