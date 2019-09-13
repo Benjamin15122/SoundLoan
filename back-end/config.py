@@ -58,11 +58,11 @@ class Config(object):
     ]
 
     # 支付宝配置
-    BASE_DIR = './'
+    BASE_DIR = pwd = os.getcwd().split('back-end')[0]
     # 初始化操作
     # 设置秘钥公钥的存放路径
-    app_private_key_path = os.path.join(BASE_DIR, 'external_api_keys/myapp_private_key.txt')
-    alipay_public_key_path = os.path.join(BASE_DIR, 'external_api_keys/alipay_public_key.txt')
+    app_private_key_path = os.path.join(BASE_DIR, 'back-end/external_api_keys/myapp_private_key.txt')
+    alipay_public_key_path = os.path.join(BASE_DIR, 'back-end/external_api_keys/alipay_public_key.txt')
     # TODO：前端完成后修改这个地址
     redirect_url = "http://47.103.113.144:"+str(PORT)+"/alipay/completed"
     notification_url = "http://47.103.113.144:"+str(PORT)+"/alipay/notification"

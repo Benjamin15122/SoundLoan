@@ -129,6 +129,14 @@ def upload_contract_text():
         )
         db.session.add(contract)
         db.session.commit()
+
+        record_id = request.form.get('record_id')
+        if record_id is not None:
+            item = LoanRecord.query.filter(LoanRecord.Id == record_id).first()
+            item.OrderStatus = 'effective'
+            item.ContractId = contract.Id
+            db.session.commit()
+
         return jsonify({
             'success': True,
             'message': '',
