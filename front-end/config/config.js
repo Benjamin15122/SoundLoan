@@ -210,13 +210,8 @@ export default {
           path: '/contractDetect',
           name: '合同检测',
           icon: 'audit',
-          component: './contractDetect',
+          component: './step-form',
         },
-        // {
-        //   name: 'step-form',
-        //   path: '/step-form',
-        //   component: './step-form',
-        // },
         {
           component: './404',
         },
