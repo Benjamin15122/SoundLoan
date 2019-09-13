@@ -18,10 +18,9 @@ class CoEval extends Component {
 
   componentDidMount() {
     const {user} = this.props;
-    const that = this;
-    (async function() {
+    (async () => {
       const res = await getEntProductComments(user.name);
-      that.setState({ comments: res.concat(res).concat(res) });
+      this.setState({ comments: res.concat(res).concat(res) });
     })();
   }
 
