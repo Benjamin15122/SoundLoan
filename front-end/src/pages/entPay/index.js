@@ -24,6 +24,13 @@ export class index extends Component {
         });
     }
 
+    payConfirm = ()=>{
+        const {step} = this.state;
+        this.setState({
+            step: 1
+        });
+    }
+
     render() {
         const {step} = this.state;
         console.log("index");
@@ -36,9 +43,17 @@ export class index extends Component {
                     </ChooseProgram>
                 )
             case 2:
-                return <ContractPay></ContractPay>
+                return (
+                    <ContractPay
+                        payConfirm={this.payConfirm}>
+                    </ContractPay>
+                )
             case 3:
-                return <RatePay></RatePay>
+                return (
+                    <RatePay
+                        payConfirm={this.payConfirm}>
+                    </RatePay>
+                )
         }
     }
 }
