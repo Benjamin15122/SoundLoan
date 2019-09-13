@@ -6,7 +6,7 @@ URI_FORMAT = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'
 
 class Config(object):
     HOST = "127.0.0.1"
-    PORT = 5000
+    PORT = 6100
 
     SECRET_KEY = "gTzSygPGe^#v6N7W"  # used for password encryption
 
