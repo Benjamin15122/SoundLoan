@@ -2,6 +2,7 @@ import pickle
 import pandas as pd
 import datetime
 import math
+from algorithm.automl_credit.automl import model
 
 
 class CreditModel(object):
@@ -11,6 +12,9 @@ class CreditModel(object):
         self.path = pwd + 'back-end/algorithm/personal_credit/' + path
         self.model = None
         with open(self.path, 'rb') as f:
+            import os
+            import sys
+            sys.path.insert(0, os.getcwd().split('back-end')[0] + 'back-end/algorithm/personal_credit/automl')
             self.model = pickle.load(f)
 
     @staticmethod
