@@ -1,51 +1,88 @@
-import React, { PureComponent } from 'react';
-import { List, Avatar, Icon, Button } from 'antd';
+import React, { Component } from 'react';
+import { List, Modal, Input, Button, message } from 'antd';
+import { addCommentComplain, getEntProductComments } from '@/services/enterprise';
+import {connect} from 'dva';
 
-const listData = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: 'http://ant.design',
-    title: `ant design part ${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description:
-      'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-      'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-  });
-}
 
-const IconText = ({ type, text }) => (
-  <span>
-    <Icon type={type} style={{ marginRight: 8 }} />
-    {text}
-  </span>
-);
+@connect(({user}) => ({user}))
+class CoEval extends Component {
 
-class CoEval extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      comments: [],
+      showModal: false,
+      postData: {},
+    }
+  }
+
+  componentDidMount() {
+    const {user} = this.props;
+    const that = this;
+    (async function() {
+      const res = await getEntProductComments(user.name);
+      that.setState({ comments: res.concat(res).concat(res) });
+    })();
+  }
+
+  handleButton = (comment_product_id, comment_user_id) => (e) => {
+    e.preventDefault();
+    const {user} = this.props;
+    this.setState({ postData: {
+      ent_id: user.id, comment_product_id, comment_user_id
+      }});
+    this.setState({ showModal: true });
+  };
+
+  handleSubmit = async (e) => {
+    e.preventDefault();
+    const ok = await addCommentComplain(this.state.postData);
+    if (ok) {
+      message.success('提交申诉成功');
+      this.setState({ showModal: false });
+    }
+    else {
+      message.error('提交申诉失败');
+    }
+    this.setState({ postData: {}});
+  };
+
   render() {
-    return (
+    const { comments, showModal } = this.state;
+    return <>
       <List
         itemLayout="vertical"
         size="large"
         pagination={{
           onChange: page => {
-            console.log(page);
           },
-          pageSize: 3,
+          pageSize: 5,
         }}
-        dataSource={listData}
+        dataSource={comments}
         renderItem={item => (
-          <List.Item key={item.title} extra={<Button type="primary">申诉</Button>}>
+          <List.Item extra={<Button type="primary"
+                                    onClick={this.handleButton(
+                                      item['product_id'], item['user_id']
+                                    )}>
+            申诉
+          </Button>}>
             <List.Item.Meta
-              avatar={<Avatar src={item.avatar} />}
-              title={<a href={item.href}>{item.title}</a>}
-              description={item.description}
+              title={item['user_name']} description={item['product_name']}
             />
-            {item.content}
+            {item['comment']}
           </List.Item>
         )}
       />
-    );
+      <Modal title='请填写申诉内容' visible={showModal}
+             onCancel={() => this.setState({ showModal: false, postData: {} })}
+             onOk={this.handleSubmit}
+      >
+        <Input.TextArea rows={4} onChange={value => this.setState({
+          postData: { ...this.state.postData, complain_content: value }
+        })} />
+      </Modal>
+    </>;
   }
 }
+
 export default CoEval;

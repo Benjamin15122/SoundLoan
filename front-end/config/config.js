@@ -146,6 +146,7 @@ export default {
         {
           name: '企业空间',
           path: '/companySpace',
+          icon: 'bank',
           routes: [
             {
               name: '企业信息',
