@@ -144,6 +144,40 @@ export default {
           ],
         },
         {
+          name: '企业空间',
+          path: '/companySpace',
+          routes: [
+            {
+              name: '企业信息',
+              path: 'coInfo',
+              component: './companySpace/coInfo',
+            },
+            {
+              name: '企业评价',
+              path: 'coEval',
+              component: './companySpace/coEval',
+            },
+            {
+              name: '企业合同',
+              path: 'coCtrct',
+              component: './companySpace/coCtrct',
+            },
+            {
+              name: '用户申请',
+              path: 'userApply',
+              component: './companySpace/userApply',
+            },
+            {
+              name: '修改密码',
+              path: 'changePassword',
+              component: './companySpace/changePassword',
+            },
+            {
+              component: './404',
+            },
+          ],
+        },
+        {
           name: '企业查询',
           icon: 'database',
           path: '/entInfo/inquiry',
