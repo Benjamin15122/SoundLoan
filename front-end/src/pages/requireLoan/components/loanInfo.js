@@ -23,7 +23,7 @@ export class LoanInfo extends Component {
   handleSubmit(e) {
     e.preventDefault();
     //...
-    message.success('申请成功，可在我的申请查看进度及状态');
+    message.success('申请成功，可在"我的贷款"查看进度及状态');
     router.replace('/personalManagement/loans');
   }
 

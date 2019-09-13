@@ -168,6 +168,11 @@ export default {
           component: './requireLoan/components/loanInfo',
         },
         {
+          path: '/entPay',
+          name: '企业付款(临时路由)',
+          component: './entPay/components/chooseProgram',
+        },
+        {
           path: '/contractDetect',
           name: '合同检测',
           icon: 'audit',
