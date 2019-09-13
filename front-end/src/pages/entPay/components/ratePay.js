@@ -5,7 +5,7 @@ export class RatePay extends Component {
 
     payConfirm = e => {
         e.preventDefault();
-        message.success('您的上一年合同签订费用已付清');
+        message.success('您的用户信用评分费用已付清');
         this.props.payConfirm();
     }
 
