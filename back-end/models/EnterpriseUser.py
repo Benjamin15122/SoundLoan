@@ -25,7 +25,8 @@ class EnterpriseUser(db.Model):
     Description = db.Column(db.String(1000))
 
     CreditScore = db.Column(db.Float)
-    
+    FeeToPay = db.Column(db.Float)
+
     aes = AES.new(extend_to_16(app.config['SECRET_KEY']), AES.MODE_ECB)
 
 
@@ -50,6 +51,8 @@ class EnterpriseUser(db.Model):
         # '-1' as 'not set'
         self.CreditScore = -1
 
+        self.FeeToPay = 0
+
     def to_dict(self):
         return {
             'id': self.Id,
@@ -66,7 +69,8 @@ class EnterpriseUser(db.Model):
             'contact': self.Contact,
             'description': self.Description,
 
-            'credit_score': self.CreditScore
+            'credit_score': self.CreditScore,
+            'fee_to_pay': self.FeeToPay
         }
 
     def get_name(self):

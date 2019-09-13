@@ -178,6 +178,8 @@ def sign_contract():
                 })
         elif user_type == 'enterprise':
             user = EnterpriseUser.query.filter(EnterpriseUser.Name==user_name).first()
+            # 企业每签订一份合同需要收费
+            user.FeeToPay += Config.CONTRACT_FEE
             if not user.verify_password(password):
                 return jsonify({
                     'success': False,
