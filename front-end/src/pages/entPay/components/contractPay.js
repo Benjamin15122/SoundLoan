@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class contractPay extends Component {
+export class ContractPay extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ export class contractPay extends Component {
     }
 }
 
-export default contractPay
+export default ContractPay

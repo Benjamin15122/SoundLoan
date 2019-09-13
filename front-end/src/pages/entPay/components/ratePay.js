@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class ratePay extends Component {
+export class RatePay extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ export class ratePay extends Component {
     }
 }
 
-export default ratePay
+export default RatePay

@@ -170,7 +170,7 @@ export default {
         {
           path: '/entPay',
           name: '企业付款(临时路由)',
-          component: './entPay/components/chooseProgram',
+          component: './entPay/index',
         },
         {
           path: '/contractDetect',
