@@ -63,8 +63,15 @@ const BasicLayout = props => {
   /**
    * constructor
    */
+  const currentUser = JSON.parse(sessionStorage.getItem('currentUser')) || {};
+  if (currentUser.name && !user.currentUser.name) {
+    dispatch({
+      type: 'user/saveCurrentUser',
+      payload: currentUser,
+    });
+  }
   const { pathname, query } = location;
-  if (!user.currentUser.name) {
+  if (!user.currentUser.name && !currentUser.name) {
     router.replace({
       pathname: '/user/login',
       query: { ...query, redirect: pathname },

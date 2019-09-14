@@ -32,6 +32,7 @@ class Login extends Component {
         message.error('用户名或密码错误！');
         return;
       }
+      sessionStorage.setItem('currentUser', JSON.stringify(res.content));
       const { dispatch } = this.props;
       dispatch({
         type: 'user/saveCurrentUser',
