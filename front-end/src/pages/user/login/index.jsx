@@ -1,4 +1,4 @@
-import { Alert, Checkbox, Icon, message } from 'antd';
+import { Alert, message } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 import Link from 'umi/link';
@@ -10,7 +10,7 @@ import SelectUserType from '@/pages/user/components/SelectUserType';
 import { entLogin, indLogin } from '@/services/user';
 import router from 'umi/router';
 
-const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
+const { Tab, UserName, Password,  Submit } = LoginComponents;
 
 @connect(({ userLogin, loading }) => ({
   userLogin,

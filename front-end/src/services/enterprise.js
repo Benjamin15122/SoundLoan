@@ -20,3 +20,10 @@ export const getAllContract = async (user_name, user_type) => {
   const res = await request.post('/contract/getAll', {data: { user_name, user_type}});
   return res['content'];
 };
+
+export const transferMoney = async (postData) => {
+  const formData = new FormData();
+  Object.keys(postData).forEach(k => {formData.append(k, postData[k])});
+  const res = await request.post('/apis/citi/moneymovement', {data: formData});
+  return res['success'];
+};

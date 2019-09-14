@@ -181,6 +181,11 @@ export default {
               component: './personalManagement/center',
             },
             {
+              name: '转账结果',
+              path: 'transferResult',
+              component: './companySpace/TransferResult',
+            },
+            {
               component: './404',
             },
           ],

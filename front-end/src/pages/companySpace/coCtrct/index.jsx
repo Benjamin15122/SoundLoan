@@ -62,8 +62,14 @@ class CoCtrct extends PureComponent {
       title: '合同签订',
       key: 'sign',
       render: (_, record) => {
-        if (['NoSign', 'Individual'].indexOf(record['sign_state']) < 0)
-          return <b>--</b>;
+        if (['NoSign', 'Individual'].indexOf(record['sign_state']) < 0) {
+          if (record['sign_state'] !== 'BothSign')
+            return <b>--</b>;
+          else
+            return <Button href='https://sandbox.apihub.citi.com/gcb/api/authCode/oauth2/authorize?response_type=code&client_id=d104de7d-07ad-4700-b7c8-7330f93643cf&scope=internal_domestic_transfers&countryCode=HK&businessCode=GCB&locale=en_HK&state=666&redirect_uri=http://47.103.113.144:6013/CitiAuthCodeRedirect'>
+              放款
+            </Button>
+        }
         return <Button onClick={(e) => {
           e.preventDefault();
           this.setState({
