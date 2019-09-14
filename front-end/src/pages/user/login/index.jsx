@@ -38,10 +38,14 @@ class Login extends Component {
         payload: res.content,
       });
       const query = getPageQuery();
+      const { redirect, ...otherQuery } = query;
       console.log(query.redirect);
       if (query.redirect && query.redirect !== '/') {
         message.success('登录成功，正在重定向...');
-        router.replace(query.redirect);
+        router.replace({
+          pathname: query.redirect,
+          query: otherQuery,
+        });
         return;
       }
       message.success('登录成功，跳转到主页...');
