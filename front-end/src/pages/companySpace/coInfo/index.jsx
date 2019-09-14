@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react';
+import ChangeForm from './component/ChangeForm';
+import { getEntUserInfo, changeEntUser } from '@/services/enterprise';
+import {connect} from 'dva';
 import {
   Descriptions,
   Badge,
@@ -16,8 +19,17 @@ import {
   AutoComplete,
 } from 'antd';
 
+@connect(({user}) => ({user}))
 class CoInfo extends PureComponent {
-  state = { visible: false };
+  constructor(props) {
+    super(props);
+    this.state = {
+      infos:[],
+      showModal: false,
+      visible:false,
+    }
+  }
+  
 
   showModal = () => {
     this.setState({
@@ -39,36 +51,39 @@ class CoInfo extends PureComponent {
     });
   };
 
+  componentDidMount() {
+    const {user} = this.props;
+    const that = this;
+    (async function() {
+      const res = await getEntUserInfo(user.name);
+      that.setState({ infos: res[0] });
+    })();
+  }
+
   render() {
+    const { infos, showModal } = this.state;
     return (
       <div>
         <Descriptions bordered>
-          <Descriptions.Item label="企业名称">Cloud Database</Descriptions.Item>
-          <Descriptions.Item label="注册资本">Prepaid</Descriptions.Item>
-          <Descriptions.Item label="公司资本">YES</Descriptions.Item>
-          <Descriptions.Item label="成立日期">2018-04-24 18:00:00</Descriptions.Item>
+          <Descriptions.Item label="企业名称">{infos.name}</Descriptions.Item>
+          <Descriptions.Item label="注册资本">{infos.register_capital}</Descriptions.Item>
+          <Descriptions.Item label="企业法人">{infos.legal_person_name}</Descriptions.Item>
+          <Descriptions.Item label="公司资本">{infos.corporate_capital}</Descriptions.Item>
+          <Descriptions.Item label="成立日期">{infos.foundation_date}</Descriptions.Item>
           <Descriptions.Item label="联系方式" span={2}>
-            18612345678
+            {infos.contact}
           </Descriptions.Item>
           <Descriptions.Item label="企业官网" span={3}>
-            <Badge status="processing" text="Running" />
+            {infos.website}
           </Descriptions.Item>
-          <Descriptions.Item label="贷款利率">$80.00</Descriptions.Item>
+          <Descriptions.Item label="贷款利率">
+            {infos.fee_to_pay} 
+          </Descriptions.Item>
           <Descriptions.Item label="企业地址" span={3}>
-            $20.00
+            {infos.address}
           </Descriptions.Item>
           <Descriptions.Item label="机构介绍" span={3}>
-            Data disk type: MongoDB
-            <br />
-            Database version: 3.4
-            <br />
-            Package: dds.mongo.mid
-            <br />
-            Storage space: 10 GB
-            <br />
-            Replication_factor:3
-            <br />
-            Region: East China 1<br />
+            {infos.description}
           </Descriptions.Item>
         </Descriptions>
         <Button type="primary" onClick={this.showModal}>
@@ -80,9 +95,7 @@ class CoInfo extends PureComponent {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <ChangeForm/>
         </Modal>
       </div>
     );

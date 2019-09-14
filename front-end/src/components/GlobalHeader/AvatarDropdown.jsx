@@ -11,6 +11,7 @@ class AvatarDropdown extends React.Component {
     const { key } = event;
 
     if (key === 'logout') {
+      sessionStorage.setItem('currentUser', JSON.stringify({}));
       const { dispatch } = this.props;
 
       if (dispatch) {

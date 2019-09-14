@@ -20,6 +20,7 @@ class CoCtrct extends PureComponent {
       showSign: false,
       imgUrl: '',
       loading: false,
+      signPassword: '',
     }
   }
 
@@ -62,8 +63,14 @@ class CoCtrct extends PureComponent {
       title: '合同签订',
       key: 'sign',
       render: (_, record) => {
-        if (['NoSign', 'Individual'].indexOf(record['sign_state']) < 0)
-          return <b>--</b>;
+        if (['NoSign', 'Individual'].indexOf(record['sign_state']) < 0) {
+          if (record['sign_state'] !== 'BothSign')
+            return <b>--</b>;
+          else
+            return <Button href='https://sandbox.apihub.citi.com/gcb/api/authCode/oauth2/authorize?response_type=code&client_id=d104de7d-07ad-4700-b7c8-7330f93643cf&scope=internal_domestic_transfers&countryCode=HK&businessCode=GCB&locale=en_HK&state=666&redirect_uri=http://47.103.113.144:8000/companySpace/transferResult'>
+              放款
+            </Button>
+        }
         return <Button onClick={(e) => {
           e.preventDefault();
           this.setState({
@@ -129,20 +136,34 @@ class CoCtrct extends PureComponent {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    const UploadView = () => (
-      <Upload
-        listType="picture-card"
-        showUploadList={false}
-        accept=".jpg"
-        beforeUpload={beforeUpload}
-      >
-        {this.state['imgUrl'] ? (
-          <img src={this.state['imgUrl']} alt="avatar" style={{ width: '100%' }} />
-        ) : (
-          uploadButton
-        )}
-      </Upload>
-    );
+    const SignView = () => {
+      {/*<Upload*/
+      }
+      {/*  listType="picture-card"*/
+      }
+      {/*  showUploadList={false}*/
+      }
+      {/*  accept=".jpg"*/
+      }
+      {/*  beforeUpload={beforeUpload}*/
+      }
+      {/*>*/
+      }
+      {/*  {this.state['imgUrl'] ? (*/
+      }
+      {/*    <img src={this.state['imgUrl']} alt="avatar" style={{ width: '100%' }} />*/
+      }
+      {/*  ) : (*/
+      }
+      {/*    uploadButton*/
+      }
+      {/*  )}*/
+      }
+      {/*</Upload>*/
+      }
+      return <Input addonBefore='请输入密码确认'
+                    onChange={(value) => this.setState({ signPassword: value })}/>
+    };
     return <>
       <div>
         <Select defaultValue="all" style={{ width: 200 }} onChange={this.handleChange}>
@@ -172,7 +193,7 @@ class CoCtrct extends PureComponent {
       <Modal title='签订合同' visible={showSign}
              onCancel={() => this.setState({ showSign: false })}
              onOk={this.onSign}>
-        {UploadView()}
+        {SignView()}
       </Modal>
     </>;
   }

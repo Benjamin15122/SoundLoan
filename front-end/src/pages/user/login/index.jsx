@@ -1,4 +1,4 @@
-import { Alert, Checkbox, Icon, message } from 'antd';
+import { Alert, message } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 import Link from 'umi/link';
@@ -10,7 +10,7 @@ import SelectUserType from '@/pages/user/components/SelectUserType';
 import { entLogin, indLogin } from '@/services/user';
 import router from 'umi/router';
 
-const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
+const { Tab, UserName, Password,  Submit } = LoginComponents;
 
 @connect(({ userLogin, loading }) => ({
   userLogin,
@@ -32,13 +32,14 @@ class Login extends Component {
         message.error('用户名或密码错误！');
         return;
       }
+      sessionStorage.setItem('currentUser', JSON.stringify(res.content));
       const { dispatch } = this.props;
       dispatch({
         type: 'user/saveCurrentUser',
         payload: res.content,
       });
       const query = getPageQuery();
-      const { redirect, ...otherQuery } = query;
+      const { redirect, type, ...otherQuery } = query;
       console.log(query.redirect);
       if (query.redirect && query.redirect !== '/') {
         message.success('登录成功，正在重定向...');
@@ -72,7 +73,9 @@ class Login extends Component {
   render() {
     const { search } = this.props.location;
     const query = getPageQuery();
-    let suffix = search !== '' ? '&' + search.slice(1): '';
+    let suffix = '';
+    if (search !== '')
+      suffix = search[0] === '?'? '&' + search.slice(1): '&' + search;
     if (query.type !== 'person' && query.type !== 'enterprise') {
       return (
         <SelectUserType

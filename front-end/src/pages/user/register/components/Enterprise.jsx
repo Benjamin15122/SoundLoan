@@ -281,7 +281,8 @@ class RegisterForPerson extends Register {
       const { imgUrl1, imgUrl2, formData } = this.state;
       const front_pic = imgUrl1.slice(imgUrl1.indexOf(',') + 1);
       const back_pic = imgUrl2.slice(imgUrl2.indexOf(',') + 1);
-      const result = await askForIdCard(front_pic, back_pic);
+      // const result = await askForIdCard(front_pic, back_pic); // url 太大
+      const result = await askForIdCard();
       const ok = await legalPersonAuthenByPhone(
         formData['legal_person_name'],
         result.front.code,
