@@ -109,7 +109,7 @@ export default {
           name: '个人信息',
           icon: 'profile',
           path: '/personalManagement',
-          authority: ['person'],
+          authority: ['person', 'admin'],
           routes: [
             {
               name: '个人空间',
@@ -124,19 +124,20 @@ export default {
               component: './personalManagement/loans',
             },
             {
-              name: '合同详情',
-              path: 'content',
-              component: './personalManagement/contracts/content',
-              icon: 'edit', // hideInMenu: true,
-            },
-            {
               name: '我的合同',
               path: 'contracts',
               icon: 'audit',
               component: './personalManagement/contracts',
             },
             {
-              name: '账户设置',
+              name: '合同详情',
+              path: 'content',
+              component: './personalManagement/contracts/content',
+              icon: 'edit',
+              hideInMenu: true,
+            },
+            {
+              name: '修改密码',
               path: 'settings',
               icon: 'setting',
               component: './personalManagement/settings',
@@ -147,6 +148,7 @@ export default {
           name: '企业空间',
           path: '/companySpace',
           icon: 'bank',
+          authority: ['enterprise', 'admin'],
           routes: [
             {
               name: '企业信息',
@@ -174,6 +176,11 @@ export default {
               component: './companySpace/changePassword',
             },
             {
+              path: 'readPersonInfo',
+              hideInMenu: true,
+              component: './personalManagement/center',
+            },
+            {
               component: './404',
             },
           ],
@@ -183,7 +190,7 @@ export default {
           icon: 'database',
           path: '/entInfo/inquiry',
           component: './entInfo/inquiry',
-          authority: ['person'],
+          authority: ['person', 'admin'],
         },
         {
           path: '/entInfo/details',
@@ -195,7 +202,7 @@ export default {
           name: '我要借款',
           icon: 'money-collect',
           component: './requireLoan/components/requireLoan',
-          authority: ['person'],
+          authority: ['person', 'admin'],
         },
         {
           path: '/askLoanInfo',
@@ -205,12 +212,14 @@ export default {
           path: '/entPay',
           name: '企业付款',
           icon: 'pay-circle',
+          authority: ['enterprise', 'admin'],
           component: './entPay/index',
         },
         {
           path: '/contractDetect',
           name: '合同检测',
           icon: 'audit',
+          authority: ['person', 'admin'],
           component: './step-form',
         },
         {

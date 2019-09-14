@@ -18,6 +18,8 @@ export default {
   'menu.企业信息': '企业信息',
   'menu.企业信息.企业详情': '企业详情',
   'menu.合同检测': '合同检测',
+  'menu.企业查询': '企业查询',
+  'menu.我要借款': '我要借款',
   ...globalHeader,
   ...menu,
   ...settingDrawer,

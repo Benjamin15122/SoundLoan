@@ -44,7 +44,12 @@ class Login extends Component {
         type: 'user/saveCurrentUser',
         payload: res.content,
       });
-      router.replace('/');
+      if (type === 'person')
+        router.replace('/personalManagement/center');
+      else if (type === 'enterprise')
+        router.replace('/companySpace/coInfo');
+      else
+        router.replace('/');
     }
   };
 

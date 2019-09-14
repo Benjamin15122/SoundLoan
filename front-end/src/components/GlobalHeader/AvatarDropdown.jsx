@@ -7,7 +7,7 @@ import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
 class AvatarDropdown extends React.Component {
-  onMenuClick = event => {
+  onMenuClick = authority => event => {
     const { key } = event;
 
     if (key === 'logout') {
@@ -22,7 +22,20 @@ class AvatarDropdown extends React.Component {
       return;
     }
 
-    router.push(`/account/${key}`);
+    switch (key) {
+      case 'settings':
+        if (authority === 'person')
+          router.push('/personalManagement/settings');
+        else if (authority === 'enterprise')
+          router.push('/companySpace/changePassword');
+        return;
+      case 'center':
+        if (authority === 'person')
+          router.push('/personalManagement/center');
+        else if (authority === 'enterprise')
+          router.push('/companySpace/coInfo');
+        return;
+    }
   };
 
   render() {
@@ -38,14 +51,15 @@ class AvatarDropdown extends React.Component {
     }
 
     const menuHeaderDropdown = (
-      <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
+      <Menu className={styles.menu} selectedKeys={[]}
+            onClick={this.onMenuClick(currentUser.authority)}>
         <Menu.Item key="center">
           <Icon type="user" />
           <FormattedMessage id="menu.account.center" defaultMessage="account center" />
         </Menu.Item>
         <Menu.Item key="settings">
           <Icon type="setting" />
-          <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
+          修改密码
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">
