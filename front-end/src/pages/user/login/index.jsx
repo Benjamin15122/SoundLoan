@@ -72,7 +72,9 @@ class Login extends Component {
   render() {
     const { search } = this.props.location;
     const query = getPageQuery();
-    let suffix = search !== '' ? '&' + search.slice(1): '';
+    let suffix = '';
+    if (search !== '')
+      suffix = search[0] === '?'? '&' + search.slice(1): '&' + search;
     if (query.type !== 'person' && query.type !== 'enterprise') {
       return (
         <SelectUserType
