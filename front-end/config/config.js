@@ -183,6 +183,7 @@ export default {
             {
               name: '转账结果',
               path: 'transferResult',
+              hideInMenu: true,
               component: './companySpace/TransferResult',
             },
             {
