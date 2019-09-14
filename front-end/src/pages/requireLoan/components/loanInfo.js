@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Input, DatePicker, TimePicker, Select, Cascader, InputNumber, Button } from 'antd';
+import { Form, Input, DatePicker, TimePicker, Select, message, InputNumber, Button } from 'antd';
 import center from '@/pages/personalManagement/center';
 import { createHashHistory } from 'history';
+import router from 'umi/router';
 
 const history = createHashHistory();
 
@@ -22,9 +23,8 @@ export class LoanInfo extends Component {
   handleSubmit(e) {
     e.preventDefault();
     //...
-    const path = `/enterInfo`;
-    console.log('click');
-    history.push(path);
+    message.success('申请成功，可在"我的贷款"查看进度及状态');
+    router.replace('/personalManagement/loans');
   }
 
   render() {
@@ -61,7 +61,7 @@ export class LoanInfo extends Component {
             </Form.Item>
 
             <Form.Item style={{ marginLeft: '36%', textAlign: 'right' }}>
-              <Button type="primary" htmlType="submit" onClick={this.props.handleSubmit}>
+              <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>
                 提交
               </Button>
             </Form.Item>

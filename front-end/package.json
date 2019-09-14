@@ -25,9 +25,11 @@
     "test:all": "node ./tests/run-tests.js",
     "test:component": "umi test ./src/components"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint-staged"
+  "//": {
+    "husky": {
+      "hooks": {
+        "pre-commit": "npm run lint-staged"
+      }
     }
   },
   "lint-staged": {
@@ -48,6 +50,7 @@
     "@ant-design/pro-layout": "^4.5.9",
     "@antv/data-set": "^0.10.2",
     "antd": "^3.20.0",
+    "braft-editor": "^2.3.8",
     "classnames": "^2.2.6",
     "dropzone": "^5.5.1",
     "dva": "^2.4.1",

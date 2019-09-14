@@ -55,35 +55,6 @@ export default {
       },
     ],
   },
-  'GET /infoMan/entProductComment': {
-    content: [
-      {
-        comment: 'balabala_1_1',
-        product_name: '金利来小额贷',
-        score: 1,
-        user_id: 1,
-      },
-      {
-        comment: 'balabala_2_1',
-        product_name: '金利来小额贷',
-        score: 4,
-        user_id: 2,
-      },
-      {
-        comment: 'balabala_1_3',
-        product_name: '要你命3000贷',
-        score: 3,
-        user_id: 1,
-      },
-      {
-        comment: 'balabala_2_3',
-        product_name: '要你命3000贷',
-        score: 4,
-        user_id: 2,
-      },
-    ],
-    success: true,
-  },
   'GET /infoMan/entUserInfo': {
     content: {
       name: '某某企业',

@@ -12,6 +12,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { isAntDesignPro } from '@/utils/utils';
 import logo from '../assets/logo.svg';
+import router from 'umi/router';
 
 /**
  * use Authorized check all menu item
@@ -19,7 +20,8 @@ import logo from '../assets/logo.svg';
 const menuDataRender = menuList =>
   menuList.map(item => {
     const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
-    return Authorized.check(item.authority, localItem, null);
+    console.log(item.authority);
+    return localItem;
   });
 
 const footerRender = (_, defaultDom) => {
@@ -56,21 +58,24 @@ const footerRender = (_, defaultDom) => {
 };
 
 const BasicLayout = props => {
-  const { dispatch, children, settings } = props;
+  const { dispatch, children, settings, user } = props;
   /**
    * constructor
    */
 
-  useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-      dispatch({
-        type: 'settings/getSetting',
-      });
-    }
-  }, []);
+  if (!user.currentUser.name) {
+    router.replace('/user/login');
+  }
+  // useEffect(() => {
+  //   if (dispatch) {
+  //     dispatch({
+  //       type: 'user/fetchCurrent',
+  //     });
+  //     dispatch({
+  //       type: 'settings/getSetting',
+  //     });
+  //   }
+  // }, []);
   /**
    * init variables
    */
@@ -123,7 +128,8 @@ const BasicLayout = props => {
   );
 };
 
-export default connect(({ global, settings }) => ({
+export default connect(({ global, settings, user }) => ({
   collapsed: global.collapsed,
   settings,
+  user,
 }))(BasicLayout);

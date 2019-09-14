@@ -103,12 +103,13 @@ export default {
       path: '/',
       component: '../layouts/BasicLayout',
       // Routes: ['src/pages/Authorized'],
-      authority: ['admin', 'user'],
+      // authority: ['admin', 'user'],
       routes: [
         {
           name: '个人信息',
           icon: 'profile',
           path: '/personalManagement',
+          authority: ['person'],
           routes: [
             {
               name: '个人空间',
@@ -121,6 +122,12 @@ export default {
               path: 'loans',
               icon: 'pay-circle',
               component: './personalManagement/loans',
+            },
+            {
+              name: '合同详情',
+              path: 'content',
+              component: './personalManagement/contracts/content',
+              icon: 'edit', // hideInMenu: true,
             },
             {
               name: '我的合同',
@@ -137,10 +144,46 @@ export default {
           ],
         },
         {
+          name: '企业空间',
+          path: '/companySpace',
+          icon: 'bank',
+          routes: [
+            {
+              name: '企业信息',
+              path: 'coInfo',
+              component: './companySpace/coInfo',
+            },
+            {
+              name: '企业评价',
+              path: 'coEval',
+              component: './companySpace/coEval',
+            },
+            {
+              name: '企业合同',
+              path: 'coCtrct',
+              component: './companySpace/coCtrct',
+            },
+            {
+              name: '用户申请',
+              path: 'userApply',
+              component: './companySpace/userApply',
+            },
+            {
+              name: '修改密码',
+              path: 'changePassword',
+              component: './companySpace/changePassword',
+            },
+            {
+              component: './404',
+            },
+          ],
+        },
+        {
           name: '企业查询',
           icon: 'database',
           path: '/entInfo/inquiry',
           component: './entInfo/inquiry',
+          authority: ['person'],
         },
         {
           path: '/entInfo/details',
@@ -152,23 +195,29 @@ export default {
           name: '我要借款',
           icon: 'money-collect',
           component: './requireLoan/components/requireLoan',
+          authority: ['person'],
         },
         {
           path: '/askLoanInfo',
           component: './requireLoan/components/loanInfo',
         },
         {
+          path: '/entPay',
+          name: '企业付款',
+          icon: 'pay-circle',
+          component: './entPay/index',
+        },
+        {
           path: '/contractDetect',
           name: '合同检测',
           icon: 'audit',
-          component: './contractDetect',
+          component: './step-form',
         },
         {
           component: './404',
         },
       ],
     },
-
     {
       component: './404',
     },
@@ -215,12 +264,13 @@ export default {
     basePath: '/',
   },
   chainWebpack: webpackPlugin,
-
-  // proxy: {
-  //   '/api/': {
-  //     target: 'http://47.103.113.144:7777/',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/api': '' },
-  //   },
-  // },
+  proxy: {
+    '/api/': {
+      target: 'http://47.103.113.144:7777/',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': '',
+      },
+    },
+  },
 };
