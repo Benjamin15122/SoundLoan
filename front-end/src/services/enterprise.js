@@ -29,7 +29,9 @@ export const transferMoney = async (postData) => {
       formData.append(k, postData[k])
     });
   const res = await request.post('/apis/citi/moneymovement', { data: formData });
-}
+  console.log(res);
+  return res['success'];
+};
 
 export const getEntUserInfo = async (company_name) => {
   const res = await request.get('/infoMan/entUserInfo', { data: { company_name }});
