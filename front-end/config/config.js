@@ -174,6 +174,11 @@ export default {
               component: './companySpace/changePassword',
             },
             {
+              path: 'readPersonInfo',
+              hideInMenu: true,
+              component: './personalManagement/center',
+            },
+            {
               component: './404',
             },
           ],

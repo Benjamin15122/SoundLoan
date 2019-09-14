@@ -3,6 +3,7 @@ import { Table, Divider, Tag, Button, Modal, Radio, message, Input } from 'antd'
 import { Select } from 'antd';
 import { getEntLoanApply } from '@/services/enterprise';
 import {connect} from 'dva';
+import Link from 'umi/link';
 
 const { Option } = Select;
 
@@ -29,7 +30,7 @@ class UserApply extends PureComponent {
     {
       title: '个人姓名',
       dataIndex: 'ind_user_name',
-      render: text => <a>{text}</a>,
+      render: text => <Link to='/companySpace/readPersonInfo?id=1'>{text}</Link>,
     },
     {
       title: '申请金额',

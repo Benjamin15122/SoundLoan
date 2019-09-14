@@ -12,7 +12,6 @@ export default {
       yield put({ type: "setList", list })
     },
     *cancelLoan({ id }, { call, put }) {
-      debugger
       const list = yield call(request.delete, `/api/loans?id=${id}`)
       yield put({ type: "setList", list })
     }

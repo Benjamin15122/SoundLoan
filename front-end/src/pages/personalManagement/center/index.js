@@ -17,8 +17,10 @@ class Center extends React.Component {
   render() {
     const { id, nickname, basic, credit } = this.state.info;
     const { editMode } = this.state;
+    const { location } = this.props;
 
     const editSwitch = (
+      location.pathname.indexOf('companySpace') > 0 ? <div/>:
       <Tooltip title={editMode ? '结束编辑' : '开始编辑'}>
         <Switch
           className={styles.editSwitch}
@@ -31,7 +33,7 @@ class Center extends React.Component {
     const basicInfoTab = (
       <TabPane tab="基本信息" key="basicInfo">
         <Descriptions
-          title={<img className={styles.avatir} src={require('@/assets/vdd.png')} />}
+          // title={<img className={styles.avatir} src={require('@/assets/vdd.png')} />}
           bordered
         >
           {Object.getOwnPropertyNames(basic).map(property => (
@@ -83,9 +85,10 @@ class Center extends React.Component {
   };
 
   componentDidMount() {
+    const {id} = this.props.location.query;
     this.props.dispatch({
       type: 'personalManagement-personalInfo/getPersonalInfo',
-      id: this.props.location.query.id,
+      id: id ? id: 1,
       callback: info => this.setState({ info: infoParser(info) }),
     });
   }
