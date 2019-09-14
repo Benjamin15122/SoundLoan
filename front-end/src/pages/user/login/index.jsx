@@ -24,12 +24,6 @@ class Login extends Component {
     autoLogin: true,
   };
 
-  changeAutoLogin = e => {
-    this.setState({
-      autoLogin: e.target.checked,
-    });
-  };
-
   handleSubmit = type => async (err, values) => {
     const loginFunc = type === 'person' ? indLogin : entLogin;
     if (!err) {
@@ -38,12 +32,18 @@ class Login extends Component {
         message.error('用户名或密码错误！');
         return;
       }
-      message.success('登录成功，跳转到主页...');
       const { dispatch } = this.props;
       dispatch({
         type: 'user/saveCurrentUser',
         payload: res.content,
       });
+      const query = getPageQuery();
+      if (query.redirect) {
+        message.success('登录成功，正在重定向...');
+        router.replace(query.redirect);
+        return;
+      }
+      message.success('登录成功，跳转到主页...');
       if (type === 'person')
         router.replace('/personalManagement/center');
       else if (type === 'enterprise')
@@ -52,27 +52,6 @@ class Login extends Component {
         router.replace('/');
     }
   };
-
-  onGetCaptcha = () =>
-    new Promise((resolve, reject) => {
-      if (!this.loginForm) {
-        return;
-      }
-
-      this.loginForm.validateFields(['mobile'], {}, (err, values) => {
-        if (err) {
-          reject(err);
-        } else {
-          const { dispatch } = this.props;
-          dispatch({
-            type: 'userLogin/getCaptcha',
-            payload: values.mobile,
-          })
-            .then(resolve)
-            .catch(reject);
-        }
-      });
-    });
 
   renderMessage = content => (
     <Alert
@@ -87,19 +66,21 @@ class Login extends Component {
 
   render() {
     const query = getPageQuery();
+    let redirectSuffix = '';
+    if (query.redirect)
+      redirectSuffix = '&redirect=' + query.redirect;
     if (query.type !== 'person' && query.type !== 'enterprise') {
       return (
         <SelectUserType
           action="登录"
-          linkToPerson="?type=person"
-          linkToEnterprise="?type=enterprise"
+          linkToPerson={"?type=person" + redirectSuffix}
+          linkToEnterprise={"?type=enterprise" + redirectSuffix}
         />
       );
     }
 
     const { userLogin, submitting } = this.props;
     const { status } = userLogin;
-    const { autoLogin } = this.state;
     return (
       <div className={styles.main}>
         <LoginComponents

@@ -59,13 +59,13 @@ const footerRender = (_, defaultDom) => {
 };
 
 const BasicLayout = props => {
-  const { dispatch, children, settings, user } = props;
+  const { dispatch, children, settings, user, location } = props;
   /**
    * constructor
    */
-
+  const { pathname } = location;
   if (!user.currentUser.name) {
-    router.replace('/user/login');
+    router.replace('/user/login?redirect=' + pathname);
   }
   // useEffect(() => {
   //   if (dispatch) {
