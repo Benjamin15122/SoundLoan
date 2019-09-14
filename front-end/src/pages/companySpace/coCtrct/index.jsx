@@ -27,7 +27,6 @@ class CoCtrct extends PureComponent {
     {
       title: '合同标题',
       dataIndex: 'contract_title',
-      render: text => <a>{text}</a>,
     },
     {
       title: '个人名称',
