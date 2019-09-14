@@ -504,7 +504,7 @@ def loan_apply():
         return jsonify({'success': False, 'message': str(e)})
 
 
-@app.route("infoMan/loanApplyReject", methods=['POST'])
+@app.route("/infoMan/loanApplyReject", methods=['POST'])
 def loan_apply_reject():
     try:
         recordId = request.form.get('record_id',  None)
