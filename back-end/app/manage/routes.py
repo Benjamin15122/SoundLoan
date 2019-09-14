@@ -442,6 +442,12 @@ def user_applied_loan():
         )
     ).all()
     result = [r.to_dict() for r in loan_records]
+
+    for i in range(len(result)):
+        entUserId = result[i]['lender_id']
+        ent = EnterpriseUser.query.filter(IndividualUser.Id == entUserId).first()
+        result[i]['company_name'] = ent.Name
+
     return jsonify({'success': True, 'content': result})
 
 
