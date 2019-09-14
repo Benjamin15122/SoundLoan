@@ -66,7 +66,7 @@ class CoCtrct extends PureComponent {
           if (record['sign_state'] !== 'BothSign')
             return <b>--</b>;
           else
-            return <Button href='https://sandbox.apihub.citi.com/gcb/api/authCode/oauth2/authorize?response_type=code&client_id=d104de7d-07ad-4700-b7c8-7330f93643cf&scope=internal_domestic_transfers&countryCode=HK&businessCode=GCB&locale=en_HK&state=666&redirect_uri=http://47.103.113.144:8000/transferResult'>
+            return <Button href='https://sandbox.apihub.citi.com/gcb/api/authCode/oauth2/authorize?response_type=code&client_id=d104de7d-07ad-4700-b7c8-7330f93643cf&scope=internal_domestic_transfers&countryCode=HK&businessCode=GCB&locale=en_HK&state=666&redirect_uri=http://47.103.113.144:8000/companySpace/transferResult'>
               放款
             </Button>
         }
