@@ -84,7 +84,7 @@ class DefaultModel:
         return bucket
 
     def predict(self, info):
-        x = pd.DataFrame(info)
+        x = pd.DataFrame(info, index=[0])
         x['borrowamount'] = x['repay_capital_amount'] + x['unrepay_capital_amount']
         x['notpaytotalamount'] = x['unrepay_capital_amount'] + x['unrepay_interest_amount']
         x['overduetotalamount'] = x['overdue_capital_amount'] + x['overdue_interest_amount']
@@ -101,10 +101,12 @@ class DefaultModel:
                 'repay_interest_amount', 'unrepay_interest_amount', 'overdue_interest_amount',
                 'credit_score', 'lender_id', 'debtor_id', 'product_id', 'contract_id',
                 'app_date_timestamp', 'due_date_timestamp', 'start_date_timestamp',
-                'end_date_timestamp', 'repay_status', 'order_status'],
+                'end_date_timestamp', 'repay_status', 'order_status',
+                'default_prob', 'loan_money', 'rate'],
                axis=1, inplace=True)
         res = self.model.predict(x)
         res = 1 - 1 / (1 + math.exp(-res))
+        print(res)
         return res
 
 
