@@ -20,7 +20,6 @@ const menuDataRender = user => menuList =>
   menuList.map(item => {
     const localItem = { ...item, children: item.children? menuDataRender(user)(item.children): [] };
     const authorities = localItem.authority;
-    console.log(authorities, user.currentUser.authority);
     if (!authorities || authorities.indexOf(user.currentUser.authority) >= 0)
       return localItem;
     return undefined;
