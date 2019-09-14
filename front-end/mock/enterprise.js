@@ -215,5 +215,47 @@ export default {
         'default_prob': '10%',
       },
     ]
+  },
+  'POST /contract/getAll': {
+    content: [
+      {
+        'id': '合同编号',
+        'contract_title': '合同标题',
+        'sign_state': 'BothSign',
+        'analyze_state': '合同分析状态',
+        'individual_name': '个人名字',
+        'enterprise_name': '企业名字',
+      },
+      {
+        'id': '合同编号',
+        'contract_title': '合同标题',
+        'sign_state': 'NoSign',
+        'analyze_state': '合同分析状态',
+        'individual_name': '个人名字',
+        'enterprise_name': '企业名字',
+      },
+      {
+        'id': '合同编号',
+        'contract_title': '合同标题',
+        'sign_state': 'Individual',
+        'analyze_state': '合同分析状态',
+        'individual_name': '个人名字',
+        'enterprise_name': '企业名字',
+      },
+      {
+        'id': '合同编号',
+        'contract_title': '合同标题',
+        'sign_state': 'Enterprise',
+        'analyze_state': '合同分析状态',
+        'individual_name': '个人名字',
+        'enterprise_name': '企业名字',
+      },
+    ]
+  },
+  'GET /contract/getContent': {
+    content: [
+      'title',
+      '合同内容'
+    ]
   }
 }

@@ -8,13 +8,13 @@ const { Option } = Select;
 
 
 @connect(({user}) => ({user}))
-class CoCtrct extends PureComponent {
+class UserApply extends PureComponent {
 
   constructor(props) {
     super(props);
     this.state = {
       allRecord: [],
-      options: CoCtrct.allOptions,
+      options: UserApply.allOptions,
       operatingRecord: undefined,
       showAuditing: false,
       auditingValue: 'true',
@@ -91,7 +91,7 @@ class CoCtrct extends PureComponent {
 
   handleChange = (value) => {
     this.setState({
-      options: value === 'all'? CoCtrct.allOptions: [value]
+      options: value === 'all'? UserApply.allOptions: [value]
     });
   };
 
@@ -165,4 +165,4 @@ class CoCtrct extends PureComponent {
     </>;
   }
 }
-export default CoCtrct;
+export default UserApply;

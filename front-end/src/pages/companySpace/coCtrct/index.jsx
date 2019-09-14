@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Table, Divider, Tag, Button, Modal, Radio, message, Input } from 'antd';
+import { Table, Descriptions, Upload, Button, Modal, Radio, message, Input, Icon } from 'antd';
 import { Select } from 'antd';
-import { getEntLoanApply } from '@/services/enterprise';
+import { getAllContract } from '@/services/enterprise';
 import {connect} from 'dva';
 
 const { Option } = Select;
@@ -13,81 +13,77 @@ class CoCtrct extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      allRecord: [],
+      allContract: [],
       options: CoCtrct.allOptions,
       operatingRecord: undefined,
-      showAuditing: false,
-      auditingValue: 'true',
-      showUpload: false,
-      uploadForm: {
-        contract_title: '', individual_name: '', enterprise_name: '', contract_content: '',
-      },
+      showContent: false,
+      showSign: false,
+      imgUrl: '',
+      loading: false,
     }
   }
 
   columns = [
     {
-      title: '个人姓名',
-      dataIndex: 'ind_user_name',
+      title: '合同标题',
+      dataIndex: 'contract_title',
       render: text => <a>{text}</a>,
     },
     {
-      title: '申请金额',
-      dataIndex: 'loan_money',
+      title: '个人名称',
+      dataIndex: 'individual_name',
     },
     {
-      title: '期望还款日期',
-      dataIndex: 'due_date_timestamp',
-      render: () => '2019-05-05',
-    },
-    {
-      title: '违约概率',
-      dataIndex: 'default_prob',
-    },
-    {
-      title: '申请时间',
-      dataIndex: 'app_date_timestamp',
-      render: () => '2020-09-09',
-    },
-    {
-      title: '申请状态',
-      dataIndex: 'order_status',
+      title: '合同状态',
+      dataIndex: 'sign_state',
       render: (text) => {
         switch (text) {
-          case 'applied': return '待审核';
-          case 'auditing': return '待上传合同';
-          case 'uploading_contract': return '合同已上传';
+          case 'NoSign':
+            return '待签订';
+          case 'Individual':
+            return '待企业签订';
+          case 'Enterprise':
+            return '待用户签订';
+          case 'BothSign':
+            return '签订完成';
         }
       }
     },
     {
-      title: '操作',
-      key: 'operation',
-      render: (text, record, index) => {
-        switch (record['order_status']) {
-          case 'applied':
-            return <Button onClick={() => {
-              this.setState({ showAuditing: true, operatingRecord: record });
-            }}>审核</Button>;
-          case 'auditing':
-            return <Button onClick={() => {
-              this.setState({ showUpload: true, operatingRecord: record, uploadForm: {} });
-            }}>上传合同</Button>;
-          case 'uploading_contract':
-            return <b>--</b>
-        }
-      }
+      title: '合同内容',
+      key: 'contract_content',
+      render: (_, record) => (
+        <Button onClick={(e) => {
+          e.preventDefault();
+          this.setState({ showContent: true, operatingRecord: record });
+        }}>查看内容</Button>
+      )
     },
+    {
+      title: '合同签订',
+      key: 'sign',
+      render: (_, record) => {
+        if (['NoSign', 'Individual'].indexOf(record['sign_state']) < 0)
+          return <b>--</b>;
+        return <Button onClick={(e) => {
+          e.preventDefault();
+          this.setState({
+            showSign: true,
+            operatingRecord: record
+          });
+        }}>签订</Button>
+      }
+    }
   ];
 
   componentDidMount() {
     (async () => {
-      const res = await getEntLoanApply(this.props.user.name);
-      this.setState({ allRecord: res });
+      const res = await getAllContract(this.props.user.name, 'enterprise');
+      this.setState({ allContract: res });
     })();
   }
 
-  static allOptions = ['applied', "auditing", "uploading_contract"];
+  static allOptions = ['NoSign', "Individual", "Enterprise", 'BothSign'];
 
   handleChange = (value) => {
     this.setState({
@@ -95,72 +91,89 @@ class CoCtrct extends PureComponent {
     });
   };
 
-  getRecords = () => {
-    const { allRecord, options } = this.state;
-    return allRecord.filter((value) => options.indexOf(value['order_status']) >= 0);
+  getContracts = () => {
+    const { allContract, options } = this.state;
+    return  allContract.filter((value) => options.indexOf(value['sign_state']) >= 0);
   };
 
-  onAuditing = () => {
-    const { operatingRecord, auditingValue } = this.state;
-    operatingRecord['order_status'] = auditingValue === 'true' ? 'auditing': 'finished';
+
+  onSign = () => {
+    const { operatingRecord, dataUrl } = this.state;
+    operatingRecord['sign_state'] = operatingRecord['sign_state'] === 'NoSign' ?
+      'Enterprise': 'BothSign';
     console.debug('some thing to do');
-    message.success('操作成功');
-    this.setState({ showAuditing: false });
-  };
-
-  onChangeContract = (property) => (value) => {
-    const { uploadForm } = this.state;
-    this.setState({ uploadForm: { ...uploadForm, [property]: value }});
-  };
-
-  onUpload = () => {
-    const { operatingRecord, uploadForm } = this.state;
-    operatingRecord['order_status'] = 'uploading_contract';
-    console.debug('some thing to do');
-    message.success('上传成功');
-    this.setState({ showUpload: false });
+    message.success('签订成功');
+    this.setState({ showSign: false });
   };
 
   render() {
-    const { showAuditing, showUpload, uploadForm } = this.state;
-    const contractInputStyle = { paddingTop: '20px' };
+    const { showContent, showSign } = this.state;
+    const beforeUpload = async file => {
+      this.setState({ loading: true });
+      try {
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        });
+        this.setState({ imgUrl: dataUrl });
+      } catch (err) {
+        message.error('上传失败: ' + err.message);
+      }
+      this.setState({ loading: false });
+      return false;
+    };
+    const uploadButton = (
+      <div>
+        <Icon type={this.state.loading? 'loading': 'plus'} />
+        <div className="ant-upload-text">Upload</div>
+      </div>
+    );
+    const UploadView = () => (
+      <Upload
+        listType="picture-card"
+        showUploadList={false}
+        accept=".jpg"
+        beforeUpload={beforeUpload}
+      >
+        {this.state['imgUrl'] ? (
+          <img src={this.state['imgUrl']} alt="avatar" style={{ width: '100%' }} />
+        ) : (
+          uploadButton
+        )}
+      </Upload>
+    );
     return <>
       <div>
         <Select defaultValue="all" style={{ width: 200 }} onChange={this.handleChange}>
           <Option value="all">全部</Option>
-          <Option value="applied">未审核</Option>
-          <Option value="auditing">待上传合同</Option>
-          <Option value="uploading_contract">上传完成</Option>
+          <Option value="NoSign">未签订</Option>
+          <Option value="Enterprise">待用户签订</Option>
+          <Option value="Individual">待企业签订</Option>
+          <Option value="BothSign">签订完成</Option>
         </Select>
-        <Table columns={this.columns} dataSource={this.getRecords()} />
+        <Table columns={this.columns} dataSource={this.getContracts()} />
       </div>
-      <Modal title='审核贷款申请' visible={showAuditing}
-             onCancel={() => this.setState({ showAuditing: false })}
-             onOk={this.onAuditing}>
-        <Radio.Group defaultValue='true' onChange={value => this.setState({ auditingValue: value})}>
-          <Radio value='true'>通过</Radio>
-          <Radio value='false'>不通过</Radio>
-        </Radio.Group>
+      <Modal title='查看合同' visible={showContent}
+             onCancel={() => this.setState({ showContent: false })}
+             onOk={() => this.setState({ showContent: false })}>
+        <Descriptions layout='vertical' bordered column={2}>
+          <Descriptions.Item label='合同标题'>
+            这个标题
+          </Descriptions.Item>
+          <Descriptions.Item label='个人名称'>
+            某人名称
+          </Descriptions.Item>
+          <Descriptions.Item label='合同内容'>
+            这是...合同..的...内容..
+          </Descriptions.Item>
+        </Descriptions>
       </Modal>
-      <Modal title='上传合同' visible={showUpload}
-             onCancel={() => this.setState({ showUpload: false })}
-             onOk={this.onUpload}>
-        <Input addonBefore='合同名称'
-               onChange={this.onChangeContract('contract_title')}
-               style={contractInputStyle}
-        />
-        <Input addonBefore='借款者'
-               onChange={this.onChangeContract('individual_name')}
-               style={contractInputStyle}
-        />
-        <Input addonBefore='放贷企业'
-               onChange={this.onChangeContract('enterprise_name')}
-               style={contractInputStyle}
-        />
-        <h6 style={{ paddingTop: '20px' }}>合同内容</h6>
-        <Input.TextArea rows={4}
-               onChange={this.onChangeContract('contract_content')}
-        />
+      <Modal title='签订合同' visible={showSign}
+             onCancel={() => this.setState({ showSign: false })}
+             onOk={this.onSign}>
+        {UploadView()}
       </Modal>
     </>;
   }
