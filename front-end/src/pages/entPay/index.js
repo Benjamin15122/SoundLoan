@@ -3,6 +3,7 @@ import ChooseProgram from './components/chooseProgram';
 import ContractPay from './components/contractPay';
 import RatePay from './components/ratePay';
 import { thisExpression } from '@babel/types';
+import PayDone from './components/payDone';
 
 
 export class index extends Component {
@@ -24,6 +25,13 @@ export class index extends Component {
         });
     }
 
+    payConfirm = ()=>{
+        const {step} = this.state;
+        this.setState({
+            step: 4
+        });
+    }
+
     render() {
         const {step} = this.state;
         console.log("index");
@@ -36,9 +44,21 @@ export class index extends Component {
                     </ChooseProgram>
                 )
             case 2:
-                return <ContractPay></ContractPay>
+                return (
+                    <ContractPay
+                        payConfirm={this.payConfirm}>
+                    </ContractPay>
+                )
             case 3:
-                return <RatePay></RatePay>
+                return (
+                    <RatePay
+                        payConfirm={this.payConfirm}>
+                    </RatePay>
+                )
+            case 4:
+                return (
+                    <PayDone></PayDone>
+                )
         }
     }
 }

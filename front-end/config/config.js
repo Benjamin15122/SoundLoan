@@ -203,20 +203,15 @@ export default {
         },
         {
           path: '/entPay',
-          name: '企业付款(临时路由)',
+          name: '企业付款',
           component: './entPay/index',
         },
         {
           path: '/contractDetect',
           name: '合同检测',
           icon: 'audit',
-          component: './contractDetect',
+          component: './step-form',
         },
-        // {
-        //   name: 'step-form',
-        //   path: '/step-form',
-        //   component: './step-form',
-        // },
         {
           component: './404',
         },

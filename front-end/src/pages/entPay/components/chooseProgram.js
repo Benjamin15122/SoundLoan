@@ -16,7 +16,7 @@ export class ChooseProgram extends Component {
 
     render() {
         return (
-            <div style={{textAlign:'center',marginTop: "5%",}}>
+            <div style={{textAlign:'center',marginTop: "5%"}}>
                 <h2 style={{textAlign:'center'}}>
                     请选择您要付费的项目
                 </h2>
