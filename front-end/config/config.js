@@ -219,6 +219,7 @@ export default {
           path: '/contractDetect',
           name: '合同检测',
           icon: 'audit',
+          authority: ['person', 'admin'],
           component: './step-form',
         },
         {
