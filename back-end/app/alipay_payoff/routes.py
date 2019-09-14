@@ -10,12 +10,12 @@ def get_pay_redirect_url():
     try:
         # 获取订单号，根据订单生成 支付订单
         # 支付订单包括: 订单号、支付金额、订单名称
-        order_id = request.form.get('order_id')
-        amount = request.form.get('amount')
+        order_id = int(request.form.get('order_id'))
+        amount = float(request.form.get('amount'))
 
-        order = ContractOrderFee(OrderId=order_id, Paid=0)
-        db.session.add(order)
-        db.session.commit()
+        # order = ContractOrderFee(OrderId=order_id, Paid=0)
+        # db.session.add(order)
+        # db.session.commit()
 
         # 传递参数执行支付类里的direct_pay方法，返回签名后的支付参数，
         url = Config.alipay.direct_pay(
@@ -37,7 +37,6 @@ def get_pay_redirect_url():
             'content': re_url
         })
     except Exception as e:
-        db.session.rollback()
         return jsonify({
             'success': False,
             'message': str(e),
@@ -57,39 +56,40 @@ def alipay_notify():
     # 获取 支付成功的 订单号
     # 修改数据库中订单状态以及其他操作
     order_no = request.form.get('out_trade_no')
-    order = ContractOrderFee.query.filter(ContractOrderFee.OrderId == order_no).first()
-    if order is None:
-        order = ContractOrderFee(OrderId=order_no, Paid=1)
-        db.session.add(order)
-        db.session.commit()
-    else:
-        order.Paid = 1
-        db.session.commit()
+    # order = ContractOrderFee.query.filter(ContractOrderFee.OrderId == order_no).first()
+    # if order is None:
+    #     order = ContractOrderFee(OrderId=order_no, Paid=1)
+    #     db.session.add(order)
+    #     db.session.commit()
+    # else:
+    #     order.Paid = 1
+    #     db.session.commit()
+    print('notification from alipay: %s' % order_no)
 
     # 返回支付宝success，否则会不间断的调用该回调
     return {'msg': 'success'}
 
 
-@app.route('/alipay/getOrderStatus', methods=['POST'])
-def get_order_status():
-    try:
-        order_no = request.form.get('order_id')
-        order = ContractOrderFee.query.filter(ContractOrderFee.OrderId == order_no).first()
-        if order is None or order.Paid==0:
-            return jsonify({
-                'success': True,
-                'message': '',
-                'content': False
-            })
-        else:
-            return jsonify({
-                'success': True,
-                'message': '',
-                'content': True
-            })
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'message': str(e),
-            'content': None
-        })
+# @app.route('/alipay/getOrderStatus', methods=['POST'])
+# def get_order_status():
+#     try:
+#         order_no = request.form.get('order_id')
+#         order = ContractOrderFee.query.filter(ContractOrderFee.OrderId == order_no).first()
+#         if order is None or order.Paid==0:
+#             return jsonify({
+#                 'success': True,
+#                 'message': '',
+#                 'content': False
+#             })
+#         else:
+#             return jsonify({
+#                 'success': True,
+#                 'message': '',
+#                 'content': True
+#             })
+#     except Exception as e:
+#         return jsonify({
+#             'success': False,
+#             'message': str(e),
+#             'content': None
+#         })

@@ -69,7 +69,7 @@ def contract_upload_analyze():
         fake_advertising = contract_data['fake_advertising']
 
         if contract_data["type"] == 'text':
-            return_obj = analyze(contract_data['text_data'],
+            return_obj = analyze(contract_data['contract_text'],
                                  loan_consistent_with_actual,
                                  fake_advertising)
 
@@ -90,7 +90,7 @@ def contract_upload_analyze():
             })
 
         elif contract_data["type"] == 'image':
-            text = image_to_text(contract_data['image_base64_data'])
+            text = image_to_text([contract_data['contract_image']])
             return_obj = analyze(text,
                                  loan_consistent_with_actual,
                                  fake_advertising)

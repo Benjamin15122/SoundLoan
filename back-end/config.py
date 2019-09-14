@@ -54,7 +54,14 @@ class Config(object):
             'func': 'utils.credit_score_utils:update_credit_scores',
             'trigger': 'interval',  # interval表示循环任务
             'seconds': 24 * 60 * 60,
+        },
+        {
+            'id': 'Job3: add_monthly_fee_for_enterprise',
+            'func': 'utils.citi_api_utils:increase_monthly_fee',
+            'trigger': 'interval',
+            'seconds': 30*24*60*60
         }
+
     ]
 
     # 支付宝配置

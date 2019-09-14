@@ -5,8 +5,9 @@ import os
 import re
 import subprocess
 import time
+from config import Config
+from app import app, db
 
-from app import app
 
 def to_dict(columns, results):
     datas = []
@@ -54,7 +55,6 @@ def execute_cmd(cmd, timeout=2):
     return sub.returncode, output if output else ''
 
 
-
 def extend_to_16(text):
     """Extend text to a multiple of 16 as type of bytes"""
     while len(text) % 16 != 0:
@@ -97,4 +97,3 @@ def calc_interest(amount, rate, duration, loan_type):
 
     else:
         raise Exception('Invalid loan type. ')
-
