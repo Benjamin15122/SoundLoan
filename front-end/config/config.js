@@ -124,19 +124,20 @@ export default {
               component: './personalManagement/loans',
             },
             {
-              name: '合同详情',
-              path: 'content',
-              component: './personalManagement/contracts/content',
-              icon: 'edit', // hideInMenu: true,
-            },
-            {
               name: '我的合同',
               path: 'contracts',
               icon: 'audit',
               component: './personalManagement/contracts',
             },
             {
-              name: '账户设置',
+              name: '合同详情',
+              path: 'content',
+              component: './personalManagement/contracts/content',
+              icon: 'edit',
+              hideInMenu: true,
+            },
+            {
+              name: '修改密码',
               path: 'settings',
               icon: 'setting',
               component: './personalManagement/settings',
