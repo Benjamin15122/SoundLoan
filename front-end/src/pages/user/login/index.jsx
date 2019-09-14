@@ -70,16 +70,15 @@ class Login extends Component {
   );
 
   render() {
+    const { search } = this.props.location;
     const query = getPageQuery();
-    let redirectSuffix = '';
-    if (query.redirect)
-      redirectSuffix = '&redirect=' + query.redirect;
+    let suffix = search !== '' ? '&' + search.slice(1): '';
     if (query.type !== 'person' && query.type !== 'enterprise') {
       return (
         <SelectUserType
           action="登录"
-          linkToPerson={"?type=person" + redirectSuffix}
-          linkToEnterprise={"?type=enterprise" + redirectSuffix}
+          linkToPerson={"?type=person" + suffix}
+          linkToEnterprise={"?type=enterprise" + suffix}
         />
       );
     }

@@ -63,9 +63,12 @@ const BasicLayout = props => {
   /**
    * constructor
    */
-  const { pathname, search } = location;
+  const { pathname, query } = location;
   if (!user.currentUser.name) {
-    router.replace('/user/login' + search + '&redirect=' + pathname );
+    router.replace({
+      pathname: '/user/login',
+      query: { ...query, redirect: pathname },
+    });
   }
   // useEffect(() => {
   //   if (dispatch) {
