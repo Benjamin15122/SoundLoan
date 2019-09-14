@@ -1,27 +1,49 @@
 import React from 'react';
-import { Card, Table, Button, Modal, Input } from 'antd';
+import { Card, Table, Button, Modal, Input, Tag, Divider } from 'antd';
 import { connect } from 'dva';
 import styles from './index.css';
 
+import ReactStars from 'react-stars'
+
 const mapStateToProps = state => ({
-  loanList: state['personalManagement-loanList']
+  loanList: state['personalManagement-loanList'],
+  user: state.user.currentUser,
+  tagList: state['personalManagement-tagList']
 })
 
 class Loans extends React.Component {
   render() {
-    const { loanList } = this.props
+    const { loanList, tagList } = this.props
+
+    const { tags } = this.state
 
     const loanTable = <Table columns={this.columns} dataSource={loanList} />
+
+    const loan = loanList.find(l => l.id === this.state.activeLoanId)
+
     const evaluateModal = (
       <Modal
         key={this.state.activeLoanId}
         title="请填写对企业的评价"
         visible={this.state.evaluateModalVisible}
-        onOk={_ => this.setState({ evaluateModalVisible: false, activeLoanId: null })}
-        onCancel={_ => this.setState({ evaluateModalVisible: false, activeLoanId: null, evaluationText: null })}>
-        <Input.TextArea rows={4} onChange={value => this.setState({
-          evaluationText: value
-        })} />
+        onOk={_ => this.setState({ evaluateModalVisible: false, activeLoanId: null }, _ => this.evaluateHandler(loan))}
+        onCancel={_ => this.setState({ evaluateModalVisible: false, activeLoanId: null })}>
+        <div>
+          {Object.
+            keys(tagList).
+            filter(tag => !this.state.tags[tag]).
+            map(tag => <Tag color={tagList[tag]} key={tag} onClick={_ => this.addTagHandler(tag, tagList[tag])}>{tag}</Tag>)}
+        </div>
+        <Divider />
+        <div>
+          {Object.
+            keys(tags).
+            map(tag => <Tag color={tags[tag]} key={"_" + tag} closable={true} onClose={_ => this.delTagHandler(tag)}>{tag}</Tag>)}
+        </div>
+        <Divider />
+        <Input.TextArea rows={4} value={this.state.evaluationText} onChange={e => this.setState({ evaluationText: e.target.value })} />
+        <Divider />
+        <ReactStars count={5} size={24} value={this.state.score} onChange={value => this.setState({ score: value })} />
       </Modal>
     )
 
@@ -36,37 +58,69 @@ class Loans extends React.Component {
   state = {
     evaluateModalVisible: false,
     activeLoanId: null,
-    evaluationText: null
+    evaluationText: "",
+    realLoanList: [],
+    tags: {},
+    score: 0
   }
 
   columns = [
-    { title: '企业名称', key: 'id', render: loan => <span>{loan.client}</span>, },
-    { title: '贷款金额', render: loan => <span>{loan.amount}</span>, },
-    { title: '申请时间', render: loan => <span>{loan.applyTime}</span>, },
-    { title: '申请状态', render: loan => <span>{loan.state}</span>, },
+    { title: '企业名称', key: 'id', render: loan => <span>{loan.company_name ? loan.company_name : loan.lender_id}</span>, },
+    { title: '贷款金额', render: loan => <span>{loan.loan_money}</span>, },
+    { title: '申请状态', render: loan => <span>{loan.order_status}</span>, },
     {
       title: '选项', render: loan => (
-        <span>
-          <Button disabled={loan.state === "finished"} onClick={_ => this.cancelLoanHandler(loan.id)}>取消</Button>
-          <Button onClick={_ => this.setState({
-            activeLoanId: loan.id,
-            evaluateModalVisible: true
-          })}>评价</Button>
-        </span>
+        <Button onClick={_ => this.setState({
+          activeLoanId: loan.id,
+          evaluateModalVisible: true,
+          evaluationText: "",
+          tags: {},
+          score: 0
+        })}>评价</Button>
       )
     }
   ];
 
   componentDidMount() {
+    const { user } = this.props
     this.props.dispatch({
-      type: "personalManagement-loanList/getLoanList"
+      type: "personalManagement-loanList/getRealLoanList",
+      user_name: user.name ? "Lucy" : user.name,
+    })
+
+    this.props.dispatch({
+      type: "personalManagement-tagList/getTagList"
     })
   }
 
-  cancelLoanHandler = id => this.props.dispatch({
-    type: "personalManagement-loanList/cancelLoan",
-    id
-  })
+  evaluateHandler = loan => {
+    const { user } = this.props
+    this.props.dispatch({
+      type: "personalManagement-loanList/updateEvaluation",
+      user,
+      loan,
+      evaluation: this.state.evaluationText,
+      score: this.state.score
+    })
+  }
+
+  addTagHandler = (tag, color) => {
+    let { tags, evaluationText } = this.state
+    tags[tag] = color
+    evaluationText = evaluationText + "#" + tag
+
+    this.setState({
+      tags,
+      evaluationText
+    })
+  }
+
+  delTagHandler = tag => {
+    let { tags, evaluationText } = this.state
+    delete tags[tag]
+    evaluationText = evaluationText.replace("#" + tag, "")
+    this.setState({ tags, evaluationText })
+  }
 }
 
 export default connect(mapStateToProps)(Loans);

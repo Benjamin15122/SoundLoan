@@ -32,10 +32,7 @@ class Center extends React.Component {
 
     const basicInfoTab = (
       <TabPane tab="基本信息" key="basicInfo">
-        <Descriptions
-          // title={<img className={styles.avatir} src={require('@/assets/vdd.png')} />}
-          bordered
-        >
+        <Descriptions bordered>
           {Object.getOwnPropertyNames(basic).map(property => (
             <Descriptions.Item label={property} key={property}>
               {editMode ? (
@@ -100,6 +97,7 @@ class Center extends React.Component {
       type: 'personalManagement-personalInfo/updatePersonalInfo',
       id,
       newInfo,
+      callback: info => this.setState({ info: infoParser(info) })
     });
   };
 }

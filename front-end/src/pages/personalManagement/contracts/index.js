@@ -2,25 +2,25 @@ import React, { PureComponent } from 'react';
 import { Table, Descriptions, Upload, Button, Modal, Radio, message, Input, Icon } from 'antd';
 import { Select } from 'antd';
 import { getAllContract } from '@/services/enterprise';
-import {connect} from 'dva';
+import { connect } from 'dva';
 
 const { Option } = Select;
 
+const mapStateToProps = state => ({
+  user: state.user,
+  contractList: state['personalManagement-contractList']
+})
 
-@connect(({user}) => ({user}))
 class CoCtrct extends PureComponent {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      allContract: [],
-      options: CoCtrct.allOptions,
-      operatingRecord: undefined,
-      showContent: false,
-      showSign: false,
-      imgUrl: '',
-      loading: false,
-    }
+  state = {
+    allContract: [],
+    options: CoCtrct.allOptions,
+    operatingRecord: undefined,
+    showContent: false,
+    showSign: false,
+    imgUrl: '',
+    loading: false,
   }
 
   columns = [
@@ -80,26 +80,30 @@ class CoCtrct extends PureComponent {
       const res = await getAllContract(this.props.user.name, 'enterprise');
       this.setState({ allContract: res });
     })();
+    // this.props.dispatch({
+    //   type:"personalManagement-contractList/getContractList",
+    //   user_name: "Lucy"
+    // })
   }
 
   static allOptions = ['NoSign', "Individual", "Enterprise", 'BothSign'];
 
   handleChange = (value) => {
     this.setState({
-      options: value === 'all'? CoCtrct.allOptions: [value]
+      options: value === 'all' ? CoCtrct.allOptions : [value]
     });
   };
 
   getContracts = () => {
     const { allContract, options } = this.state;
-    return  allContract.filter((value) => options.indexOf(value['sign_state']) >= 0);
+    return allContract.filter((value) => options.indexOf(value['sign_state']) >= 0);
   };
 
 
   onSign = () => {
     const { operatingRecord, dataUrl } = this.state;
     operatingRecord['sign_state'] = operatingRecord['sign_state'] === 'NoSign' ?
-      'Individual': 'BothSign';
+      'Individual' : 'BothSign';
     console.debug('some thing to do');
     message.success('签订成功');
     this.setState({ showSign: false });
@@ -125,7 +129,7 @@ class CoCtrct extends PureComponent {
     };
     const uploadButton = (
       <div>
-        <Icon type={this.state.loading? 'loading': 'plus'} />
+        <Icon type={this.state.loading ? 'loading' : 'plus'} />
         <div className="ant-upload-text">Upload</div>
       </div>
     );
@@ -139,8 +143,8 @@ class CoCtrct extends PureComponent {
         {this.state['imgUrl'] ? (
           <img src={this.state['imgUrl']} alt="avatar" style={{ width: '100%' }} />
         ) : (
-          uploadButton
-        )}
+            uploadButton
+          )}
       </Upload>
     );
     return <>
@@ -155,8 +159,8 @@ class CoCtrct extends PureComponent {
         <Table columns={this.columns} dataSource={this.getContracts()} />
       </div>
       <Modal title='查看合同' visible={showContent}
-             onCancel={() => this.setState({ showContent: false })}
-             onOk={() => this.setState({ showContent: false })}>
+        onCancel={() => this.setState({ showContent: false })}
+        onOk={() => this.setState({ showContent: false })}>
         <Descriptions layout='vertical' bordered column={2}>
           <Descriptions.Item label='合同标题'>
             这个标题
@@ -170,11 +174,11 @@ class CoCtrct extends PureComponent {
         </Descriptions>
       </Modal>
       <Modal title='签订合同' visible={showSign}
-             onCancel={() => this.setState({ showSign: false })}
-             onOk={this.onSign}>
+        onCancel={() => this.setState({ showSign: false })}
+        onOk={this.onSign}>
         {UploadView()}
       </Modal>
     </>;
   }
 }
-export default CoCtrct;
+export default connect(mapStateToProps)(CoCtrct);
