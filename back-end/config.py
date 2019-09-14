@@ -5,7 +5,7 @@ URI_FORMAT = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'
 
 
 class Config(object):
-    HOST = "127.0.0.1"
+    HOST = "0.0.0.0"
     PORT = 6100
 
     SECRET_KEY = "gTzSygPGe^#v6N7W"  # used for password encryption
@@ -42,23 +42,24 @@ class Config(object):
     K_USERS, K_PRODUCTS = 5, 20
     JOBS = [
         {  # 每隔一天执行一次
-            'id': 'Job1: Update_recommendation_model',
+            'id': 'Job1: update_recommendation_model',
             #'func': 'algorithm.loan_recommendation.recommendation_userbased:update_model',  # 方法名
             'func': 'utils.recommendation_userbased_utils:update_model',
             # 'args': (K_USERS, K_PRODUCTS),  # 入参
             'trigger': 'interval',  # interval表示循环任务
             'seconds': 24*60*60,
         },
-        # {
-        #     'id': 'Job1: Update_recommendation_model',
-        #     'func': 'utils.credit_score_utils:update_credit_scores',
-        #     'trigger': 'interval',  # interval表示循环任务
-        #     'seconds': 24 * 60 * 60,
-        # }
+        {
+            'id': 'Job2: update_credit_scores',
+            'func': 'utils.credit_score_utils:update_credit_scores',
+            'trigger': 'interval',  # interval表示循环任务
+            'seconds': 24 * 60 * 60,
+        }
     ]
 
     # 支付宝配置
-    BASE_DIR = pwd = os.getcwd().split('back-end')[0]
+    # BASE_DIR = '.'
+    BASE_DIR = os.getcwd().split('back-end')[0]
     # 初始化操作
     # 设置秘钥公钥的存放路径
     app_private_key_path = os.path.join(BASE_DIR, 'back-end/external_api_keys/myapp_private_key.txt')
