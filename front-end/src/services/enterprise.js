@@ -28,6 +28,7 @@ export const transferMoney = async (postData) => {
     .forEach(k => {
       formData.append(k, postData[k])
     });
+  console.log(postData);
   const res = await request.post('/apis/citi/moneymovement', { data: formData });
   console.log(res);
   return res['success'];
