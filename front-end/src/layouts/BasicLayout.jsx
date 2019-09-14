@@ -8,7 +8,6 @@ import React, { useEffect } from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
-import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { isAntDesignPro } from '@/utils/utils';
 import logo from '../assets/logo.svg';
@@ -17,11 +16,14 @@ import router from 'umi/router';
 /**
  * use Authorized check all menu item
  */
-const menuDataRender = menuList =>
+const menuDataRender = user => menuList =>
   menuList.map(item => {
-    const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
-    console.log(item.authority);
-    return localItem;
+    const localItem = { ...item, children: item.children? menuDataRender(user)(item.children): [] };
+    const authorities = localItem.authority;
+    console.log(authorities, user.currentUser.authority);
+    if (!authorities || authorities.indexOf(user.currentUser.authority) >= 0)
+      return localItem;
+    return undefined;
   });
 
 const footerRender = (_, defaultDom) => {
@@ -117,7 +119,7 @@ const BasicLayout = props => {
         );
       }}
       footerRender={footerRender}
-      menuDataRender={menuDataRender}
+      menuDataRender={menuDataRender(user)}
       formatMessage={formatMessage}
       rightContentRender={rightProps => <RightContent {...rightProps} />}
       {...props}

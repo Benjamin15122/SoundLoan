@@ -109,7 +109,7 @@ export default {
           name: '个人信息',
           icon: 'profile',
           path: '/personalManagement',
-          authority: ['person'],
+          authority: ['person', 'admin'],
           routes: [
             {
               name: '个人空间',
@@ -148,6 +148,7 @@ export default {
           name: '企业空间',
           path: '/companySpace',
           icon: 'bank',
+          authority: ['enterprise', 'admin'],
           routes: [
             {
               name: '企业信息',
@@ -189,7 +190,7 @@ export default {
           icon: 'database',
           path: '/entInfo/inquiry',
           component: './entInfo/inquiry',
-          authority: ['person'],
+          authority: ['person', 'admin'],
         },
         {
           path: '/entInfo/details',
@@ -201,7 +202,7 @@ export default {
           name: '我要借款',
           icon: 'money-collect',
           component: './requireLoan/components/requireLoan',
-          authority: ['person'],
+          authority: ['person', 'admin'],
         },
         {
           path: '/askLoanInfo',
@@ -211,6 +212,7 @@ export default {
           path: '/entPay',
           name: '企业付款',
           icon: 'pay-circle',
+          authority: ['enterprise', 'admin'],
           component: './entPay/index',
         },
         {
