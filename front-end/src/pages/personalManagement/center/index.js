@@ -91,11 +91,12 @@ class Center extends React.Component {
   }
 
   infoChangeHandler = (id, property, value) => {
+    let newInfo = {};
+    newInfo[property] = value;
     this.props.dispatch({
       type: 'personalManagement-personalInfo/updatePersonalInfo',
       id,
-      property,
-      value,
+      newInfo,
     });
   };
 }
