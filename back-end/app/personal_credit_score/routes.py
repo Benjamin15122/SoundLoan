@@ -7,4 +7,4 @@ class PersonalCreditModel(Resource):
 
 
 class DefaultProbabilityModel(Resource):
-    model = DefaultModel
+    model = DefaultModel()
