@@ -280,7 +280,8 @@ export default {
   chainWebpack: webpackPlugin,
   proxy: {
     '/apis/': {
-      target: 'http://47.103.113.144:7777/',
+      // target: 'http://47.103.113.144:7777/',
+      target: 'http://192.168.10.123:7777/',
       changeOrigin: true,
       pathRewrite: {
         '^/apis': '',
