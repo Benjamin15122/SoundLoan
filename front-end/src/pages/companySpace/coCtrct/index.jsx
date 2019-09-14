@@ -20,6 +20,7 @@ class CoCtrct extends PureComponent {
       showSign: false,
       imgUrl: '',
       loading: false,
+      signPassword: '',
     }
   }
 
@@ -135,20 +136,34 @@ class CoCtrct extends PureComponent {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    const UploadView = () => (
-      <Upload
-        listType="picture-card"
-        showUploadList={false}
-        accept=".jpg"
-        beforeUpload={beforeUpload}
-      >
-        {this.state['imgUrl'] ? (
-          <img src={this.state['imgUrl']} alt="avatar" style={{ width: '100%' }} />
-        ) : (
-          uploadButton
-        )}
-      </Upload>
-    );
+    const SignView = () => {
+      {/*<Upload*/
+      }
+      {/*  listType="picture-card"*/
+      }
+      {/*  showUploadList={false}*/
+      }
+      {/*  accept=".jpg"*/
+      }
+      {/*  beforeUpload={beforeUpload}*/
+      }
+      {/*>*/
+      }
+      {/*  {this.state['imgUrl'] ? (*/
+      }
+      {/*    <img src={this.state['imgUrl']} alt="avatar" style={{ width: '100%' }} />*/
+      }
+      {/*  ) : (*/
+      }
+      {/*    uploadButton*/
+      }
+      {/*  )}*/
+      }
+      {/*</Upload>*/
+      }
+      return <Input addonBefore='请输入密码确认'
+                    onChange={(value) => this.setState({ signPassword: value })}/>
+    };
     return <>
       <div>
         <Select defaultValue="all" style={{ width: 200 }} onChange={this.handleChange}>
@@ -178,7 +193,7 @@ class CoCtrct extends PureComponent {
       <Modal title='签订合同' visible={showSign}
              onCancel={() => this.setState({ showSign: false })}
              onOk={this.onSign}>
-        {UploadView()}
+        {SignView()}
       </Modal>
     </>;
   }
