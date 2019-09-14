@@ -204,6 +204,7 @@ export default {
         {
           path: '/entPay',
           name: '企业付款',
+          icon: 'pay-circle',
           component: './entPay/index',
         },
         {
