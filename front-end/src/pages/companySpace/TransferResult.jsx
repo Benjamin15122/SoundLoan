@@ -21,7 +21,7 @@ class TransferResult extends Component {
       source_id: '355a515030616a53576b6a65797359506a634175764a734a3238314e4668627349486a676f7449463949453d',
       payee_id: '7977557255484c7345546c4e53424766634b6c53756841672b556857626e395253334b70416449676b42673d',
     });
-    this.setState({ loading: false, transfer: ok });
+    this.setState({ loading: false, transferred: ok });
   }
 
   render() {
