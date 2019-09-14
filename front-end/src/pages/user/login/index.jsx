@@ -38,10 +38,14 @@ class Login extends Component {
         payload: res.content,
       });
       const query = getPageQuery();
+      const { redirect, ...otherQuery } = query;
       console.log(query.redirect);
       if (query.redirect && query.redirect !== '/') {
         message.success('登录成功，正在重定向...');
-        router.replace(query.redirect);
+        router.replace({
+          pathname: query.redirect,
+          query: otherQuery,
+        });
         return;
       }
       message.success('登录成功，跳转到主页...');
@@ -66,16 +70,15 @@ class Login extends Component {
   );
 
   render() {
+    const { search } = this.props.location;
     const query = getPageQuery();
-    let redirectSuffix = '';
-    if (query.redirect)
-      redirectSuffix = '&redirect=' + query.redirect;
+    let suffix = search !== '' ? '&' + search.slice(1): '';
     if (query.type !== 'person' && query.type !== 'enterprise') {
       return (
         <SelectUserType
           action="登录"
-          linkToPerson={"?type=person" + redirectSuffix}
-          linkToEnterprise={"?type=enterprise" + redirectSuffix}
+          linkToPerson={"?type=person" + suffix}
+          linkToEnterprise={"?type=enterprise" + suffix}
         />
       );
     }

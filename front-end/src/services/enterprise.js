@@ -21,9 +21,22 @@ export const getAllContract = async (user_name, user_type) => {
   return res['content'];
 };
 
+
 export const transferMoney = async (postData) => {
   const formData = new FormData();
-  Object.keys(postData).forEach(k => {formData.append(k, postData[k])});
-  const res = await request.post('/apis/citi/moneymovement', {data: formData});
+  Object.keys(postData)
+    .forEach(k => {
+      formData.append(k, postData[k])
+    });
+  const res = await request.post('/apis/citi/moneymovement', { data: formData });
+}
+
+export const getEntUserInfo = async (company_name) => {
+  const res = await request.get('/infoMan/entUserInfo', { data: { company_name }});
+  return res['content'];
+};
+
+export const changeEntUser = async (postData) =>{
+  const res = await request.post('/infoMan/changeEntUser',{data:postData});
   return res['success'];
 };

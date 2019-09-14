@@ -59,7 +59,7 @@ class CoEval extends Component {
         }}
         dataSource={comments}
         renderItem={item => (
-          <List.Item extra={<Button type="primary"
+          <List. Item extra={<Button type="primary"
                                     onClick={this.handleButton(
                                       item['product_id'], item['user_id']
                                     )}>

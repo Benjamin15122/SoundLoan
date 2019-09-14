@@ -257,5 +257,26 @@ export default {
       'title',
       '合同内容'
     ]
+  },
+  'Get /infoMan/entUserInfo':{
+    success:true,
+    message:'',
+    content:[{
+      'id':1,
+      'name':'金利来',
+      'foundation_date':'2018.1.1',
+      'corporate_capital':100,
+      'legal_person_name':'范冰冰',
+      'register_capital':1000,
+      'loan_rate_min':300,
+      'loan_rate_max':500,
+      'address':'南京鼓楼区',
+      'website':'www.xixi.com',
+      'contact':'hahaha',
+      'description':'这是一家公司',
+      'credit_score':10,
+      'fee_to_pay':100
+    },{
+    }]
   }
 }
