@@ -15,8 +15,8 @@ class Config(object):
 
     # [Mysql]
     # MYSQL_USER = 'root'
-    # MYSQL_PASSWD = '123456'
-    # MYSQL_HOST = '192.168.255.128'
+    # MYSQL_PASSWD = 'SoundLoan2019'
+    # MYSQL_HOST = 'localhost'
     # MYSQL_PORT = 3306
     # MYSQL_DATABASE = 'sound_loan'
     ## TODO: 本地测试时配置自己的mysql参数
@@ -72,7 +72,7 @@ class Config(object):
     app_private_key_path = os.path.join(BASE_DIR, 'back-end/external_api_keys/myapp_private_key.txt')
     alipay_public_key_path = os.path.join(BASE_DIR, 'back-end/external_api_keys/alipay_public_key.txt')
     # TODO：前端完成后修改这个地址
-    redirect_url = "http://47.103.113.144:"+str(PORT)+"/alipay/completed"
+    redirect_url = "http://47.103.113.144:8000/contractDetect"
     notification_url = "http://47.103.113.144:"+str(PORT)+"/alipay/notification"
     # 根据自己申请的进行设置
     alipay = AliPay(
