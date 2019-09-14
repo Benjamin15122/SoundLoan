@@ -351,24 +351,22 @@ def update_ent_score(ent_name):
 
 @app.route("/infoMan/addProductComment", methods=["POST"])
 def add_product_comment():
-    company_name = request.form.get('company_name', None)
-    product_name = request.form.get('product_name', None)
-    user_name = request.form.get('user_name', None)
+    company_id = request.form.get('company_id', None)
+    product_id = request.form.get('product_id', None)
+    user_id = request.form.get('user_id', None)
     comment = request.form.get('comment', None)
     score = request.form.get('score', None)
-    if not company_name or not product_name or not user_name or not comment or not score:
-        return jsonify({'success': False, 'message': 'Missing params company_name/product_name/user_name/comment/score.'})
+    if not company_id or not product_id or not user_id or not comment or not score:
+        return jsonify({'success': False, 'message': 'Missing params company_id/product_id/user_id/comment/score.'})
     
     # prepare a new comment record
-    product = LoanProduct.query.filter(LoanProduct.Name == product_name).first()
+    product = LoanProduct.query.filter(LoanProduct.Id == product_id).first()
     if not product:
         return jsonify({'success': False, 'message': 'No such loan product found.'})
-    product_id = product.Id
 
-    user = IndividualUser.query.filter(IndividualUser.Nickname == user_name).first()
+    user = IndividualUser.query.filter(IndividualUser.Id == user_id).first()
     if not user:
         return jsonify({'success': False, 'message': 'No such individual user found.'})
-    user_id = user.Id
 
     new_comment = LoanProductComment(ProductId=product_id, UserId=user_id, Comment=comment, Score=score)
 
@@ -377,7 +375,8 @@ def add_product_comment():
         db.session.add(new_comment)
         db.session.commit()
 
-        update_ent_score(company_name)
+        company = EnterpriseUser.query.filter(EnterpriseUser.Id == company_id)
+        update_ent_score(company.Name)
 
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
