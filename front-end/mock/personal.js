@@ -1,4 +1,4 @@
-const infoList = [
+let infoList = [
   {
     apply_pass_time: -1,
     birth: '10000',
