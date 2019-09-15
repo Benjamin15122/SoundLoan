@@ -261,7 +261,7 @@ export default {
   'Get /infoMan/entUserInfo':{
     success:true,
     message:'',
-    content:[{
+    content:{
       'id':1,
       'name':'金利来',
       'foundation_date':'2018.1.1',
@@ -276,7 +276,6 @@ export default {
       'description':'这是一家公司',
       'credit_score':10,
       'fee_to_pay':100
-    },{
-    }]
+    }
   }
 }

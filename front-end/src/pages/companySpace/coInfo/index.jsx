@@ -29,7 +29,7 @@ class CoInfo extends PureComponent {
       visible:false,
     }
   }
-  
+
 
   showModal = () => {
     this.setState({
@@ -56,7 +56,7 @@ class CoInfo extends PureComponent {
     const that = this;
     (async function() {
       const res = await getEntUserInfo(user.name);
-      that.setState({ infos: res[0] });
+      that.setState({ infos: res });
     })();
   }
 
@@ -77,7 +77,7 @@ class CoInfo extends PureComponent {
             {infos.website}
           </Descriptions.Item>
           <Descriptions.Item label="贷款利率">
-            {infos.fee_to_pay} 
+            {infos.fee_to_pay}
           </Descriptions.Item>
           <Descriptions.Item label="企业地址" span={3}>
             {infos.address}
