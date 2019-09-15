@@ -16,6 +16,7 @@ const GlobalHeaderRight = props => {
   return (
     <div className={className}>
       <Popover overlayStyle={{  }}
+               mouseLeaveDelay={1}
                placement='bottomLeft'
                title='贷款计算器'
                content={
