@@ -9,3 +9,18 @@
 .contractSelector {
   min-width: 20px;
 }
+
+.detailsTitle{
+  font-size: 14px;
+}
+
+.detailsLink {
+  font-size: 10px;
+  color: rgb(0,127,127);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.checkButton {
+  background-color: cornflowerblue;
+}
