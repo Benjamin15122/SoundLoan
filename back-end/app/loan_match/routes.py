@@ -50,9 +50,9 @@ def demand_loan_match():
 @app.route('/loan/calculate', methods=['POST'])
 def loan_calculate():
     try:
-        amount = request.form.get('amount')
-        rate = request.form.get('rate')
-        duration = request.form.get('duration')
+        amount = float(request.form.get('amount'))
+        rate = float(request.form.get('rate'))
+        duration = int(request.form.get('duration'))
         loan_type = request.form.get('type')
         total, interest_total, monthly_pay = calc_interest(amount, rate, duration, loan_type)
         content = {
