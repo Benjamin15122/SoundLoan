@@ -27,7 +27,7 @@ class EntInfoDetails extends Component {
     const { company_name } = this.props.location.query;
     (async () => {
       const entUserInfo = await getEntUserInfo(company_name);
-      this.setState({ entUserInfo });
+      this.setState({ entUserInfo: entUserInfo });
     })();
     (async () => {
       const news = await getNews(company_name);
