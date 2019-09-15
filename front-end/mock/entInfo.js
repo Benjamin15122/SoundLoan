@@ -4,7 +4,7 @@ export default {
     reason: '',
     return_object: [
       {
-        enterprise_name: '企业名称',
+        enterprise_name: '大企业',
         news_title: '新闻标题',
         news_link: '新闻链接',
         distribution_date: '发布日期',
@@ -12,7 +12,7 @@ export default {
         news_extract: '新...闻...摘...要...新...闻...摘...要...',
       },
       {
-        enterprise_name: '企业名称',
+        enterprise_name: '小企业',
         news_title: '新闻标题',
         news_link: '新闻链接',
         distribution_date: '发布日期',
@@ -20,7 +20,7 @@ export default {
         news_extract: '新...闻...摘...要...新...闻...摘...要...',
       },
       {
-        enterprise_name: '企业名称',
+        enterprise_name: '金牌贷贷贷',
         news_title: '新闻标题',
         news_link: '新闻链接',
         distribution_date: '发布日期',
