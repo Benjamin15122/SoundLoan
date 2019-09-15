@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'dva';
 import { withRouter } from 'umi';
 import { Card, Tabs, Descriptions, Switch, Tooltip } from 'antd';
+import Gauge from '@/components/Gauge';
+import {randomNum} from '@/utils/random';
 import styles from './index.css';
 
 import { infoParser, propertyParser,editableParser } from '@/utils/Perish/generalUtils';
@@ -50,6 +52,7 @@ class Center extends React.Component {
 
     const creditInfoTab = (
       <TabPane tab="信用信息" key="creditInfo">
+        <Gauge range={100} value={randomNum(80,100)} height={200}/>
         <Descriptions title={null} bordered>
           {Object.getOwnPropertyNames(credit).map(property => (
             <Descriptions.Item label={property} key={property}>
