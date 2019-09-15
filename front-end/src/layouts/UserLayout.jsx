@@ -51,7 +51,9 @@ const UserLayout = props => {
               </Link>
             </div>
           </div>
+          <div style={{ margin: location.pathname === '/user/welcome' ? '0': '50px' }}>
           {children}
+          </div>
         </div>
         <footer style={{ textAlign: 'center', background: 'white' }}>
           <div>本产品暂不向在校学生提供服务</div>
