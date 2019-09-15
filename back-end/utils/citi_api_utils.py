@@ -4,6 +4,8 @@ import requests
 import base64
 import http.client
 from config import Config
+from app import app, db
+from models.EnterpriseUser import EnterpriseUser
 
 
 def get_access_refresh_tokens(auth_code):
@@ -19,7 +21,7 @@ def get_access_refresh_tokens(auth_code):
     payload = {
         'grant_type': 'authorization_code',
         'code': auth_code,
-        'redirect_uri': "http://47.103.113.144:6006/CitiAuthCodeRedirect"
+        'redirect_uri': "http://47.103.113.144:8000/companySpace/transferResult"
     }
     r = requests.post("https://sandbox.apihub.citi.com/gcb/api/authCode/oauth2/token/hk/gcb",
                       data=payload,
@@ -62,3 +64,11 @@ def create_money_transfer(access_token, loan_amount, source_id, payee_id):
                               headers=headers)
     confirm_text = json.loads(confirm_r.text)
     return confirm_text
+
+
+def increase_monthly_fee():
+    all_ent = EnterpriseUser.query.all()
+    for i in range(len(all_ent)):
+        all_ent[i].FeeToPay += Config.MONTHLY_FEE
+    db.session.commit()
+

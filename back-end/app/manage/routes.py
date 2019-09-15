@@ -316,6 +316,7 @@ def ent_product_comment():
         return jsonify({'success': False, 'message': 'Missing params company_name'})
     sub = LoanProduct.query.filter(LoanProduct.EnterpriseName == name).subquery()
     commentList = db.session.query(sub, LoanProductComment).join(LoanProductComment, LoanProductComment.ProductId == sub.c.Id).all()
+
     result = [{
         'product_name': c.Name,
         'product_id': c.ProductId,
@@ -323,6 +324,11 @@ def ent_product_comment():
         'comment': c.LoanProductComment.Comment,
         'score': c.LoanProductComment.Score,
     } for c in commentList]
+
+    # 拿出每条评论的用户名
+    for i in range(len(result)):
+        ind = IndividualUser.query.get(result[i]['user_id'])
+        result[i]['user_name'] = ind.Nickname
 
     return jsonify({'success': True, 'content': result})
 
@@ -345,24 +351,22 @@ def update_ent_score(ent_name):
 
 @app.route("/infoMan/addProductComment", methods=["POST"])
 def add_product_comment():
-    company_name = request.form.get('company_name', None)
-    product_name = request.form.get('product_name', None)
-    user_name = request.form.get('user_name', None)
+    company_id = request.form.get('company_id', None)
+    product_id = request.form.get('product_id', None)
+    user_id = request.form.get('user_id', None)
     comment = request.form.get('comment', None)
     score = request.form.get('score', None)
-    if not company_name or not product_name or not user_name or not comment or not score:
-        return jsonify({'success': False, 'message': 'Missing params company_name/product_name/user_name/comment/score.'})
+    if not company_id or not product_id or not user_id or not comment or not score:
+        return jsonify({'success': False, 'message': 'Missing params company_id/product_id/user_id/comment/score.'})
     
     # prepare a new comment record
-    product = LoanProduct.query.filter(LoanProduct.Name == product_name).first()
+    product = LoanProduct.query.filter(LoanProduct.Id == product_id).first()
     if not product:
         return jsonify({'success': False, 'message': 'No such loan product found.'})
-    product_id = product.Id
 
-    user = IndividualUser.query.filter(IndividualUser.Nickname == user_name).first()
+    user = IndividualUser.query.filter(IndividualUser.Id == user_id).first()
     if not user:
         return jsonify({'success': False, 'message': 'No such individual user found.'})
-    user_id = user.Id
 
     new_comment = LoanProductComment(ProductId=product_id, UserId=user_id, Comment=comment, Score=score)
 
@@ -371,7 +375,8 @@ def add_product_comment():
         db.session.add(new_comment)
         db.session.commit()
 
-        update_ent_score(company_name)
+        company = EnterpriseUser.query.filter(EnterpriseUser.Id == company_id)
+        update_ent_score(company.Name)
 
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
@@ -413,8 +418,13 @@ def ent_loan_apply():
 
     loans = LoanRecord.query.filter(LoanRecord.LenderId == userId).all()
     result = [l.to_dict() for l in loans]
+    for i in range(len(result)):
+        indUserId = result[i]['user_id']
+        ind = IndividualUser.query.filter(IndividualUser.Id == indUserId).first()
+        result[i]['ind_user_name'] = ind.Nickname
 
     return jsonify({'success': True, 'content': result})
+
 
 @app.route("/infoMan/getMyApply", methods=["GET"])
 def user_applied_loan():
@@ -432,6 +442,12 @@ def user_applied_loan():
         )
     ).all()
     result = [r.to_dict() for r in loan_records]
+
+    for i in range(len(result)):
+        entUserId = result[i]['lender_id']
+        ent = EnterpriseUser.query.filter(IndividualUser.Id == entUserId).first()
+        result[i]['company_name'] = ent.Name
+
     return jsonify({'success': True, 'content': result})
 
 
@@ -489,6 +505,22 @@ def loan_apply():
                 'id': new_record.Id
             }
         })
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
+@app.route("/infoMan/loanApplyReject", methods=['POST'])
+def loan_apply_reject():
+    try:
+        recordId = request.form.get('record_id',  None)
+        if not recordId:
+            return jsonify({'success': False, 'message': 'Missing params record_id'})
+        record = LoanRecord.query.filter(LoanRecord.Id == recordId).first()
+        if not record:
+            return jsonify({'success': False, 'message': 'No such loan record found'})
+        db.session.delete(record)
+        db.commit()
+        return jsonify({'success': True, 'message': 'Loan apply rejected. '})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
 

@@ -5,8 +5,9 @@ import os
 import re
 import subprocess
 import time
+from config import Config
+from app import app, db
 
-from app import app
 
 def to_dict(columns, results):
     datas = []
@@ -54,9 +55,45 @@ def execute_cmd(cmd, timeout=2):
     return sub.returncode, output if output else ''
 
 
-
 def extend_to_16(text):
     """Extend text to a multiple of 16 as type of bytes"""
     while len(text) % 16 != 0:
         text += '\0'
     return str.encode(text)
+
+
+def calc_interest(amount, rate, duration, loan_type):
+    # 计算三个值：还款总额，利息总额，每月还款额度
+    L, i, n = amount, rate/12, duration
+    # 等额本息
+    if loan_type == 'EqualPricipalInterest':
+        a_n_i = (1-(1+i)**(-n))/i
+        P = L/a_n_i
+        return n*P, n*P-L, [P for i in range(n)]
+
+    # 等额本金
+    elif loan_type == 'EqualPricipal':
+        return L+((n+1)*L*i/2), (n+1)*L*i/2, [(L/n)*(1+i*(n+1-j)) for j in range(1, n+1)]
+
+    # 按月付息，到期还本
+    elif loan_type == 'MonthlyInterest':
+        total = L*(1+n*i)
+        interest_total = L*n*i
+        return total, interest_total, [L*i if not j == n else L*(1+i) for j in range(1, n+1)]
+
+    elif loan_type == 'QuarterlyInterest':
+        total = L*(1+n*i)
+        interest_total = L*n*i
+        times = int(n/3)
+        monthly_pay = [L*3*i if j%3==0 else 0 for j in range(1, n+1)]
+        last_pay = total - sum(monthly_pay)
+        monthly_pay[-1] += last_pay
+        return total, interest_total, monthly_pay
+
+    elif loan_type == 'OneTimeDebt':
+        total = L*(1+i*n)
+        interest_total = L*i*n
+        return total, interest_total, [total if j == n else 0 for j in range(1, n+1)]
+
+    else:
+        raise Exception('Invalid loan type. ')

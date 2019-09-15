@@ -1,4 +1,10 @@
 from app import db, app
+from app.personal_credit_score.routes import DefaultProbabilityModel
+
+
+def compute_default_prob(info):
+    info['user'].update(info['loan_record'])
+    return DefaultProbabilityModel.model.predict(info['user'])
 
 
 class LoanRecord(db.Model):
@@ -45,7 +51,7 @@ class LoanRecord(db.Model):
         from app.manage.manage_utils import get_default_prob_info
 
         default_prob_info = get_default_prob_info(self)
-        # self.DefaultProb = computeDefaultProb(get_default_prob_info())
+        self.DefaultProb = compute_default_prob(default_prob_info)
 
     def to_dict(self):
         return {
@@ -62,5 +68,6 @@ class LoanRecord(db.Model):
             'end_date_timestamp': self.EndDateTimestamp,
             'repay_status': self.RepayStatus,
             'order_status': self.OrderStatus,
+            'default_prob': self.DefaultProb
         }
 

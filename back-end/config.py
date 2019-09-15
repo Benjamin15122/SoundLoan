@@ -5,8 +5,8 @@ URI_FORMAT = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'
 
 
 class Config(object):
-    HOST = "127.0.0.1"
-    PORT = 5000
+    HOST = "0.0.0.0"
+    PORT = 7777
 
     SECRET_KEY = "gTzSygPGe^#v6N7W"  # used for password encryption
 
@@ -14,17 +14,17 @@ class Config(object):
     EXPIRES_IN = 86400  # seconds of one day
 
     # [Mysql]
-    # MYSQL_USER = 'root'
-    # MYSQL_PASSWD = '123456'
-    # MYSQL_HOST = '192.168.255.128'
-    # MYSQL_PORT = 3306
-    # MYSQL_DATABASE = 'sound_loan'
-    ## TODO: 本地测试时配置自己的mysql参数
     MYSQL_USER = 'root'
-    MYSQL_PASSWD = 'root'
-    MYSQL_HOST = '127.0.0.1'
+    MYSQL_PASSWD = 'SoundLoan2019'
+    MYSQL_HOST = 'localhost'
     MYSQL_PORT = 3306
     MYSQL_DATABASE = 'sound_loan'
+    ## TODO: 本地测试时配置自己的mysql参数
+    # MYSQL_USER = 'root'
+    # MYSQL_PASSWD = 'yanfan'
+    # MYSQL_HOST = '127.0.0.1'
+    # MYSQL_PORT = 3308
+    # MYSQL_DATABASE = 'sound_loan'
 
     # example 'mysql+pymysql://mdpmonitor:X7_mJw12m8UW@168.61.2.7:3306/mdpmonitor?charset=utf8'
     SQLALCHEMY_DATABASE_URI = URI_FORMAT.format(MYSQL_USER, MYSQL_PASSWD, MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE)
@@ -42,29 +42,37 @@ class Config(object):
     K_USERS, K_PRODUCTS = 5, 20
     JOBS = [
         {  # 每隔一天执行一次
-            'id': 'Job1: Update_recommendation_model',
+            'id': 'Job1: update_recommendation_model',
             #'func': 'algorithm.loan_recommendation.recommendation_userbased:update_model',  # 方法名
             'func': 'utils.recommendation_userbased_utils:update_model',
             # 'args': (K_USERS, K_PRODUCTS),  # 入参
             'trigger': 'interval',  # interval表示循环任务
             'seconds': 24*60*60,
         },
-        # {
-        #     'id': 'Job1: Update_recommendation_model',
-        #     'func': 'utils.credit_score_utils:update_credit_scores',
-        #     'trigger': 'interval',  # interval表示循环任务
-        #     'seconds': 24 * 60 * 60,
-        # }
+        {
+            'id': 'Job2: update_credit_scores',
+            'func': 'utils.credit_score_utils:update_credit_scores',
+            'trigger': 'interval',  # interval表示循环任务
+            'seconds': 24 * 60 * 60,
+        },
+        {
+            'id': 'Job3: add_monthly_fee_for_enterprise',
+            'func': 'utils.citi_api_utils:increase_monthly_fee',
+            'trigger': 'interval',
+            'seconds': 30*24*60*60
+        }
+
     ]
 
     # 支付宝配置
-    BASE_DIR = './'
+    # BASE_DIR = '.'
+    BASE_DIR = os.getcwd().split('back-end')[0]
     # 初始化操作
     # 设置秘钥公钥的存放路径
-    app_private_key_path = os.path.join(BASE_DIR, 'external_api_keys/myapp_private_key.txt')
-    alipay_public_key_path = os.path.join(BASE_DIR, 'external_api_keys/alipay_public_key.txt')
+    app_private_key_path = os.path.join(BASE_DIR, 'back-end/external_api_keys/myapp_private_key.txt')
+    alipay_public_key_path = os.path.join(BASE_DIR, 'back-end/external_api_keys/alipay_public_key.txt')
     # TODO：前端完成后修改这个地址
-    redirect_url = "http://47.103.113.144:"+str(PORT)+"/alipay/completed"
+    redirect_url = "http://47.103.113.144:8000/contractDetect"
     notification_url = "http://47.103.113.144:"+str(PORT)+"/alipay/notification"
     # 根据自己申请的进行设置
     alipay = AliPay(
@@ -80,3 +88,6 @@ class Config(object):
     # 爬取地址暂定为这个
     # COURT_URL_TEMPLATE = 'https://rmfygg.court.gov.cn/web/rmfyportal/noticeinfo'
     COURT_URL_TEMPLATE = 'http://www.zqcn.com.cn/search/servlet/SearchServlet.do'
+
+    CONTRACT_FEE = 6
+    MONTHLY_FEE = 2000

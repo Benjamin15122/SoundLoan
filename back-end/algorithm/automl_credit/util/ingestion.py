@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import sys
 import pandas as pd
-from model import Model
+from algorithm.automl_credit.automl.model import Model
 
 
 def m_print(msg):

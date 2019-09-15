@@ -6,6 +6,7 @@ from models.LoanProduct import LoanProduct
 from models.EnterpriseUser import EnterpriseUser
 from utils.loan_match_utils import *
 from config import Config
+from utils.common_utils import *
 
 
 @app.route("/enterprise/match", methods=["POST"])
@@ -38,6 +39,32 @@ def demand_loan_match():
             'content': [each.to_dict() for each in enterprises]
         })
 
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e),
+            'content': None
+        })
+
+
+@app.route('/loan/calculate', methods=['POST'])
+def loan_calculate():
+    try:
+        amount = float(request.form.get('amount'))
+        rate = float(request.form.get('rate'))
+        duration = int(request.form.get('duration'))
+        loan_type = request.form.get('type')
+        total, interest_total, monthly_pay = calc_interest(amount, rate, duration, loan_type)
+        content = {
+            'total_amount': total,
+            'total_interest': interest_total,
+            'monthly_payment': monthly_pay
+        }
+        return jsonify({
+            'success': True,
+            'message': '',
+            'content': content
+        })
     except Exception as e:
         return jsonify({
             'success': False,

@@ -1,4 +1,4 @@
-from tools import timeit
+from algorithm.automl_credit.automl.tools import timeit
 
 
 @timeit

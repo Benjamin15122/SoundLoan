@@ -12,6 +12,9 @@ def update_credit_scores():
         update_ind_user_credit_score(user['id'], credit_score)
 
 
+
+
+
 if __name__ == '__main__':
     user1 = {
         'id': 1,

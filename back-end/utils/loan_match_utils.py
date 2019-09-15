@@ -59,3 +59,4 @@ def match_products(demand, products):
     index = sorted(range(len(match_score)), key=lambda k: match_score[k])
     index = index[::-1][:demand['num_max']]
     return [products[i].to_dict() for i in index]
+

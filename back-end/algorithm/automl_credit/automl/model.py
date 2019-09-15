@@ -1,10 +1,10 @@
 import copy
 import pickle
-from tools import timeit, log
-from preprocess import pipeline as pp_pipeline
-from feature_engineering import pipeline as fe_pipeline
-from hyper_train import train, predict
-from constant import TARGET
+from algorithm.automl_credit.automl.tools import timeit, log
+from algorithm.automl_credit.automl.preprocess import pipeline as pp_pipeline
+from algorithm.automl_credit.automl.feature_engineering import pipeline as fe_pipeline
+from algorithm.automl_credit.automl.hyper_train import train, predict
+from algorithm.automl_credit.util.constant import TARGET
 
 
 class Model:

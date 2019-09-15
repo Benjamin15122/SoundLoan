@@ -1,8 +1,8 @@
-from tools import timeit, log
+from algorithm.automl_credit.automl.tools import timeit, log
 import datetime
 from pandas import DataFrame
 from sklearn.preprocessing import LabelEncoder
-from constant import *
+from algorithm.automl_credit.util.constant import *
 
 @timeit
 def clean_df(df, info):
