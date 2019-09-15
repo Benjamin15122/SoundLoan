@@ -7,7 +7,6 @@ from config import *
 from models.EnterpriseNews import EnterpriseNews
 from models.EnterpriseUser import EnterpriseUser
 from app import app, db
-import requests
 
 
 def get_search_results(company_name):
@@ -73,17 +72,6 @@ def update_news():
     db.session.commit()
     print('all news collected!')
 
-
-def detecting_thread(host, port):
-    url = 'http://' + host + ':' + str(port)
-    while True:
-        try:
-            requests.get(url)
-            break
-        except Exception as e:
-            print(e)
-            time.sleep(0.5)
-    update_news()
 
 
 
