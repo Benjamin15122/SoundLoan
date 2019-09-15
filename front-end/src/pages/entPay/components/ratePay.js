@@ -3,13 +3,28 @@ import { Checkbox, Button, message, InputNumber } from 'antd';
 
 export class RatePay extends Component {
 
+    state = {
+        year: mockData.year,
+        month: mockData.month,
+        day: mockData.day,
+        proMonth: 0,
+        per: mockData.per,
+        sum: mockData.sum
+    }
+
     payConfirm = e => {
         e.preventDefault();
         message.success('您的用户信用评分费用已付清');
         this.props.payConfirm();
     }
 
+    onChange = (value) => this.setState({
+         proMonth: value,
+         sum: this.state.per * value
+    }); 
+
     render() {
+        const {year,month,day,proMonth,per,sum} = this.state;
         return (
             <div style={{marginTop: "5%"}}>
                 <h2 style={{textAlign:'center'}}>
@@ -28,15 +43,18 @@ export class RatePay extends Component {
                         <div className="rightItem" 
                         style={{margin:"20px",textAlign:"right"}}>
                             <div style={labelItem}>
-                                {mockData.year}年
-                                {mockData.month}月
-                                {mockData.day}日
+                                {year}年
+                                {month}月
+                                {day}日
                             </div>
                             <div style={labelItem}>
-                                <InputNumber style={{ width: '30%',marginRight:"10px" }} />月
+                                <InputNumber 
+                                style={{ width: '30%',marginRight:"10px" }} 
+                                onChange={this.onChange}
+                                />月
                             </div>
-                            <div style={labelItem}>{mockData.per}元</div>
-                            <div style={labelItem}>{mockData.sum}元</div>
+                            <div style={labelItem}>{per}元</div>
+                            <div style={labelItem}>{sum}元</div>
                         </div>
                         
                     </div>
@@ -81,8 +99,8 @@ const mockData = {
     month: 9,
     day: 13,
     // proMonth: 2,
-    per: 6,
-    sum: 120
+    per: 2000,
+    sum: 0
 }
 
 export default RatePay
