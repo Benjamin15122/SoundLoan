@@ -95,6 +95,22 @@ export default {
           component: './user/register',
         },
         {
+          path: 'welcome',
+          component: './Welcome',
+        },
+        {
+          path: './contractDetect',
+          component: './step-form',
+        },
+        {
+          path: './requireLoan',
+          component: './requireLoan/components/requireLoan',
+        },
+        {
+          path: './inquiry',
+          component: './entInfo/inquiry',
+        },
+        {
           component: './404',
         },
       ],
@@ -106,13 +122,13 @@ export default {
       // authority: ['admin', 'user'],
       routes: [
         {
-          name: '个人信息',
+          name: '个人空间',
           icon: 'profile',
           path: '/personalManagement',
           authority: ['person', 'admin'],
           routes: [
             {
-              name: '个人空间',
+              name: '个人信息',
               path: 'center',
               icon: 'user',
               component: './personalManagement/center',

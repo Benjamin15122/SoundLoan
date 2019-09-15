@@ -37,7 +37,7 @@ class ChangePassword extends PureComponent {
     const { form } = this.props;
     const { getFieldDecorator } = form;
     return <div>
-      <Form style={{ textAlign: 'center', width: '500px', marginLeft: '100px' }}
+      <Form style={{ textAlign: 'center', width: '500px', margin: 'auto' }}
             onSubmit={this.handleSubmit}>
         <Form.Item>
           <h3>修改密码</h3>

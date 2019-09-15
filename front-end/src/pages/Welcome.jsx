@@ -1,3 +1,10 @@
 import React from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
-export default () => <h3>欢迎你！</h3>;
+import welcome_1 from '../assets/welcome-1.png';
+import welcome_2 from '../assets/welcome-2.png'
+
+export default () => (
+  <div>
+    <img alt='welcome-1' src={welcome_1} style={{ width: '100%' }}/>
+    <img alt='welcome-2' src={welcome_2} style={{ width: '100%' }}/>
+  </div>
+)

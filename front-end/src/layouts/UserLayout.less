@@ -20,7 +20,7 @@
 
 .content {
   flex: 1;
-  padding: 32px 0;
+  padding: 0;
 }
 
 @media (min-width: @screen-md-min) {
@@ -32,20 +32,29 @@
   }
 
   .content {
-    padding: 32px 0 24px;
+    padding: 0;
   }
 }
 
 .top {
-  text-align: center;
+  text-align: left;
 }
 
 .header {
-  height: 44px;
-  line-height: 44px;
+  height: 60px;
+  padding-top: 10px;
+  padding-left: 50px;
+  line-height: 50px;
+  vertical-align: center;
   a {
+    margin-right: 30px;
+    margin-left: 30px;
+    color: darkgrey;
+    font-size: 15px;
     text-decoration: none;
   }
+
+  background: rgba(22, 32, 69, 1);
 }
 
 .logo {

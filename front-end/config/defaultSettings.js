@@ -10,7 +10,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Sound Loan',
+  title: 'Loan Guard',
   pwa: false,
   iconfontUrl: '',
 };

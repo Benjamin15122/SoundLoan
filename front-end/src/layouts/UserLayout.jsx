@@ -4,9 +4,9 @@ import Link from 'umi/link';
 import React from 'react';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
-import SelectLang from '@/components/SelectLang';
-import logo from '../assets/logo.svg';
+import logo from '../assets/LoanGuard_logo.png';
 import styles from './UserLayout.less';
+import footer from '../assets/footer.png';
 
 const UserLayout = props => {
   const {
@@ -32,20 +32,31 @@ const UserLayout = props => {
       })}
     >
       <div className={styles.container}>
-        <div className={styles.lang}>{/* <SelectLang /> */}</div>
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>
-              <Link to="/">
+              <Link to="/user/welcome">
                 <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>Loan Guard</span>
+              </Link>
+              <Link to='/user/contractDetect'>
+                检测合同
+              </Link>
+              <Link to='/user/requireLoan'>
+                我要借款
+              </Link>
+              <Link to='/user/inquiry'>
+                企业查询
+              </Link>
+              <Link to='/user/login' style={{ float: 'right' }}>
+                现在登录
               </Link>
             </div>
-            <div className={styles.desc}>Loan Guard 是花期杯的参赛作品</div>
           </div>
+          <div style={{ margin: location.pathname === '/user/welcome' ? '0': '50px' }}>
           {children}
+          </div>
         </div>
-        <DefaultFooter />
+        <img alt='footer' src={footer}/>
       </div>
     </DocumentTitle>
   );

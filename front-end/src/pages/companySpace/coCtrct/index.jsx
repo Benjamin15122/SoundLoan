@@ -180,13 +180,13 @@ class CoCtrct extends PureComponent {
              onOk={() => this.setState({ showContent: false })}>
         <Descriptions layout='vertical' bordered column={2}>
           <Descriptions.Item label='合同标题'>
-            这个标题
+            利民贷
           </Descriptions.Item>
           <Descriptions.Item label='个人名称'>
-            某人名称
+            张全德
           </Descriptions.Item>
           <Descriptions.Item label='合同内容'>
-            这是...合同..的...内容..
+            合同内容...
           </Descriptions.Item>
         </Descriptions>
       </Modal>

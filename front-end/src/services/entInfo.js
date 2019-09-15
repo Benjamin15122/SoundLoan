@@ -24,6 +24,7 @@ export const getComments = async company_name => {
 
 export const getEntUserInfo = async name => {
   const res = await request.get('/infoMan/entUserInfo', { params: { name } });
+  debugger
   return res['content'];
 };
 
