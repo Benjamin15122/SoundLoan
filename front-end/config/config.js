@@ -122,13 +122,13 @@ export default {
       // authority: ['admin', 'user'],
       routes: [
         {
-          name: '个人信息',
+          name: '个人空间',
           icon: 'profile',
           path: '/personalManagement',
           authority: ['person', 'admin'],
           routes: [
             {
-              name: '个人空间',
+              name: '个人信息',
               path: 'center',
               icon: 'user',
               component: './personalManagement/center',
