@@ -6,6 +6,7 @@ import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import logo from '../assets/LoanGuard_logo.png';
 import styles from './UserLayout.less';
+import footer from '../assets/footer.png';
 
 const UserLayout = props => {
   const {
@@ -55,11 +56,7 @@ const UserLayout = props => {
           {children}
           </div>
         </div>
-        <footer style={{ textAlign: 'center', background: 'white' }}>
-          <div>本产品暂不向在校学生提供服务</div>
-          <div>如有问题，请联系xxxxxxx@xxx.com</div>
-          <small>copyright&copy;LoanGuardians</small>
-        </footer>
+        <img alt='footer' src={footer}/>
       </div>
     </DocumentTitle>
   );
