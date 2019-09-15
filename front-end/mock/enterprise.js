@@ -5,14 +5,14 @@ export default {
     content: [{
       'comment': '很好，下次再来',
       'product_id': 1,
-      'product_name': '金利来小额贷',
+      'product_name': '金坷垃小额贷',
       'score': 5,
       'user_id': 1,
       'user_name': 'Bad man'
     }, {
       'comment': '非常棒',
       'product_id': 1,
-      'product_name': '金利来小额贷',
+      'product_name': '金坷垃小额贷',
       'score': 4,
       'user_id': 2,
       'user_name': 'bad girl'
@@ -263,19 +263,19 @@ export default {
     message:'',
     content:{
       'id':1,
-      'name':'金利来',
-      'foundation_date':'2018.1.1',
-      'corporate_capital':100,
-      'legal_person_name':'范冰冰',
-      'register_capital':1000,
+      'name':'圣地亚哥农资集团',
+      'foundation_date':'2009/5/19',
+      'corporate_capital':'500,000',
+      'legal_person_name':'周巍立',
+      'register_capital':'10,000',
       'loan_rate_min':300,
       'loan_rate_max':500,
-      'address':'南京鼓楼区',
-      'website':'www.xixi.com',
-      'contact':'hahaha',
-      'description':'这是一家公司',
+      'address':'中国河南郑州市金水区农业路国际企业中心A座906室',
+      'website':'http://51sole1921548.51sole.com/',
+      'contact':'86-0371-63691985',
+      'description':'本公司位于中国.河南省.郑州市.金水区郑州市农业路国际企业中心A座906室，主营 金脉动，金坷垃 等。公司秉承“顾客至上，锐意进取”的经营理念，坚持“客户第一”的原则为广大客户提供优质的服务。欢迎惠顾！  美国圣地亚戈国际农资集团是一家—，注册资本为1万，所在地区位于河南郑州市,我们以诚信、实力和质量获得业界的高度认可，坚持以客户为核心，“质量到位、服务一流”的经营理念为广大客户提供优质的服务。欢迎各界朋友莅临美国圣地亚戈国际农资集团参观、指导和业务洽谈。您如果对我们感兴趣的话，可以直接联系我们或者留下联系方式。联系人周巍立 先生，电话：-，传真：-，联系地址：河南郑州市中国...金水区农业路国际企业中心A座906室。',
       'credit_score':10,
       'fee_to_pay':100
-    }
+    },
   }
 }
