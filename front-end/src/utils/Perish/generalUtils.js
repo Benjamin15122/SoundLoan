@@ -54,3 +54,7 @@ export function propertyParser(property) {
   });
   return result;
 }
+
+export function editableParser(property){
+  return property!=="姓名"&&property!=="性别"&&property!=="生日"
+}
