@@ -4,8 +4,8 @@ export default {
     success: true,
     content: {
       token: 'token..string..',
-      id: 2123,
-      name: '用户名',
+      id: 1,
+      name: '个人用户示例',
       authority: 'person',
     }
   },
@@ -13,8 +13,8 @@ export default {
     success: true,
     content: {
       token: 'token..string..',
-      id: 2123,
-      name: '用户名',
+      id: 1,
+      name: '企业用户示例',
       authority: 'enterprise',
     }
   },
