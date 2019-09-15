@@ -7,7 +7,8 @@ from app.loan_recommendation.routes import *
 from app import app, db
 from flask_caching import Cache
 from apscheduler.schedulers.background import BackgroundScheduler
-from utils.news_crawl_utils import update_news
+from utils.news_crawl_utils import update_news, detecting_thread
+import threading
 
 api = Api(app)
 api.add_resource(LoanRecommendation, '/enterprise/recommendation')
@@ -23,4 +24,5 @@ if __name__ == "__main__":
 
     host = app.config['HOST']
     port = app.config['PORT']
+    threading.Thread(target=detecting_thread, args=(host, port)).start()
     app.run(host=host, port=port)
