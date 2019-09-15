@@ -1,9 +1,11 @@
 import React from 'react';
-import { Card, Table, Button, Modal, Input, Tag, Divider } from 'antd';
+import { Card, Table, Button, Modal, Input, Tag, Divider, Tabs } from 'antd';
 import { connect } from 'dva';
 import styles from './index.css';
 
 import ReactStars from 'react-stars'
+
+const { TabPane } = Tabs
 
 const mapStateToProps = state => ({
   loanList: state['personalManagement-loanList'],
@@ -17,8 +19,6 @@ class Loans extends React.Component {
 
     const { tags } = this.state
 
-    const loanTable = <Table columns={this.columns} dataSource={loanList} />
-
     const loan = loanList.find(l => l.id === this.state.activeLoanId)
 
     const evaluateModal = (
@@ -28,6 +28,8 @@ class Loans extends React.Component {
         visible={this.state.evaluateModalVisible}
         onOk={_ => this.setState({ evaluateModalVisible: false, activeLoanId: null }, _ => this.evaluateHandler(loan))}
         onCancel={_ => this.setState({ evaluateModalVisible: false, activeLoanId: null })}>
+        <ReactStars count={5} size={24} value={this.state.score} onChange={value => this.setState({ score: value })} />
+        <Divider />
         <div>
           {Object.
             keys(tagList).
@@ -42,14 +44,38 @@ class Loans extends React.Component {
         </div>
         <Divider />
         <Input.TextArea rows={4} value={this.state.evaluationText} onChange={e => this.setState({ evaluationText: e.target.value })} />
-        <Divider />
-        <ReactStars count={5} size={24} value={this.state.score} onChange={value => this.setState({ score: value })} />
       </Modal>
+    )
+
+    const uploadingLoanTableTab = (
+      <TabPane key="uploading_contract" tab="贷款中" >
+        <Table columns={this.columns} dataSource={loanList.filter(l => l.order_status === "uploading_contract")} />
+      </TabPane>
+    )
+
+    const appliedLoanTableTab = (
+      <TabPane key="applied" tab="我的申请">
+        <Table columns={this.columns} dataSource={loanList.filter(l => l.order_status === "applied")} />
+      </TabPane>
+    )
+
+    const finishedLoanTableTab = (
+      <TabPane key="finished" tab="已完成贷款">
+        <Table columns={this.columns} dataSource={loanList.filter(l => l.order_status === "finished")} />
+      </TabPane>
+    )
+
+    const loanTabs = (
+      <Tabs activeKey={this.state.loanTabsActiveKey} onTabClick={key => this.setState({ loanTabsActiveKey: key })}>
+        {appliedLoanTableTab}
+        {uploadingLoanTableTab}
+        {finishedLoanTableTab}
+      </Tabs>
     )
 
     return (
       <Card className={styles.container}>
-        {loanTable}
+        {loanTabs}
         {evaluateModal}
       </Card>
     );
@@ -61,7 +87,8 @@ class Loans extends React.Component {
     evaluationText: "",
     realLoanList: [],
     tags: {},
-    score: 0
+    score: 0,
+    loanTabsActiveKey: "uploading_contract"
   }
 
   columns = [
