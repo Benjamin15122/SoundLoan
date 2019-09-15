@@ -10,7 +10,7 @@ import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { isAntDesignPro } from '@/utils/utils';
-import logo from '../assets/logo.svg';
+import logo from '../assets/LoanGuard_logo.png';
 import router from 'umi/router';
 
 /**
@@ -71,11 +71,26 @@ const BasicLayout = props => {
     });
   }
   const { pathname, query } = location;
+  const type = user.currentUser.authority || currentUser.authority;
   if (!user.currentUser.name && !currentUser.name) {
-    router.replace({
-      pathname: '/user/login',
-      query: { ...query, redirect: pathname },
-    });
+    if (!pathname || pathname === '/') {
+      router.replace('/user/welcome');
+    }
+    else {
+      router.replace({
+        pathname: '/user/login',
+        query: {
+          ...query,
+          redirect: pathname
+        },
+      });
+    }
+  }
+  else if (!pathname || pathname === '/') {
+    if (type === 'person')
+      router.replace('/personalManagement/center');
+    else if (type === 'enterprise')
+      router.replace('/companySpace/coInfo');
   }
   // useEffect(() => {
   //   if (dispatch) {

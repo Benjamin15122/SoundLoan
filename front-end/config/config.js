@@ -95,6 +95,22 @@ export default {
           component: './user/register',
         },
         {
+          path: 'welcome',
+          component: './Welcome',
+        },
+        {
+          path: './contractDetect',
+          component: './step-form',
+        },
+        {
+          path: './requireLoan',
+          component: './requireLoan/components/requireLoan',
+        },
+        {
+          path: './inquiry',
+          component: './entInfo/inquiry',
+        },
+        {
           component: './404',
         },
       ],
