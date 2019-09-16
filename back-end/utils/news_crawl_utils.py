@@ -25,7 +25,7 @@ def get_search_results(company_name):
     )
     time.sleep(5)
     flag_element = driver.find_element_by_css_selector('#result_list > table:nth-child(1) > tbody > tr > td')
-    flag_word = flag_element.text.split(search_word)
+    flag_word = flag_element.text.split(search_word)[0]
     evidence_number = int(re.findall(r"\d+\.?\d*", flag_word)[0])
     if evidence_number == 0:
         return results
