@@ -29,7 +29,8 @@ def get_search_results(company_name):
     evidence_number = int(re.findall(r"\d+\.?\d*", flag_word)[0])
     if evidence_number == 0:
         return results
-    for i in range(1, 21):
+    max_number = 21 if evidence_number > 21 else evidence_number
+    for i in range(1, max_number + 1):
         result_row = {}
         a_element = driver.find_element_by_css_selector(
             '#result_list > table:nth-child(3) > tbody > tr:nth-child(%d) > td > a:nth-child(1)' % i)
