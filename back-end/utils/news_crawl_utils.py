@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
+import re
 from config import *
 from models.EnterpriseNews import EnterpriseNews
 from models.EnterpriseUser import EnterpriseUser
@@ -23,6 +24,11 @@ def get_search_results(company_name):
         EC.presence_of_element_located((By.ID, "result_list"))
     )
     time.sleep(5)
+    flag_element = driver.find_element_by_css_selector('#result_list > table:nth-child(1) > tbody > tr > td')
+    flag_word = flag_element.text.split(search_word)
+    evidence_number = int(re.findall(r"\d+\.?\d*", flag_word)[0])
+    if evidence_number == 0:
+        return results
     for i in range(1, 21):
         result_row = {}
         a_element = driver.find_element_by_css_selector(
